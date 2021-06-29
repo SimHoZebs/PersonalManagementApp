@@ -16,7 +16,7 @@ import Item from "../components/Item";
 import ItemCard from "../components/ItemCard";
 
 //interface
-import IItemSchema from "../interface/IItemSchema";
+import { IItemSchema } from "../schema/ItemSchema";
 
 interface props {
   itemList: IItemSchema[];
@@ -76,10 +76,12 @@ export default function Home(props: props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   dbConnect();
-  const res = await axios.get("http://localhost:3000/api");
-  const itemList = res.data.itemList;
+  const groupListGetRes = await axios.get<{ res: any[] }>(
+    "http://localhost:3000/api/group"
+  );
+  const groupList = groupListGetRes.data.res;
 
   return {
-    props: { itemList },
+    props: { groupList },
   };
 };
