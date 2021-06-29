@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-import IItemSchema from "../interface/ItemSchema"
+import IItemSchema from "../interface/IItemSchema"
 
 export const ItemSchema = new mongoose.Schema<IItemSchema>({
 	title: {
@@ -17,6 +17,6 @@ export const ItemSchema = new mongoose.Schema<IItemSchema>({
 	}
 })
 
-//mongoose.models.NoteSchema looks for a model called Task in the mongoDB connection that has been established.
+//mongoose.models.ItemSchema looks for a model called ItemSchema in the mongoDB connection that has been established.
 
-export default mongoose.models.ItemSchema || mongoose.model('ItemSchema', ItemSchema)
+export default mongoose.models.ItemSchema || mongoose.model<IItemSchema>('ItemSchema', ItemSchema)

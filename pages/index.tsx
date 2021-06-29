@@ -12,11 +12,11 @@ import dbConnect from "../dbConnect";
 import { useStyles } from "../styles/index";
 
 //components
-import ListItem from "../components/ListItem";
+import Item from "../components/Item";
 import ItemCard from "../components/ItemCard";
 
 //interface
-import IItemSchema from "../interface/ItemSchema";
+import IItemSchema from "../interface/IItemSchema";
 
 interface props {
   itemList: IItemSchema[];
@@ -61,10 +61,10 @@ export default function Home(props: props) {
 
         <Grid item container>
           <Grid item container spacing={1}>
-            <ListItem title={"Example list item title"} />
+            <Item title={"Example list item title"} />
             {props.itemList.map((item: IItemSchema, index: number) => (
               <Grid item xs={12} key={index}>
-                <ListItem title={item.title} />
+                <Item title={item.title} />
               </Grid>
             ))}
           </Grid>
