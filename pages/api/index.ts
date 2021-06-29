@@ -1,4 +1,4 @@
-import Task from '../../schema/todoSchema'
+import ItemSchema from '../../schema/ItemSchema'
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -7,8 +7,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 	switch (method) {
 		case "GET":
 			try {
-				const taskList = await Task.find({})
-				res.status(200).json({ taskList: taskList })
+				const itemList = await ItemSchema.find({})
+				res.status(200).json({ itemList: itemList })
 			} catch (error) {
 				res.status(400).json({ error: error })
 			}
@@ -16,8 +16,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 		case "POST":
 			try {
-				const newTask = await Task.create(req.body);
-				res.status(201).json({ success: true, newTask: newTask })
+				const newItem = await ItemSchema.create(req.body);
+				res.status(201).json({ success: true, newTask: newItem })
 			} catch (error) {
 				res.status(400).json({ error: error })
 			}
@@ -25,8 +25,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 		case "DELETE":
 			try {
-				const removedTask = await Task.findByIdAndRemove(req.body._id)
-				res.status(201).json({ success: true, removedTask: removedTask })
+				const removedItem = await ItemSchema.findByIdAndRemove(req.body._id)
+				res.status(201).json({ success: true, removedItem: removedItem })
 			} catch (error) {
 				res.status(400).json({ error: error })
 			}

@@ -4,5 +4,9 @@ export const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
 			padding: 30
+		},
+
+		backdrop: {
+			zIndex: theme.zIndex.drawer + 1
 		}
 	}))

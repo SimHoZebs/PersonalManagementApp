@@ -6,12 +6,18 @@ const useStyles = makeStyles((theme: Theme) =>
 			padding: 0
 		},
 
-		content: {
+		backdrop: {
+			zIndex: theme.zIndex.drawer + 1
+		},
+
+		actionArea: {
 			paddingLeft: 15,
 			paddingRight: 15,
 			paddingTop: 20,
 			paddingBottom: 20,
-		}
+		},
+
+
 	})
 )
 
