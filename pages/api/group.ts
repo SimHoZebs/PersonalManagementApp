@@ -3,16 +3,23 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method } = req;
+  let msg = ["Successful response"]
 
   switch (method) {
     case 'GET':
       try {
         let groupList = await GroupSchema.find({})
         if (groupList.length === 0) {
-          await GroupSchema.create({ groupName: "Default group" })
-          groupList = await GroupSchema.find({})
+          try {
+            await GroupSchema.create({ groupName: "Default group" })
+            groupList = await GroupSchema.find({})
+            msg.push("There was no default group, created default group")
+          }
+          catch (error) {
+            res.status(400).json({ msg: error })
+          }
         }
-        res.status(200).json({ res: groupList })
+        res.status(200).json({ res: groupList, msg: msg })
       } catch (error) {
         res.status(400).json({ msg: error })
       }

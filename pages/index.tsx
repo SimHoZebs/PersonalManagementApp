@@ -1,34 +1,21 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Container,
-  Typography,
-  Grid,
-  Backdrop,
-} from "@material-ui/core";
+import { Container, Typography, Grid } from "@material-ui/core";
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import dbConnect from "../dbConnect";
 import { useStyles } from "../styles/index";
 
-//components
-import Item from "../components/Item";
-import ItemCard from "../components/ItemCard";
-
-//interface
-import { IItemSchema } from "../schema/ItemSchema";
+import Group from "../components/Group";
 
 interface props {
-  itemList: IItemSchema[];
+  groupList: any[];
 }
 
 export default function Home(props: props) {
   const styles = useStyles();
-  const [createItemCardOpen, setCreateItemCardOpen] = useState(false);
+  const [groupList, setGroupList] = useState(props.groupList);
 
-  function handleCreateItem() {
-    setCreateItemCardOpen(true);
-  }
+  console.log(props.groupList);
 
   return (
     <Container className={styles.root}>
@@ -37,38 +24,7 @@ export default function Home(props: props) {
           <Typography variant="h4">Item list title</Typography>
         </Grid>
 
-        <Grid item container>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => handleCreateItem()}
-          >
-            New Item
-          </Button>
-
-          <Backdrop
-            open={createItemCardOpen}
-            onClick={() => setCreateItemCardOpen(false)}
-            className={styles.backdrop}
-          >
-            <ItemCard title={""} />
-          </Backdrop>
-        </Grid>
-
-        <Grid item>
-          <Typography variant="h6">Item list group</Typography>
-        </Grid>
-
-        <Grid item container>
-          <Grid item container spacing={1}>
-            <Item title={"Example list item title"} />
-            {props.itemList.map((item: IItemSchema, index: number) => (
-              <Grid item xs={12} key={index}>
-                <Item title={item.title} />
-              </Grid>
-            ))}
-          </Grid>
-        </Grid>
+        <Group />
       </Grid>
     </Container>
   );
@@ -76,9 +32,10 @@ export default function Home(props: props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   dbConnect();
-  const groupListGetRes = await axios.get<{ res: any[] }>(
+  const groupListGetRes = await axios.get<{ res: any[]; msg: string[] }>(
     "http://localhost:3000/api/group"
   );
+
   const groupList = groupListGetRes.data.res;
 
   return {
