@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Grid, Typography, Button, Backdrop } from "@material-ui/core";
 import axios from "axios";
 
@@ -6,43 +6,67 @@ import axios from "axios";
 import useStyles from "../styles/Group";
 import Item from "./Item";
 import ItemCard from "./ItemCard";
+import { IGroupSchema } from "../schema/GroupSchema";
+import { IItemSchema } from "../schema/ItemSchema";
 
-interface props {}
+interface props {
+  group: IGroupSchema;
+}
 
 const Group = (props: props) => {
   const styles = useStyles();
   const [createItemCardOpen, setCreateItemCardOpen] = useState(false);
+  const [items, setItems] = useState<IItemSchema[]>([]);
+  const itemListWrapperRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    async function getItems() {
+      let items: IItemSchema[] = [];
+      console.log("fetching items");
+
+      props.group.itemId.map(async (itemId) => {
+        console.log("URL is ", `localhost:3000/api/item/${itemId}`);
+        const item = await axios({
+          method: "GET",
+          url: `localhost:3000/api/item/${itemId}`,
+        });
+        items.push(item.data);
+      });
+
+      setItems(items);
+    }
+    getItems();
+    console.log(items);
+  }, []);
+
+  useEffect(() => {
+    const inputFieldOfLastItemInGroup: HTMLDivElement | null | undefined =
+      itemListWrapperRef.current?.children[
+        itemListWrapperRef.current?.children.length - 1
+      ].querySelector(".MuiInputBase-root");
+    inputFieldOfLastItemInGroup?.click();
+  }, [items]);
 
   async function handleCreateItem() {
-    setCreateItemCardOpen(true);
-    // const itemId = getNewItemId();
-  }
-
-  async function getNewItemId() {
-    const res = await axios({
-      method: "POST",
-      url: "localhost:3000/api",
-      data: {
-        title: "",
-      },
-    });
+    const newItem: IItemSchema = { title: "" };
+    setItems((prev) => [...prev, newItem]);
   }
 
   return (
     <>
       <Grid item>
-        <Typography variant="h6">Item list group</Typography>
+        <Typography variant="h6">{props.group.title}</Typography>
       </Grid>
 
-      <Grid item container>
+      <Grid item container ref={itemListWrapperRef}>
         <Grid item container spacing={1}>
           <Item title={"Example list item title"} />
-          {/* {props.itemList.map((item: IItemSchema, index: number) => (
-              <Grid item xs={12} key={index}>
-                <Item title={item.title} />
-              </Grid>
-            ))} */}
         </Grid>
+        {items.map((item, index) => (
+          <Grid key={index} item container spacing={1}>
+            <Item title={item.title} />
+          </Grid>
+        ))}
       </Grid>
 
       <Grid item container>

@@ -1,12 +1,12 @@
 import mongoose from "mongoose"
 
 export interface IGroupSchema {
-  groupName: string;
+  title: string;
   itemId: mongoose.Schema.Types.ObjectId[];
 }
 
 const GroupSchema = new mongoose.Schema<IGroupSchema>({
-  groupName: {
+  title: {
     type: String,
     required: true
   },

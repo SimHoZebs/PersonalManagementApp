@@ -1,14 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  Grid,
-  Backdrop,
-  Typography,
-  Container,
-  Card,
-  CardActionArea,
-  CardActions,
-  CardContent,
-} from "@material-ui/core";
+import React, { useState, useEffect, MouseEvent } from "react";
+import { Grid, Backdrop, Paper, TextField } from "@material-ui/core";
 import useStyles from "../styles/Item";
 
 //components
@@ -25,17 +16,24 @@ const Item = (props: props) => {
   const [title, setTitle] = useState(props.title);
   const styles = useStyles();
 
+  function handleOnClick(e: MouseEvent) {
+    e.stopPropagation();
+  }
+
   return (
     <>
       <Grid item xs={12} className={styles.root}>
-        <Card>
-          <CardActionArea
-            className={styles.actionArea}
-            onClick={() => setItemCardOpen(true)}
-          >
-            <Typography>{title}</Typography>
-          </CardActionArea>
-        </Card>
+        <Paper
+          className={styles.actionArea}
+          onClick={() => setItemCardOpen(true)}
+        >
+          <TextField
+            variant="outlined"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            onClick={handleOnClick}
+          />
+        </Paper>
       </Grid>
 
       <Grid item xs={12}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Typography, Grid } from "@material-ui/core";
 import axios from "axios";
 import { GetServerSideProps } from "next";
@@ -15,8 +15,6 @@ export default function Home(props: props) {
   const styles = useStyles();
   const [groupList, setGroupList] = useState(props.groupList);
 
-  console.log(props.groupList);
-
   return (
     <Container className={styles.root}>
       <Grid container spacing={2} direction="column">
@@ -24,7 +22,9 @@ export default function Home(props: props) {
           <Typography variant="h4">Item list title</Typography>
         </Grid>
 
-        <Group />
+        {groupList.map((group, index) => {
+          return <Group key={index} group={group} />;
+        })}
       </Grid>
     </Container>
   );

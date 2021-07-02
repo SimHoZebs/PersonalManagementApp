@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         let groupList = await GroupSchema.find({})
         if (groupList.length === 0) {
           try {
-            await GroupSchema.create({ groupName: "Default group" })
+            await GroupSchema.create({ title: "Default group" })
             groupList = await GroupSchema.find({})
             msg.push("There was no default group, created default group")
           }
