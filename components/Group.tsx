@@ -17,7 +17,6 @@ const Group = (props: props) => {
   const styles = useStyles();
   const [createItemCardOpen, setCreateItemCardOpen] = useState(false);
   const [items, setItems] = useState<IItemSchema[]>([]);
-  const itemListWrapperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     async function getItems() {
@@ -39,26 +38,13 @@ const Group = (props: props) => {
     console.log(items);
   }, []);
 
-  useEffect(() => {
-    const inputFieldOfLastItemInGroup: HTMLDivElement | null | undefined =
-      itemListWrapperRef.current?.children[
-        itemListWrapperRef.current?.children.length - 1
-      ].querySelector(".MuiInputBase-root");
-    inputFieldOfLastItemInGroup?.click();
-  }, [items]);
-
-  async function handleCreateItem() {
-    const newItem: IItemSchema = { title: "" };
-    setItems((prev) => [...prev, newItem]);
-  }
-
   return (
     <>
       <Grid item>
         <Typography variant="h6">{props.group.title}</Typography>
       </Grid>
 
-      <Grid item container ref={itemListWrapperRef}>
+      <Grid item container>
         <Grid item container spacing={1}>
           <Item title={"Example list item title"} />
         </Grid>

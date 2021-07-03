@@ -5,7 +5,7 @@ export interface IGroupSchema {
   itemId: mongoose.Schema.Types.ObjectId[];
 }
 
-const GroupSchema = new mongoose.Schema<IGroupSchema>({
+export const GroupSchema = new mongoose.Schema<IGroupSchema>({
   title: {
     type: String,
     required: true

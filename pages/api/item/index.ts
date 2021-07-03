@@ -9,14 +9,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   switch (method) {
     case "GET":
       try {
-        if (req.body._id !== undefined) {
-          const item = await ItemSchema.findById(req.body._id);
-          res.status(200).json(item);
-        }
-        else {
-          const itemList = await ItemSchema.find({})
-          res.status(200).json({ itemList: itemList })
-        }
+        const itemList = await ItemSchema.find({})
+        res.status(200).json({ res: itemList })
       } catch (error) {
         res.status(400).json({ error: error })
       }

@@ -9,9 +9,11 @@ interface props {
   title: string;
 }
 
+/**
+ *@description Representation of an item in a list. Clicking it opens Item Card.
+ *@param props - title and setItemList
+ */
 const Item = (props: props) => {
-  /*Item is the representation of an item in a list. Clicking it opens Item Card, which is described in its script.
-   */
   const [itemCardOpen, setItemCardOpen] = useState(false);
   const [title, setTitle] = useState(props.title);
   const styles = useStyles();
