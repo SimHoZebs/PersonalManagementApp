@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Container, Typography, Grid, Button } from "@material-ui/core";
 import axios from "axios";
 import { GetServerSideProps } from "next";
 import dbConnect from "../dbConnect";
 import { useStyles } from "../styles/index";
+import { Types } from "mongoose";
 
 import Item from "../components/Item";
 import { IGroupSchema } from "../schema/GroupSchema";
@@ -12,32 +13,25 @@ import { IItemSchema } from "../schema/ItemSchema";
 interface props {
   groupList: IGroupSchema[];
   itemList: IItemSchema[];
+  _objectId?: Types.ObjectId;
 }
 
 export default function Home(props: props) {
   const styles = useStyles();
   const [itemList, setItemList] = useState(props.itemList);
-  const itemListWrapperRef = useRef<HTMLDivElement | null>(null);
-  const lastItemInGroupInputField = useRef<
-    HTMLDivElement | HTMLCollection | undefined | null
-  >(itemListWrapperRef.current?.children);
+  const [creatingNewItem, setCreatingNewItem] = useState(false);
 
-  useEffect(() => {
-    const itemListWrapperChildren = itemListWrapperRef.current?.children;
+  function handleNewItemBtn() {
+    console.log("handling new item button");
+    const newItem: IItemSchema = {
+      title: "",
+      groups: [],
+    };
 
-    lastItemInGroupInputField.current =
-      itemListWrapperChildren != undefined
-        ? itemListWrapperChildren[
-            itemListWrapperChildren.length - 1
-          ].querySelector<HTMLDivElement>(".MuiInputBase-root")
-        : undefined;
-
-    lastItemInGroupInputField.current?.click();
-  }, [itemList]);
-
-  async function handleCreateItem() {
-    const newItem: IItemSchema = { title: "", groups: [] };
     setItemList((prev) => [...prev, newItem]);
+
+    console.log("setting createNewItem state to true");
+    setCreatingNewItem((prev) => true);
   }
 
   return (
@@ -47,10 +41,21 @@ export default function Home(props: props) {
           <Typography variant="h4">Item list title</Typography>
         </Grid>
 
-        <Grid ref={itemListWrapperRef} item container spacing={1}>
+        <Grid item container spacing={1}>
           {itemList.map((item, index) => (
             <Grid item key={index} xs={12}>
-              <Item title={item.title} />
+              <Item
+                title={item.title}
+                objectId={item._objectId}
+                index={index}
+                setItemList={setItemList}
+                setCreatingNewItem={setCreatingNewItem}
+                isNewItem={
+                  creatingNewItem && index === itemList.length - 1
+                    ? true
+                    : false
+                }
+              />
             </Grid>
           ))}
         </Grid>
@@ -59,7 +64,7 @@ export default function Home(props: props) {
           <Button
             variant="text"
             color="primary"
-            onClick={() => handleCreateItem()}
+            onClick={() => handleNewItemBtn()}
           >
             New Item
           </Button>

@@ -3,19 +3,17 @@ import mongoose from "mongoose";
 export interface IItemSchema {
   title: string;
   groups: mongoose.Types.ObjectId[];
+  _objectId?: mongoose.Types.ObjectId;
 }
 
-export const ItemSchema = new mongoose.Schema<IItemSchema>({
+const ItemSchema = new mongoose.Schema<IItemSchema>({
   title: {
     type: String,
     required: [true, 'Title is empty'],
-    unique: true,
     maxLength: [64, 'Title cannot be more than 64 characters']
   },
-  groups: {
-    type: [mongoose.Schema.Types.ObjectId],
-    required: [true, 'Groups is empty'],
-    unique: true
+  group: {
+    type: [mongoose.Types.ObjectId],
   }
 })
 
