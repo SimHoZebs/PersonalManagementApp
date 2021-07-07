@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export interface IItemSchema {
   title: string;
   groups: mongoose.Types.ObjectId[];
-  _objectId?: mongoose.Types.ObjectId;
+  _id?: mongoose.Types.ObjectId;
 }
 
 const ItemSchema = new mongoose.Schema<IItemSchema>({

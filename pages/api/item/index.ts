@@ -4,7 +4,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
 
-  console.log("method", method)
   console.log(body)
 
   switch (method) {
@@ -19,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     case "POST":
       try {
-        const newItem = await ItemSchema.create(new ItemSchema(body));
+        const newItem = await ItemSchema.create(new ItemSchema(body.newItem));
         res.status(201).json({ success: true, res: newItem })
       } catch (error) {
         res.status(400).json({ error: error })

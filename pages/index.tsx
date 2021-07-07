@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Container, Typography, Grid, Button } from "@material-ui/core";
 import axios from "axios";
 import { GetServerSideProps } from "next";
@@ -13,7 +13,6 @@ import { IItemSchema } from "../schema/ItemSchema";
 interface props {
   groupList: IGroupSchema[];
   itemList: IItemSchema[];
-  _objectId?: Types.ObjectId;
 }
 
 export default function Home(props: props) {
@@ -21,8 +20,11 @@ export default function Home(props: props) {
   const [itemList, setItemList] = useState(props.itemList);
   const [creatingNewItem, setCreatingNewItem] = useState(false);
 
+  useEffect(() => {
+    console.log("itemList updated", itemList);
+  }, [itemList]);
+
   function handleNewItemBtn() {
-    console.log("handling new item button");
     const newItem: IItemSchema = {
       title: "",
       groups: [],
@@ -30,7 +32,6 @@ export default function Home(props: props) {
 
     setItemList((prev) => [...prev, newItem]);
 
-    console.log("setting createNewItem state to true");
     setCreatingNewItem((prev) => true);
   }
 
@@ -45,8 +46,7 @@ export default function Home(props: props) {
           {itemList.map((item, index) => (
             <Grid item key={index} xs={12}>
               <Item
-                title={item.title}
-                objectId={item._objectId}
+                item={item}
                 index={index}
                 setItemList={setItemList}
                 setCreatingNewItem={setCreatingNewItem}
@@ -76,9 +76,10 @@ export default function Home(props: props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   dbConnect();
-  const itemListGetRes = await axios.get<{ res: IItemSchema[]; msg: string[] }>(
-    "http://localhost:3000/api/item"
-  );
+  const itemListGetRes = await axios<{ res: IItemSchema[]; msg: string[] }>({
+    method: "get",
+    url: "http://localhost:3000/api/item",
+  });
 
   const itemList = itemListGetRes.data.res;
 

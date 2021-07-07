@@ -21,10 +21,8 @@ const Group = (props: props) => {
   useEffect(() => {
     async function getItems() {
       let items: IItemSchema[] = [];
-      console.log("fetching items");
 
       props.group.itemId.map(async (itemId) => {
-        console.log("URL is ", `localhost:3000/api/item/${itemId}`);
         const item = await axios({
           method: "GET",
           url: `localhost:3000/api/item/${itemId}`,
@@ -35,7 +33,6 @@ const Group = (props: props) => {
       setItems(items);
     }
     getItems();
-    console.log(items);
   }, []);
 
   return (
