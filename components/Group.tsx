@@ -4,8 +4,6 @@ import axios from "axios";
 
 //components
 import useStyles from "../styles/Group";
-import Item from "./Item";
-import ItemCard from "./ItemCard";
 import { IGroupSchema } from "../schema/GroupSchema";
 import { IItemSchema } from "../schema/ItemSchema";
 
@@ -15,7 +13,6 @@ interface props {
 
 const Group = (props: props) => {
   const styles = useStyles();
-  const [createItemCardOpen, setCreateItemCardOpen] = useState(false);
   const [items, setItems] = useState<IItemSchema[]>([]);
 
   useEffect(() => {
@@ -33,7 +30,7 @@ const Group = (props: props) => {
       setItems(items);
     }
     getItems();
-  }, []);
+  }, [props.group.itemId]);
 
   return (
     <>
@@ -42,32 +39,16 @@ const Group = (props: props) => {
       </Grid>
 
       <Grid item container>
-        <Grid item container spacing={1}>
-          <Item title={"Example list item title"} />
-        </Grid>
+        <Grid item container spacing={1}></Grid>
         {items.map((item, index) => (
-          <Grid key={index} item container spacing={1}>
-            <Item title={item.title} />
-          </Grid>
+          <Grid key={index} item container spacing={1}></Grid>
         ))}
       </Grid>
 
       <Grid item container>
-        <Button
-          variant="text"
-          color="primary"
-          onClick={() => handleCreateItem()}
-        >
+        <Button variant="text" color="primary">
           New Item
         </Button>
-
-        <Backdrop
-          open={createItemCardOpen}
-          onClick={() => setCreateItemCardOpen(false)}
-          className={styles.backdrop}
-        >
-          <ItemCard title={""} />
-        </Backdrop>
       </Grid>
     </>
   );

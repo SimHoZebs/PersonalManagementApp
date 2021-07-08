@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Typography, Grid, Button } from "@material-ui/core";
 import axios from "axios";
 import { GetServerSideProps } from "next";
@@ -76,7 +76,7 @@ export default function Home(props: props) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   dbConnect();
-  const itemListGetRes = await axios<{ res: IItemSchema[]; msg: string[] }>({
+  const itemListGetRes = await axios({
     method: "get",
     url: "http://localhost:3000/api/item",
   });
