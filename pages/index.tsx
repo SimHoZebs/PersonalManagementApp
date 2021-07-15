@@ -23,14 +23,14 @@ export default function Home(props: props) {
         ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`
         : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`;
 
-      const itemListGetRes: AxiosResponse<{ res: IItemSchema[] }> = await axios(
-        {
+      const itemListGetRes: AxiosResponse<{ res: IItemSchema[]; msg: string }> =
+        await axios({
           method: "get",
           url: url,
-        }
-      );
+        });
 
       const itemList = itemListGetRes.data.res;
+      console.log(itemListGetRes.data.msg);
       setItemList(itemList);
     }
 
