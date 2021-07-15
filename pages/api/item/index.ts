@@ -1,6 +1,14 @@
 import ItemSchema from '../../../schema/ItemSchema'
 import { NextApiRequest, NextApiResponse } from 'next';
 
+import dbConnect from '../../../dbConnect'
+
+const DB_URI = process.env.DB_URI;
+
+if (DB_URI !== undefined) {
+  dbConnect(DB_URI);
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
   let msg = ""
