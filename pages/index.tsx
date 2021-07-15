@@ -82,12 +82,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   dbConnect(DB_URI);
 
-  const itemListGetRes = await axios({
-    method: "get",
-    url: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`,
-  });
+  let itemListGetRes;
 
-  const itemList = itemListGetRes.data.res;
+  try {
+    itemListGetRes = await axios({
+      method: "get",
+      url: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+
+  const itemList = itemListGetRes?.data.res;
 
   return {
     props: { itemList },
