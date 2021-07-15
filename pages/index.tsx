@@ -9,7 +9,9 @@ import { useStyles } from "../styles/index";
 import Item from "../components/Item";
 import { IItemSchema } from "../schema/ItemSchema";
 
-interface props {}
+interface props {
+  itemList: IItemSchema[];
+}
 
 export default function Home(props: props) {
   const styles = useStyles();
@@ -102,7 +104,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   await dbConnect(DB_URI);
 
+  const url = process.env.NEXT_PUBLIC_VERCEL_URL?.includes("localhost")
+    ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`
+    : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`;
+
+  const itemListGetRes: AxiosResponse<{ res: IItemSchema[]; msg: string }> =
+    await axios({
+      method: "get",
+      url: url,
+    });
+
+  const itemList = itemListGetRes.data.res;
+  console.log(itemListGetRes.data.msg);
+
   return {
-    props: {},
+    props: { itemList },
   };
 };
