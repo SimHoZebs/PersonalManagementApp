@@ -1,24 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { Container, Typography, Grid, Button } from "@material-ui/core";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { GetServerSideProps } from "next";
 import dbConnect from "../dbConnect";
 import { useStyles } from "../styles/index";
 
 //components
 import Item from "../components/Item";
-import { IGroupSchema } from "../schema/GroupSchema";
 import { IItemSchema } from "../schema/ItemSchema";
 
-interface props {
-  groupList: IGroupSchema[];
-  itemList: IItemSchema[];
-}
+interface props {}
 
 export default function Home(props: props) {
   const styles = useStyles();
-  const [itemList, setItemList] = useState(props.itemList);
+  const [itemList, setItemList] = useState<IItemSchema[]>([]);
   const [creatingNewItem, setCreatingNewItem] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function getItemList() {
+      const url = process.env.NEXT_PUBLIC_VERCEL_URL?.includes("localhost")
+        ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`
+        : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`;
+
+      const itemListGetRes: AxiosResponse<{ res: IItemSchema[] }> = await axios(
+        {
+          method: "get",
+          url: url,
+        }
+      );
+
+      const itemList = itemListGetRes.data.res;
+      setItemList(itemList);
+    }
+
+    getItemList();
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     console.log("itemList updated", itemList);
@@ -35,7 +53,9 @@ export default function Home(props: props) {
     setCreatingNewItem((prev) => true);
   }
 
-  return (
+  return isLoading ? (
+    <Typography variant="h1">Loading</Typography>
+  ) : (
     <Container className={styles.root}>
       <Grid container spacing={2} direction="column">
         <Grid item>
@@ -82,20 +102,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   dbConnect(DB_URI);
 
-  let itemListGetRes;
-
-  try {
-    itemListGetRes = await axios({
-      method: "get",
-      url: `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`,
-    });
-  } catch (err) {
-    console.log(err);
-  }
-
-  const itemList = itemListGetRes?.data.res;
-
   return {
-    props: { itemList },
+    props: {},
   };
 };
