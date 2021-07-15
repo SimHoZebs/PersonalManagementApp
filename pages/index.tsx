@@ -75,7 +75,13 @@ export default function Home(props: props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  dbConnect(process.env.DB_URI);
+  const DB_URI = process.env.DB_URI;
+
+  if (DB_URI === undefined) {
+    return { props: {} };
+  }
+
+  dbConnect(DB_URI);
   const itemListGetRes = await axios({
     method: "get",
     url: "http://localhost:3000/api/item",
