@@ -100,7 +100,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (DB_URI === undefined) {
     return { props: {} };
   }
-  dbConnect(DB_URI);
+  await dbConnect(DB_URI);
 
   return {
     props: {},
