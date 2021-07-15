@@ -88,7 +88,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   dbConnect(DB_URI);
   const itemListGetRes = await axios({
     method: "get",
-    url: `${process.env.URL}/api/item`,
+    url: `https://${process.env.URL}/api/item`,
   });
 
   const itemList = itemListGetRes.data.res;
