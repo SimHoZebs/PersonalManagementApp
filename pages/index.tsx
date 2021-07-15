@@ -4,8 +4,8 @@ import axios from "axios";
 import { GetServerSideProps } from "next";
 import dbConnect from "../dbConnect";
 import { useStyles } from "../styles/index";
-import { Types } from "mongoose";
 
+//components
 import Item from "../components/Item";
 import { IGroupSchema } from "../schema/GroupSchema";
 import { IItemSchema } from "../schema/ItemSchema";
@@ -75,7 +75,7 @@ export default function Home(props: props) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  dbConnect();
+  dbConnect(process.env.DB_URI);
   const itemListGetRes = await axios({
     method: "get",
     url: "http://localhost:3000/api/item",

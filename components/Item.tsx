@@ -24,7 +24,8 @@ const Item = (props: props) => {
   const [{ title, _id }, setItem] = useState<IItemSchema>(props.item);
   const [itemCardOpen, setItemCardOpen] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
-  const textFieldRef = useRef<HTMLDivElement | null | undefined>(null);
+  const textFieldRef = useRef<HTMLDivElement | null>(null);
+  const paperRef = useRef();
   const styles = useStyles();
 
   useEffect(() => {
@@ -96,6 +97,7 @@ const Item = (props: props) => {
     <>
       <Grid item xs={12} className={styles.root}>
         <Paper
+          ref={paperRef}
           className={styles.actionArea}
           onClick={() => setItemCardOpen(true)}
         >

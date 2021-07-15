@@ -6,12 +6,12 @@ interface connection {
 
 const connection: connection = {};
 
-async function dbConnect() {
+async function dbConnect(URI: string) {
   if (connection.isConnected) {
     return;
   }
 
-  const db = await mongoose.connect("mongodb+srv://Zebs:alt159951@cluster0.1rwov.mongodb.net/todo-app?retryWrites=true&w=majority", {
+  const db = await mongoose.connect(URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false

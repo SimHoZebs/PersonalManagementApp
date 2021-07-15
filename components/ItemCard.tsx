@@ -23,7 +23,7 @@ const ItemCard = (props: props) => {
   }
 
   return (
-    <Grid container justify="center">
+    <Grid container justifyContent="center">
       <Grid item xs={8}>
         <Card
           className={styles.card}
