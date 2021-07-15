@@ -77,6 +77,10 @@ export default function Home(props: props) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const DB_URI = process.env.DB_URI;
 
+  console.log(process.env.DB_URI);
+  console.log(process.env.URL);
+  console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
+
   if (DB_URI === undefined) {
     return { props: {} };
   }
