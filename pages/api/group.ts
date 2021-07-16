@@ -1,4 +1,4 @@
-import GroupSchema, { IGroupSchema } from '../../schema/GroupSchema'
+import GroupSchema from '../../schema/GroupSchema'
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

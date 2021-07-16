@@ -2,16 +2,22 @@ import React, { useState, useEffect, MouseEvent, useRef } from "react";
 import axios, { AxiosResponse } from "axios";
 import { Grid, Backdrop, Paper, TextField } from "@material-ui/core";
 import useStyles from "../styles/Item";
-import { Types } from "mongoose";
 
 //components
 import ItemCard from "./ItemCard";
-import { IItemSchema } from "../schema/ItemSchema";
+
+//interfaces
+import { IItemModel } from "../schema/ItemSchema";
+import { IPostReq, IGetRes as IGetResItem } from "../pages/api/item";
+import {
+  IPatchReq,
+  IGetRes as IGetResObjId,
+} from "../pages/api/item/[objectId]";
 
 interface props {
   index: number;
-  item: IItemSchema;
-  setItemList: React.Dispatch<React.SetStateAction<IItemSchema[]>>;
+  item: IItemModel;
+  setItemList: React.Dispatch<React.SetStateAction<IItemModel[]>>;
   setCreatingNewItem: React.Dispatch<React.SetStateAction<boolean>>;
   isNewItem: boolean;
 }
@@ -21,7 +27,7 @@ interface props {
  *@param props - title and setItemList
  */
 const Item = (props: props) => {
-  const [{ title, _id }, setItem] = useState<IItemSchema>(props.item);
+  const [{ title, _id }, setItem] = useState<IItemModel>(props.item);
   const [itemCardOpen, setItemCardOpen] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const textFieldRef = useRef<HTMLDivElement | null>(null);
@@ -47,35 +53,24 @@ const Item = (props: props) => {
       );
     } else if (newTitle !== title) {
       //if new title isn't empty and it's diff from the old one, save the item
-      let res: AxiosResponse;
+      const req: IPostReq | IPatchReq = props.isNewItem
+        ? {
+            method: "post",
+            url: `/api/item`,
+            data: { newItem: { title: newTitle, groups: [] } },
+          }
+        : {
+            method: "patch",
+            url: `api/item/${_id}`,
+            data: { newTitle: newTitle },
+          };
 
-      if (props.isNewItem) {
-        const newItem: IItemSchema = {
-          title: newTitle,
-          groups: [],
-        };
-
-        res = await axios({
-          method: "post",
-          url: `/api/item`,
-          data: {
-            newItem: newItem,
-          },
-        });
-      } else {
-        res = await axios({
-          method: "patch",
-          url: `api/item/${_id}`,
-          data: {
-            newTitle: newTitle,
-          },
-        });
-      }
+      const res: AxiosResponse<IGetResItem | IGetResObjId> = await axios(req);
 
       //is there more efficient way of setting a new list
       props.setItemList((prev) => {
         console.log("itemlist updating...");
-        const newList = [...prev, res.data.res];
+        const newList = [...prev, res.data.res] as IItemModel[];
         newList.splice(newList.length - 2, 1);
         return newList;
       });

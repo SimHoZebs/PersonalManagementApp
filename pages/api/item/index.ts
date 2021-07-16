@@ -1,45 +1,60 @@
-import ItemSchema from '../../../schema/ItemSchema'
 import { NextApiRequest, NextApiResponse } from 'next';
+import { AxiosRequestConfig } from 'axios'
 
 import dbConnect from '../../../dbConnect'
 
-const DB_URI = process.env.DB_URI;
+//interfaces
+import IapiRes from '../../../interface/IApiRes';
+import ItemModel, { IItemModel } from '../../../schema/ItemSchema'
 
-if (DB_URI !== undefined) {
-  dbConnect(DB_URI);
+export interface IGetReq extends AxiosRequestConfig {
+  method: "get" | "GET"
+}
+export interface IPostReq extends AxiosRequestConfig {
+  method: "post" | "POST"
+  data: { newItem: IItemModel }
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export interface IGetRes extends IapiRes {
+  res: IItemModel[]
+}
+
+export interface IPostRes extends IapiRes {
+
+}
+
+export default async function handler(req: NextApiRequest, res: NextApiResponse<IapiRes>) {
   const { method, body } = req;
-  let msg = ""
+
+  await dbConnect();
 
   console.log(body)
 
   switch (method) {
     case "GET":
       try {
-        const itemList = await ItemSchema.find({})
-        res.status(200).json({ res: itemList, msg: msg })
+        const itemList = await ItemModel.find({})
+        res.status(200).json({ res: itemList, success: true })
       } catch (error) {
-        res.status(400).json({ msg: error })
+        res.status(400).json({ error: error, success: false })
       }
       break;
 
     case "POST":
       try {
-        const newItem = await ItemSchema.create(new ItemSchema(body.newItem));
+        const newItem = await ItemModel.create(new ItemModel(body.newItem));
         res.status(201).json({ success: true, res: newItem })
       } catch (error) {
-        res.status(400).json({ msg: error })
+        res.status(400).json({ error: error, success: false })
       }
       break;
 
     case "DELETE":
       try {
-        const removedItem = await ItemSchema.findByIdAndRemove(req.body._id)
-        res.status(201).json({ success: true, removedItem: removedItem })
+        const removedItem = await ItemModel.findByIdAndRemove(req.body._id)
+        res.status(201).json({ success: true, res: removedItem })
       } catch (error) {
-        res.status(400).json({ msg: error })
+        res.status(400).json({ error: error, success: false })
       }
       break;
   }

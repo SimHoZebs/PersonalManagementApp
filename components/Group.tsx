@@ -1,23 +1,21 @@
-import React, { useEffect, useState, useRef } from "react";
-import { Grid, Typography, Button, Backdrop } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Grid, Typography, Button } from "@material-ui/core";
 import axios from "axios";
 
 //components
-import useStyles from "../styles/Group";
 import { IGroupSchema } from "../schema/GroupSchema";
-import { IItemSchema } from "../schema/ItemSchema";
+import { IItemModel } from "../schema/ItemSchema";
 
 interface props {
   group: IGroupSchema;
 }
 
 const Group = (props: props) => {
-  const styles = useStyles();
-  const [items, setItems] = useState<IItemSchema[]>([]);
+  const [items, setItems] = useState<IItemModel[]>([]);
 
   useEffect(() => {
     async function getItems() {
-      let items: IItemSchema[] = [];
+      let items: IItemModel[] = [];
 
       props.group.itemId.map(async (itemId) => {
         const item = await axios({

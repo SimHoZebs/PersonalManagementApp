@@ -1,38 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { Container, Typography, Grid, Button } from "@material-ui/core";
 import axios, { AxiosResponse } from "axios";
-import { GetServerSideProps } from "next";
-import dbConnect from "../dbConnect";
 import { useStyles } from "../styles/index";
 
 //components
 import Item from "../components/Item";
-import { IItemSchema } from "../schema/ItemSchema";
 
-interface props {
-  itemList: IItemSchema[];
-}
+//interfaces
+import { IItemModel } from "../schema/ItemSchema";
+import { IGetRes, IGetReq } from "./api/item/index";
 
-export default function Home(props: props) {
+interface IProps {}
+
+export default function Home(props: IProps) {
   const styles = useStyles();
-  const [itemList, setItemList] = useState<IItemSchema[]>([]);
+  const [itemList, setItemList] = useState<IItemModel[]>([]);
   const [creatingNewItem, setCreatingNewItem] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function getItemList() {
-      const url = process.env.NEXT_PUBLIC_VERCEL_URL?.includes("localhost")
-        ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`
-        : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`;
+      let url = `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`;
 
-      const itemListGetRes: AxiosResponse<{ res: IItemSchema[]; msg: string }> =
-        await axios({
-          method: "get",
-          url: url,
-        });
+      if (!url.includes("localhost")) {
+        url = "https://" + url;
+      }
+
+      const req: IGetReq = { method: "get", url: url };
+
+      const itemListGetRes: AxiosResponse<IGetRes> = await axios(req);
 
       const itemList = itemListGetRes.data.res;
-      console.log(itemListGetRes.data.msg);
+      console.log(itemListGetRes.data.error);
       setItemList(itemList);
     }
 
@@ -45,7 +44,7 @@ export default function Home(props: props) {
   }, [itemList]);
 
   function handleNewItemBtn() {
-    const newItem: IItemSchema = {
+    const newItem: IItemModel = {
       title: "",
       groups: [],
     };
@@ -95,29 +94,3 @@ export default function Home(props: props) {
     </Container>
   );
 }
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const DB_URI = process.env.DB_URI;
-
-  if (DB_URI === undefined) {
-    return { props: {} };
-  }
-  await dbConnect(DB_URI);
-
-  const url = process.env.NEXT_PUBLIC_VERCEL_URL?.includes("localhost")
-    ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`
-    : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`;
-
-  const itemListGetRes: AxiosResponse<{ res: IItemSchema[]; msg: string }> =
-    await axios({
-      method: "get",
-      url: url,
-    });
-
-  const itemList = itemListGetRes.data.res;
-  console.log(itemListGetRes.data.msg);
-
-  return {
-    props: { itemList },
-  };
-};
