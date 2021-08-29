@@ -1,20 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { AxiosRequestConfig } from 'axios'
 
+//connection
 import Cors from 'cors'
 import initMiddleware from '../../../lib/init-middleware'
-
-// Initialize the cors middleware
-const cors = initMiddleware(
-  // You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
-  Cors({
-    // Only allow requests with GET, POST and OPTIONS
-    methods: ['GET', 'POST', 'OPTIONS'],
-    origin: "*",
-  })
-)
-
-import dbConnect from '../../../dbConnect'
+import dbConnect from '../../../lib/dbConnect'
 
 //interfaces
 import IapiRes from '../../../interface/IApiRes';
@@ -36,10 +26,18 @@ export interface IPostRes extends IapiRes {
 
 }
 
+const cors = initMiddleware(
+  // You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
+  Cors({
+    methods: ['GET', 'POST', 'OPTIONS'],
+    origin: ["http://localhost:3000", "https://anotherdotoapp.vercel.app"]
+  })
+)
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse<IapiRes>) {
   const { method, body } = req;
-  await cors(req, res);
 
+  await cors(req, res);
   await dbConnect();
 
   console.log(body)

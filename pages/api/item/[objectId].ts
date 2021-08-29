@@ -1,8 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import ItemModel, { IItemModel } from '../../../schema/ItemSchema';
-import dbConnect from '../../../dbConnect'
-import IapiRes from '../../../interface/IApiRes';
 import { AxiosRequestConfig } from 'axios';
+
+//interfaces
+import IapiRes from '../../../interface/IApiRes';
 
 export interface IPatchReq extends AxiosRequestConfig {
   method: "patch" | "PATCH"
@@ -15,8 +16,6 @@ export interface IGetRes extends IapiRes {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<IapiRes>) {
   const { method, url, query, body } = req;
-
-  await dbConnect();
 
   switch (method) {
     case 'GET':
