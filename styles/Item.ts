@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
 
     backdrop: {
-      zIndex: zIndex.drawer + 1
+      zIndex: 1200 + 1
     },
 
     actionArea: {

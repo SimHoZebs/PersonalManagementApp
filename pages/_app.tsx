@@ -9,7 +9,6 @@ import createEmotionCache from "../lib/createEmotionCache";
 
 
 declare module '@material-ui/styles/defaultTheme' {
-  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface DefaultTheme extends Theme {}
 }
 

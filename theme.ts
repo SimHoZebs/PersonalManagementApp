@@ -1,10 +1,10 @@
-import { createTheme, adaptV4Theme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 
 // Create a theme instance.
-const theme = createTheme(adaptV4Theme({
+const theme = createTheme({
   palette: {
-    mode: 'dark'
+    mode: "dark"
   },
-}));
+});
 
 export default theme;

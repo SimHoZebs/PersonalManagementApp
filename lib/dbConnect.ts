@@ -14,11 +14,7 @@ async function dbConnect() {
   let db;
 
   if (process.env.DB_URI) {
-    db = await mongoose.connect(process.env.DB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useFindAndModify: false
-    });
+    db = await mongoose.connect(process.env.DB_URI);
   } else {
     throw new Error('DB_URI is not defined');
   }

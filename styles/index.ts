@@ -5,12 +5,12 @@ import createStyles from '@material-ui/styles/createStyles';
 import zIndex from '@material-ui/core/styles/zIndex';
 
 export const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			padding: 30
-		},
+  createStyles({
+    root: {
+      padding: 30
+    },
 
-		backdrop: {
-			zIndex: zIndex.drawer + 1
-		}
-	}))
+    backdrop: {
+      zIndex: 1200 + 1
+    }
+  }))
