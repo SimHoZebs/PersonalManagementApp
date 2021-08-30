@@ -1,4 +1,8 @@
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { Theme } from "@material-ui/core/styles";
+
+import makeStyles from '@material-ui/styles/makeStyles';
+import createStyles from '@material-ui/styles/createStyles';
+import zIndex from '@material-ui/core/styles/zIndex';
 
 export const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -7,6 +11,6 @@ export const useStyles = makeStyles((theme: Theme) =>
 		},
 
 		backdrop: {
-			zIndex: theme.zIndex.drawer + 1
+			zIndex: zIndex.drawer + 1
 		}
 	}))
