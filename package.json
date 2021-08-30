@@ -1,6 +1,6 @@
 {
-  "name": "todo-app",
-  "version": "0.1.0",
+  "name": "another-todo-app",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,19 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.3",
-    "axios": "^0.21.1",
-    "cors": "^2.8.5",
-    "mongoose": "^5.13.8",
+    "@emotion/cache": "latest",
+    "@emotion/react": "latest",
+    "@emotion/server": "latest",
+    "@emotion/styled": "latest",
+    "@material-ui/core": "next",
+    "axios": "latest",
+    "clsx": "latest",
+    "cors": "latest",
+    "mongoose": "latest",
     "next": "^11.1.0",
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react": "latest",
+    "react-dom": "latest"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.12",
-    "@types/node": "^16.7.6",
-    "@types/react": "^17.0.19",
-    "eslint": "^7.32.0",
+    "@types/cors": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "eslint": "latest",
     "eslint-config-next": "^11.1.0",
     "typescript": "^4.4.2"
   }
