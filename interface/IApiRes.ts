@@ -1,5 +1,5 @@
 export default interface IapiRes {
-  res?: any;
-  error?: string;
+  res?: unknown;
+  error?: string | unknown;
   success: boolean;
 }
