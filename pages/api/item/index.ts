@@ -1,12 +1,10 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { AxiosRequestConfig } from 'axios'
-
 //connection
-import Cors from 'cors'
-import initMiddleware from '../../../lib/init-middleware'
+import corsMethods from '../../../lib/corsMiddleware'
 import dbConnect from '../../../lib/dbConnect'
 
 //interfaces
+import { NextApiRequest, NextApiResponse } from 'next';
+import { AxiosRequestConfig } from 'axios'
 import IapiRes from '../../../interface/IApiRes';
 import ItemModel, { IItemModel } from '../../../schema/ItemSchema'
 
@@ -26,13 +24,7 @@ export interface IPostRes extends IapiRes {
 
 }
 
-const cors = initMiddleware(
-  // You can read more about the available options here: https://github.com/expressjs/cors#configuration-options
-  Cors({
-    methods: ['GET', 'POST', 'OPTIONS'],
-    origin: ["http://localhost:3000", "https://anotherdotoapp.vercel.app"]
-  })
-)
+const cors = corsMethods(["DELETE"])
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<IapiRes>) {
   const { method, body } = req;
