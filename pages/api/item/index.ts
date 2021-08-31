@@ -1,5 +1,4 @@
 //connection
-import corsMethods from '../../../lib/corsMiddleware'
 import dbConnect from '../../../lib/dbConnect'
 
 //interfaces
@@ -24,15 +23,10 @@ export interface IPostRes extends IapiRes {
 
 }
 
-const cors = corsMethods(["DELETE"])
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse<IapiRes>) {
   const { method, body } = req;
 
-  await cors(req, res);
   await dbConnect();
-
-  console.log(body)
 
   switch (method) {
     case "GET":

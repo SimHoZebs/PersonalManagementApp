@@ -17,14 +17,12 @@
     "@material-ui/styles": "next",
     "axios": "latest",
     "clsx": "latest",
-    "cors": "latest",
     "mongoose": "latest",
     "next": "^11.1.0",
     "react": "latest",
     "react-dom": "latest"
   },
   "devDependencies": {
-    "@types/cors": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
