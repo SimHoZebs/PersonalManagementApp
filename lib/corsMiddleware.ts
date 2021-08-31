@@ -19,7 +19,7 @@ export default function corsMethods(methods: string | string[]) {
   return initMiddleware(
     Cors({
       methods: methods,
-      origin: ["https://anotherdotoapp.vercel.app"]
+      origin: [`${process.env.NEXT_PUBLIC_VERCEL_URL}`]
     })
   )
 }
