@@ -1,8 +1,8 @@
 import mongoose from "mongoose"
 
 export interface IGroupSchema {
-  title: string;
-  itemId: mongoose.Schema.Types.ObjectId[];
+  title: { type: string };
+  itemId: mongoose.Schema.Types.ObjectId[]
 }
 
 export const GroupSchema = new mongoose.Schema<IGroupSchema>({
@@ -10,9 +10,7 @@ export const GroupSchema = new mongoose.Schema<IGroupSchema>({
     type: String,
     required: true
   },
-  itemId: {
-    type: [mongoose.Schema.Types.ObjectId]
-  }
+  itemId: [mongoose.Schema.Types.ObjectId]
 })
 
 export default mongoose.models.GroupSchema || mongoose.model<IGroupSchema>('GroupSchema', GroupSchema)
