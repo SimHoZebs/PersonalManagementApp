@@ -1,7 +1,6 @@
 import React, { useState, useEffect, MouseEvent, useRef } from "react";
 import axios, { AxiosResponse } from "axios";
 import { Grid, Backdrop, Paper, TextField } from "@material-ui/core";
-import useStyles from "../styles/Item";
 
 //components
 import ItemCard from "./ItemCard";
@@ -32,7 +31,6 @@ const Item = (props: props) => {
   const [newTitle, setNewTitle] = useState(title);
   const textFieldRef = useRef<HTMLDivElement | null>(null);
   const paperRef = useRef<HTMLDivElement | null>(null);
-  const styles = useStyles();
 
   useEffect(() => {
     console.log("props.item updated", props.index);
@@ -90,11 +88,14 @@ const Item = (props: props) => {
 
   return (
     <>
-      <Grid item xs={12} className={styles.root}>
+      <Grid item xs={12} sx={{ padding: 0 }}>
         <Paper
           component="div"
           ref={paperRef}
-          className={styles.actionArea}
+          sx={{
+            paddingX: "15px",
+            paddingY: "20px",
+          }}
           onClick={() => setItemCardOpen(true)}
         >
           <TextField
@@ -111,7 +112,7 @@ const Item = (props: props) => {
       <Grid item xs={12}>
         <Backdrop
           open={itemCardOpen}
-          className={styles.backdrop}
+          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
           onClick={() => setItemCardOpen(false)}
         >
           <ItemCard title={title} />

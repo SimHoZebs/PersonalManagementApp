@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Typography, Grid, Button } from "@material-ui/core";
 import axios, { AxiosResponse } from "axios";
-import { useStyles } from "../styles/index";
 
 //components
 import Item from "../components/Item";
@@ -13,7 +12,6 @@ import { IGetRes, IGetReq } from "./api/item/index";
 interface IProps {}
 
 export default function Home(props: IProps) {
-  const styles = useStyles();
   const [itemList, setItemList] = useState<IItemModel[]>([]);
   const [creatingNewItem, setCreatingNewItem] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -57,7 +55,7 @@ export default function Home(props: IProps) {
   return isLoading ? (
     <Typography variant="h1">Loading</Typography>
   ) : (
-    <Container className={styles.root}>
+    <Container sx={{ padding: "30px" }}>
       <Grid container spacing={2} direction="column">
         <Grid item>
           <Typography variant="h4">Item list title</Typography>

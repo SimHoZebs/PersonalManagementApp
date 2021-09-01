@@ -8,15 +8,12 @@ import {
   TextField,
 } from "@material-ui/core";
 
-import useStyles from "../styles/ItemCard";
-
 interface props {
   title: string;
 }
 
 const ItemCard = (props: props) => {
   const [title, setTitle] = useState(props.title);
-  const styles = useStyles();
 
   function handleDetailedCardClick(e: React.MouseEvent) {
     e.stopPropagation();
@@ -26,10 +23,10 @@ const ItemCard = (props: props) => {
     <Grid container justifyContent="center">
       <Grid item xs={8}>
         <Card
-          className={styles.card}
+          sx={{ height: "85vh" }}
           onClick={(e) => handleDetailedCardClick(e)}
         >
-          <Grid item xs={12} className={styles.cardContent} container>
+          <Grid item xs={12} sx={{ padding: "15px" }} container>
             <TextField
               variant="outlined"
               value={title}
