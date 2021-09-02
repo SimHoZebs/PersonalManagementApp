@@ -6,34 +6,69 @@ import axios, { AxiosResponse } from "axios";
 import Item from "../components/Item";
 
 //interfaces
+import { FolderSchema } from "../schema/FolderSchema";
 import { IItemModel } from "../schema/ItemSchema";
 import { IGetRes, IGetReq } from "./api/item/index";
+import { ReqAllFolder, ReqAllFolderRes } from "./api/folder";
 
 interface IProps {}
 
 export default function Home(props: IProps) {
+  const [folderList, setFolderList] = useState<FolderSchema[]>([]);
   const [itemList, setItemList] = useState<IItemModel[]>([]);
   const [creatingNewItem, setCreatingNewItem] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function getItemList() {
-      let url = `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`;
+    async function initTodoApp() {
+      let url = `${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
 
       if (!url.includes("localhost")) {
         url = "https://" + url;
       }
 
-      const req: IGetReq = { method: "get", url: url };
+      //Add: Log in user and get specific user's folder
+      //For now, we'll get a general folder
+
+      //init server
+      const serverReq: IGetReq = { method: "get", url: url };
+      const initServerRes: AxiosResponse<IGetRes> = await axios(serverReq);
+
+      //stop running if API server fails to run for some odd reason
+      if (!initServerRes.data.success) {
+        console.log(initServerRes.data.error);
+        console.log("Failed to get data from server");
+        return;
+      }
+
+      //getting folder
+      const folderReq: ReqAllFolder = { method: "GET", url: `${url}/folder` };
+      const reqAllFolderRes: AxiosResponse<ReqAllFolderRes> = await axios(
+        folderReq
+      );
+
+      const folderList = reqAllFolderRes.data.res;
+      if (typeof folderList === "undefined") {
+        console.log(reqAllFolderRes.data.error);
+        return;
+      }
+      setFolderList(folderList);
+
+      //getting item
+      const itemURL = `${url}/item`;
+      const req: IGetReq = { method: "get", url: itemURL };
 
       const itemListGetRes: AxiosResponse<IGetRes> = await axios(req);
 
       const itemList = itemListGetRes.data.res;
-      console.log(itemListGetRes.data.error);
-      setItemList(itemList);
+      if (typeof itemList === "undefined") {
+        console.log(itemListGetRes.data.error);
+      } else {
+        setItemList(itemList);
+      }
     }
 
-    getItemList();
+    initTodoApp();
     setIsLoading(false);
   }, []);
 

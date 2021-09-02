@@ -1,16 +1,16 @@
 import mongoose from "mongoose"
 
-export interface IGroupSchema {
-  title: { type: string };
-  itemId: mongoose.Schema.Types.ObjectId[]
+export interface GroupSchema {
+  title: string;
+  itemIds: mongoose.Schema.Types.ObjectId[]
 }
 
-export const GroupSchema = new mongoose.Schema<IGroupSchema>({
+const schema = new mongoose.Schema<GroupSchema>({
   title: {
     type: String,
     required: true
   },
-  itemId: [mongoose.Schema.Types.ObjectId]
+  itemIds: [mongoose.Schema.Types.ObjectId]
 })
 
-export default mongoose.models.GroupSchema || mongoose.model<IGroupSchema>('GroupSchema', GroupSchema)
+export default mongoose.models.Group || mongoose.model<GroupSchema>('Group', schema)

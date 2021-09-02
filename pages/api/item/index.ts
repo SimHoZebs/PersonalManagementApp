@@ -1,7 +1,3 @@
-//connection
-import dbConnect from '../../../lib/dbConnect'
-
-//interfaces
 import { NextApiRequest, NextApiResponse } from 'next';
 import { AxiosRequestConfig } from 'axios'
 import IapiRes from '../../../interface/IApiRes';
@@ -25,8 +21,6 @@ export interface IPostRes extends IapiRes {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<IapiRes>) {
   const { method, body } = req;
-
-  await dbConnect();
 
   switch (method) {
     case "GET":
