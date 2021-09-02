@@ -2,7 +2,8 @@ import mongoose from "mongoose"
 
 export interface GroupSchema {
   title: string;
-  itemIds: mongoose.Schema.Types.ObjectId[]
+  itemIdArray: mongoose.Types.ObjectId[]
+  _id?: mongoose.Types.ObjectId;
 }
 
 const schema = new mongoose.Schema<GroupSchema>({
@@ -10,7 +11,7 @@ const schema = new mongoose.Schema<GroupSchema>({
     type: String,
     required: true
   },
-  itemIds: [mongoose.Schema.Types.ObjectId]
+  itemIdArray: [mongoose.Types.ObjectId]
 })
 
 export default mongoose.models.Group || mongoose.model<GroupSchema>('Group', schema)

@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import IapiRes from "../../../interface/IApiRes";
+import ApiRes from "../../../interface/ApiRes";
 import groupCollection from "../../../schema/GroupSchema"
 
-export interface groupReq {
+export interface ReqGroup {
   method: 'get' | "GET"
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<IapiRes>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
   const { method, url, query, body } = req;
 
   switch (method) {

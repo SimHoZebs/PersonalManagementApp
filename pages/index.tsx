@@ -6,16 +6,16 @@ import axios, { AxiosResponse } from "axios";
 import Item from "../components/Item";
 
 //interfaces
-import { FolderSchema } from "../schema/FolderSchema";
-import { IItemModel } from "../schema/ItemSchema";
-import { IGetRes, IGetReq } from "./api/item/index";
-import { ReqAllFolder, ReqAllFolderRes } from "./api/folder";
+import { ListSchema } from "../schema/ListSchema";
+import { ItemSchema } from "../schema/ItemSchema";
+import { ReqAllItemRes, ReqAllItem } from "./api/item/index";
+import { ReqAllList, ReqAllListRes } from "./api/list/index";
 
 interface IProps {}
 
 export default function Home(props: IProps) {
-  const [folderList, setFolderList] = useState<FolderSchema[]>([]);
-  const [itemList, setItemList] = useState<IItemModel[]>([]);
+  const [listArray, setListArray] = useState<ListSchema[]>([]);
+  const [itemArray, setItemArray] = useState<ItemSchema[]>([]);
   const [creatingNewItem, setCreatingNewItem] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,12 +27,12 @@ export default function Home(props: IProps) {
         url = "https://" + url;
       }
 
-      //Add: Log in user and get specific user's folder
-      //For now, we'll get a general folder
+      //Add: Log in user and get specific user's list
+      //For now, we'll get a general list
 
       //init server
-      const serverReq: IGetReq = { method: "get", url: url };
-      const initServerRes: AxiosResponse<IGetRes> = await axios(serverReq);
+      const serverReq: ReqAllItem = { method: "get", url: url };
+      const initServerRes: AxiosResponse<ReqAllItemRes> = await axios(serverReq);
 
       //stop running if API server fails to run for some odd reason
       if (!initServerRes.data.success) {
@@ -41,30 +41,28 @@ export default function Home(props: IProps) {
         return;
       }
 
-      //getting folder
-      const folderReq: ReqAllFolder = { method: "GET", url: `${url}/folder` };
-      const reqAllFolderRes: AxiosResponse<ReqAllFolderRes> = await axios(
-        folderReq
-      );
+      //getting list
+      const listReq: ReqAllList = { method: "GET", url: `${url}/list` };
+      const reqAllListRes: AxiosResponse<ReqAllListRes> = await axios(listReq);
 
-      const folderList = reqAllFolderRes.data.res;
-      if (typeof folderList === "undefined") {
-        console.log(reqAllFolderRes.data.error);
+      const listArray = reqAllListRes.data.res;
+      if (typeof listArray === "undefined") {
+        console.log(reqAllListRes.data.error);
         return;
       }
-      setFolderList(folderList);
+      setListArray(listArray);
 
       //getting item
       const itemURL = `${url}/item`;
-      const req: IGetReq = { method: "get", url: itemURL };
+      const req: ReqAllItem = { method: "get", url: itemURL };
 
-      const itemListGetRes: AxiosResponse<IGetRes> = await axios(req);
+      const reqAllItemRes: AxiosResponse<ReqAllItemRes> = await axios(req);
 
-      const itemList = itemListGetRes.data.res;
-      if (typeof itemList === "undefined") {
-        console.log(itemListGetRes.data.error);
+      const itemArray = reqAllItemRes.data.res;
+      if (typeof itemArray === "undefined") {
+        console.log(reqAllItemRes.data.error);
       } else {
-        setItemList(itemList);
+        setItemArray(itemArray);
       }
     }
 
@@ -73,16 +71,16 @@ export default function Home(props: IProps) {
   }, []);
 
   useEffect(() => {
-    console.log("itemList updated", itemList);
-  }, [itemList]);
+    console.log("itemArray updated", itemArray);
+  }, [itemArray]);
 
   function handleNewItemBtn() {
-    const newItem: IItemModel = {
+    const newItem: ItemSchema = {
       title: "",
-      groups: [],
+      groupIdArray: [],
     };
 
-    setItemList((prev) => [...prev, newItem]);
+    setItemArray((prev) => [...prev, newItem]);
 
     setCreatingNewItem((prev) => true);
   }
@@ -97,15 +95,15 @@ export default function Home(props: IProps) {
         </Grid>
 
         <Grid item container spacing={1}>
-          {itemList.map((item, index) => (
+          {itemArray.map((item, index) => (
             <Grid item key={index} xs={12}>
               <Item
                 item={item}
                 index={index}
-                setItemList={setItemList}
+                setItemArray={setItemArray}
                 setCreatingNewItem={setCreatingNewItem}
                 isNewItem={
-                  creatingNewItem && index === itemList.length - 1
+                  creatingNewItem && index === itemArray.length - 1
                     ? true
                     : false
                 }

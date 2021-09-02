@@ -1,24 +1,24 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { AxiosRequestConfig } from 'axios'
-import IapiRes from '../../../interface/IApiRes';
-import folderCollection, { FolderSchema as folderSchema } from '../../../schema/FolderSchema'
+import ApiRes from '../../../interface/ApiRes';
+import listCollection, { ListSchema } from '../../../schema/ListSchema'
 
-export interface ReqAllFolder extends AxiosRequestConfig {
+export interface ReqAllList extends AxiosRequestConfig {
   method: "get" | "GET"
 }
 
-export interface ReqAllFolderRes extends IapiRes {
-  res: folderSchema[] | undefined
+export interface ReqAllListRes extends ApiRes {
+  res: ListSchema[] | undefined
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<IapiRes>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
   const { method, body } = req;
 
   switch (method) {
     case 'GET':
       try {
-        const folderList = await folderCollection.find({})
-        res.status(200).json({ res: folderList, success: true })
+        const listArray = await listCollection.find({})
+        res.status(200).json({ res: listArray, success: true })
       } catch (error) {
         res.status(400).json({ error: error, success: false })
       }

@@ -6,27 +6,27 @@ import { Grid, Backdrop, Paper, TextField } from "@material-ui/core";
 import ItemCard from "./ItemCard";
 
 //interfaces
-import { IItemModel } from "../schema/ItemSchema";
-import { IPostReq, IGetRes as IGetResItem } from "../pages/api/item";
+import { ItemSchema } from "../schema/ItemSchema";
+import { ReqSubmitNewItem, ReqAllItemRes as IGetResItem } from "../pages/api/item";
 import {
-  IPatchReq,
-  IGetRes as IGetResObjId,
+  ReqEditItem,
+  ReqEditItemRes as IGetResObjId,
 } from "../pages/api/item/[objectId]";
 
 interface props {
   index: number;
-  item: IItemModel;
-  setItemList: React.Dispatch<React.SetStateAction<IItemModel[]>>;
+  item: ItemSchema;
+  setItemArray: React.Dispatch<React.SetStateAction<ItemSchema[]>>;
   setCreatingNewItem: React.Dispatch<React.SetStateAction<boolean>>;
   isNewItem: boolean;
 }
 
 /**
- *@description Representation of an item in a list. Clicking it opens Item Card.
- *@param props - title and setItemList
+ *@description Representation of an item in a array. Clicking it opens Item Card.
+ *@param props - title and setItemArray
  */
 const Item = (props: props) => {
-  const [{ title, _id }, setItem] = useState<IItemModel>(props.item);
+  const [{ title, _id }, setItem] = useState<ItemSchema>(props.item);
   const [itemCardOpen, setItemCardOpen] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const textFieldRef = useRef<HTMLDivElement | null>(null);
@@ -46,16 +46,16 @@ const Item = (props: props) => {
 
     if (newTitle === "") {
       //If new title is empty, do not save the item
-      props.setItemList((prev) =>
+      props.setItemArray((prev) =>
         prev.filter((item, index) => index !== props.index)
       );
     } else if (newTitle !== title) {
       //if new title isn't empty and it's diff from the old one, save the item
-      const req: IPostReq | IPatchReq = props.isNewItem
+      const req: ReqSubmitNewItem | ReqEditItem = props.isNewItem
         ? {
             method: "post",
             url: `/api/item`,
-            data: { newItem: { title: newTitle, groups: [] } },
+            data: { newItem: { title: newTitle, groupIdArray: [] } },
           }
         : {
             method: "patch",
@@ -65,12 +65,12 @@ const Item = (props: props) => {
 
       const res: AxiosResponse<IGetResItem | IGetResObjId> = await axios(req);
 
-      //is there more efficient way of setting a new list
-      props.setItemList((prev) => {
-        console.log("itemlist updating...");
-        const newList = [...prev, res.data.res] as IItemModel[];
-        newList.splice(newList.length - 2, 1);
-        return newList;
+      //is there more efficient way of setting a new array
+      props.setItemArray((prev) => {
+        console.log("itemarray updating...");
+        const newArray = [...prev, res.data.res] as ItemSchema[];
+        newArray.splice(newArray.length - 2, 1);
+        return newArray;
       });
     }
   }

@@ -1,20 +1,20 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import ItemModel, { IItemModel } from '../../../schema/ItemSchema';
+import ItemModel, { ItemSchema } from '../../../schema/ItemSchema';
 import { AxiosRequestConfig } from 'axios';
 
 //interfaces
-import IapiRes from '../../../interface/IApiRes';
+import ApiRes from '../../../interface/ApiRes';
 
-export interface IPatchReq extends AxiosRequestConfig {
+export interface ReqEditItem extends AxiosRequestConfig {
   method: "patch" | "PATCH"
   data: { newTitle: string }
 }
 
-export interface IGetRes extends IapiRes {
-  res: IItemModel;
+export interface ReqEditItemRes extends ApiRes {
+  res: ItemSchema;
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<IapiRes>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
   const { method, url, query, body } = req;
 
   switch (method) {

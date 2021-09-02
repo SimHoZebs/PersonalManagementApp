@@ -1,32 +1,32 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { AxiosRequestConfig } from 'axios'
-import IapiRes from '../../../interface/IApiRes';
-import ItemModel, { IItemModel } from '../../../schema/ItemSchema'
+import ApiRes from '../../../interface/ApiRes';
+import ItemCollection, { ItemSchema } from '../../../schema/ItemSchema'
 
-export interface IGetReq extends AxiosRequestConfig {
+export interface ReqAllItem extends AxiosRequestConfig {
   method: "get" | "GET"
 }
-export interface IPostReq extends AxiosRequestConfig {
+export interface ReqSubmitNewItem extends AxiosRequestConfig {
   method: "post" | "POST"
-  data: { newItem: IItemModel }
+  data: { newItem: ItemSchema }
 }
 
-export interface IGetRes extends IapiRes {
-  res: IItemModel[]
+export interface ReqAllItemRes extends ApiRes {
+  res: ItemSchema[] | undefined
 }
 
-export interface IPostRes extends IapiRes {
+export interface ReqSubmitNewItemRes extends ApiRes {
 
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<IapiRes>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
   const { method, body } = req;
 
   switch (method) {
     case "GET":
       try {
-        const itemList = await ItemModel.find({})
-        res.status(200).json({ res: itemList, success: true })
+        const itemArray = await ItemCollection.find({})
+        res.status(200).json({ res: itemArray, success: true })
       } catch (error) {
         res.status(400).json({ error: error, success: false })
       }
@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     case "POST":
       try {
-        const newItem = await ItemModel.create(new ItemModel(body.newItem));
+        const newItem = await ItemCollection.create(new ItemCollection(body.newItem));
         res.status(201).json({ success: true, res: newItem })
       } catch (error) {
         res.status(400).json({ error: error, success: false })
@@ -43,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     case "DELETE":
       try {
-        const removedItem = await ItemModel.findByIdAndRemove(req.body._id)
+        const removedItem = await ItemCollection.findByIdAndRemove(req.body._id)
         res.status(201).json({ success: true, res: removedItem })
       } catch (error) {
         res.status(400).json({ error: error, success: false })

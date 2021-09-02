@@ -1,18 +1,18 @@
 import dbConnect from '../../lib/dbConnect'
 
 import { AxiosRequestConfig } from 'axios'
-import IapiRes from '../../interface/IApiRes'
+import ApiRes from '../../interface/ApiRes'
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export interface IGetReq extends AxiosRequestConfig {
+export interface ReqInitServer extends AxiosRequestConfig {
   method: "get" | "GET"
 }
 
-export interface IGetRes extends IapiRes {
+export interface ReqInitServerRes extends ApiRes {
 
 }
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<IapiRes>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
   const { method, body } = req;
 
   await dbConnect()

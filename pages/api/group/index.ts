@@ -1,5 +1,6 @@
-import {NextApiRequest, NextApiResponse} from 'next'
-import IapiRes from '../../../interface/IApiRes'
-export default function handler(req: NextApiRequest, res: NextApiResponse<IapiRes>){
+import { NextApiRequest, NextApiResponse } from 'next'
+import ApiRes from '../../../interface/ApiRes'
+
+export default function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
 
 }
