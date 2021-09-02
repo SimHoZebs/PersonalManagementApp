@@ -18,7 +18,7 @@
     "axios": "latest",
     "clsx": "latest",
     "mongoose": "latest",
-    "next": "^11.1.0",
+    "next": "^11.1.2",
     "react": "latest",
     "react-dom": "latest"
   },
