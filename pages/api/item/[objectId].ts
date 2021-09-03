@@ -5,12 +5,12 @@ import { AxiosRequestConfig } from 'axios';
 //interfaces
 import ApiRes from '../../../interface/ApiRes';
 
-export interface ReqEditItem extends AxiosRequestConfig {
+export interface UpdateItem extends AxiosRequestConfig {
   method: "patch" | "PATCH"
   data: { newTitle: string }
 }
 
-export interface ReqEditItemRes extends ApiRes {
+export interface UpdateItemRes extends ApiRes {
   res: ItemSchema;
 }
 

@@ -3,11 +3,11 @@ import { AxiosRequestConfig } from 'axios'
 import ApiRes from '../../../interface/ApiRes';
 import listCollection, { ListSchema } from '../../../schema/ListSchema'
 
-export interface ReqAllList extends AxiosRequestConfig {
+export interface ReadAllList extends AxiosRequestConfig {
   method: "get" | "GET"
 }
 
-export interface ReqAllListRes extends ApiRes {
+export interface ReadAllListRes extends ApiRes {
   res: ListSchema[] | undefined
 }
 

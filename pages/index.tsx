@@ -8,8 +8,8 @@ import Item from "../components/Item";
 //interfaces
 import { ListSchema } from "../schema/ListSchema";
 import { ItemSchema } from "../schema/ItemSchema";
-import { ReqAllItemRes, ReqAllItem } from "./api/item/index";
-import { ReqAllList, ReqAllListRes } from "./api/list/index";
+import { ReadAllItemRes, ReadAllItem } from "./api/item/index";
+import { ReadAllList, ReadAllListRes } from "./api/list/index";
 
 interface IProps {}
 
@@ -31,8 +31,8 @@ export default function Home(props: IProps) {
       //For now, we'll get a general list
 
       //init server
-      const serverReq: ReqAllItem = { method: "get", url: url };
-      const initServerRes: AxiosResponse<ReqAllItemRes> = await axios(serverReq);
+      const serverReq: ReadAllItem = { method: "get", url: url };
+      const initServerRes: AxiosResponse<ReadAllItemRes> = await axios(serverReq);
 
       //stop running if API server fails to run for some odd reason
       if (!initServerRes.data.success) {
@@ -42,8 +42,8 @@ export default function Home(props: IProps) {
       }
 
       //getting list
-      const listReq: ReqAllList = { method: "GET", url: `${url}/list` };
-      const reqAllListRes: AxiosResponse<ReqAllListRes> = await axios(listReq);
+      const listReq: ReadAllList = { method: "GET", url: `${url}/list` };
+      const reqAllListRes: AxiosResponse<ReadAllListRes> = await axios(listReq);
 
       const listArray = reqAllListRes.data.res;
       if (typeof listArray === "undefined") {
@@ -54,9 +54,9 @@ export default function Home(props: IProps) {
 
       //getting item
       const itemURL = `${url}/item`;
-      const req: ReqAllItem = { method: "get", url: itemURL };
+      const req: ReadAllItem = { method: "get", url: itemURL };
 
-      const reqAllItemRes: AxiosResponse<ReqAllItemRes> = await axios(req);
+      const reqAllItemRes: AxiosResponse<ReadAllItemRes> = await axios(req);
 
       const itemArray = reqAllItemRes.data.res;
       if (typeof itemArray === "undefined") {

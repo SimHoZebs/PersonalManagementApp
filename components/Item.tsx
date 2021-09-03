@@ -7,11 +7,8 @@ import ItemCard from "./ItemCard";
 
 //interfaces
 import { ItemSchema } from "../schema/ItemSchema";
-import { ReqSubmitNewItem, ReqAllItemRes as IGetResItem } from "../pages/api/item";
-import {
-  ReqEditItem,
-  ReqEditItemRes as IGetResObjId,
-} from "../pages/api/item/[objectId]";
+import { CreateItem, CreateItemRes } from "../pages/api/item";
+import { UpdateItem, UpdateItemRes } from "../pages/api/item/[objectId]";
 
 interface props {
   index: number;
@@ -51,7 +48,7 @@ const Item = (props: props) => {
       );
     } else if (newTitle !== title) {
       //if new title isn't empty and it's diff from the old one, save the item
-      const req: ReqSubmitNewItem | ReqEditItem = props.isNewItem
+      const req: CreateItem | UpdateItem = props.isNewItem
         ? {
             method: "post",
             url: `/api/item`,
@@ -63,8 +60,9 @@ const Item = (props: props) => {
             data: { newTitle: newTitle },
           };
 
-      const res: AxiosResponse<IGetResItem | IGetResObjId> = await axios(req);
-
+      const res: AxiosResponse<CreateItemRes | UpdateItemRes> = await axios(
+        req
+      );
       //is there more efficient way of setting a new array
       props.setItemArray((prev) => {
         console.log("itemarray updating...");

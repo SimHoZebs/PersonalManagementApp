@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import ApiRes from "../../../interface/ApiRes";
 import labelCollection from "../../../schema/LabelSchema"
 
-export interface ReqLabel {
+export interface ReadLabel {
   method: 'get' | "GET"
 }
 

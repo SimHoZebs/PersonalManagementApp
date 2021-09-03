@@ -3,20 +3,20 @@ import { AxiosRequestConfig } from 'axios'
 import ApiRes from '../../../interface/ApiRes';
 import ItemCollection, { ItemSchema } from '../../../schema/ItemSchema'
 
-export interface ReqAllItem extends AxiosRequestConfig {
+export interface ReadAllItem extends AxiosRequestConfig {
   method: "get" | "GET"
 }
-export interface ReqSubmitNewItem extends AxiosRequestConfig {
+export interface CreateItem extends AxiosRequestConfig {
   method: "post" | "POST"
   data: { newItem: ItemSchema }
 }
 
-export interface ReqAllItemRes extends ApiRes {
+export interface ReadAllItemRes extends ApiRes {
   res: ItemSchema[] | undefined
 }
 
-export interface ReqSubmitNewItemRes extends ApiRes {
-
+export interface CreateItemRes extends ApiRes {
+  res: ItemSchema | undefined
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   switch (method) {
     case "GET":
       try {
-        const itemArray = await ItemCollection.find({})
+        const itemArray = await ItemCollection.find({}) 
         res.status(200).json({ res: itemArray, success: true })
       } catch (error) {
         res.status(400).json({ error: error, success: false })
