@@ -55,7 +55,7 @@ const Item = (props: props) => {
         ? {
             method: "post",
             url: `/api/item`,
-            data: { newItem: { title: newTitle, groupIdArray: [] } },
+            data: { newItem: { title: newTitle, labelIdArray: [] } },
           }
         : {
             method: "patch",

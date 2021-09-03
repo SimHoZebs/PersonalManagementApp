@@ -77,7 +77,7 @@ export default function Home(props: IProps) {
   function handleNewItemBtn() {
     const newItem: ItemSchema = {
       title: "",
-      groupIdArray: [],
+      labelIdArray: [],
     };
 
     setItemArray((prev) => [...prev, newItem]);
