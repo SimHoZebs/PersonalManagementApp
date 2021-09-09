@@ -1,15 +1,15 @@
-import { NextApiRequest, NextApiResponse } from 'next'
-import ApiRes from '../../../lib/api/ApiRes'
+import { NextApiRequest, NextApiResponse } from "next";
+import ApiRes from "../../../lib/api/ApiRes";
 import userCollection, { UserSchema } from '../../../schema/UserSchema'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
-  const { method, body, query, } = req
-  console.log(query)
+  const { method, body, query } = req
 
   switch (method) {
-    case 'GET':
+    case 'POST':
+
       try {
-        const user: UserSchema = await userCollection.findOne({ username: query.username })
+        const user: UserSchema = await userCollection.create(new userCollection({ username: query.username }))
         res.status(200).json({ success: true, res: user })
       }
       catch (error) {

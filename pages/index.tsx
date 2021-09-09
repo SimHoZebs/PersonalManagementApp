@@ -9,27 +9,20 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 //handles login.
 //If log in was successful, redirects to the main page.
 
-let url = `${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
+async function initServer() {
+  const serverReq: AxiosRequestConfig = { method: "get", url: "/api/" };
+  const initServerRes: AxiosResponse = await axios(serverReq);
 
-if (!url.includes("localhost")) {
-  url = "https://" + url;
+  //stop running if API server fails to run for some odd reason
+  if (!initServerRes.data.success) {
+    console.log(initServerRes.data.error);
+    console.log("Failed to get data from server");
+    return;
+  }
 }
 
 export default function Index() {
   useEffect(() => {
-    //init server
-    async function initServer() {
-      const serverReq: AxiosRequestConfig = { method: "get", url: url };
-      const initServerRes: AxiosResponse = await axios(serverReq);
-
-      //stop running if API server fails to run for some odd reason
-      if (!initServerRes.data.success) {
-        console.log(initServerRes.data.error);
-        console.log("Failed to get data from server");
-        return;
-      }
-    }
-
     initServer();
   }, []);
 

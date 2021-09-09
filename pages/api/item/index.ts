@@ -1,23 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { AxiosRequestConfig } from 'axios'
-import ApiRes from '../../../interface/ApiRes';
+import ApiRes from '../../../lib/api/ApiRes';
 import ItemCollection, { ItemSchema } from '../../../schema/ItemSchema'
-
-export interface ReadAllItem extends AxiosRequestConfig {
-  method: "get" | "GET"
-}
-export interface CreateItem extends AxiosRequestConfig {
-  method: "post" | "POST"
-  data: { newItem: ItemSchema }
-}
-
-export interface ReadAllItemRes extends ApiRes {
-  res: ItemSchema[] | undefined
-}
-
-export interface CreateItemRes extends ApiRes {
-  res: ItemSchema | undefined
-}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
   const { method, body } = req;

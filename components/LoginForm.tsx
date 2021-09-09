@@ -8,58 +8,14 @@ import theme from "../styles/theme";
 
 import Brand from "./Brand";
 
-import axios, { AxiosResponse } from "axios";
-import {
-  CreateUser,
-  CreateUserRes,
-  ReadUserListId,
-  ReadUserListIdRes,
-} from "../pages/api/user/[username]";
 import { useRef } from "react";
 import { useRouter } from "next/router";
-
-let url = `${process.env.NEXT_PUBLIC_VERCEL_URL}/api`;
-
-if (!url.includes("localhost")) {
-  url = "https://" + url;
-}
+import readUserInDB from "../lib/api/readUserInDB";
+import createUser from "../lib/api/createUser";
 
 const LoginForm = () => {
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
-
-  /**
-   * @description Checks if username exists in DB.
-   * @returns undefined; if request failed
-   * @returns null; if request successful but username does not exist
-   * @returns User: UserSchema; if request successful and username exists
-   */
-  async function readUserInDB(username: string) {
-    if (typeof username !== "string") {
-      console.log("username is not a string", typeof username);
-      return;
-    }
-
-    const readUserListId: ReadUserListId = {
-      method: "GET",
-      url: `${url}/user/${username}`,
-    };
-    const readUserListIdRes: AxiosResponse<ReadUserListIdRes> = await axios(
-      readUserListId
-    );
-    console.log(readUserListIdRes.data);
-
-    return await readUserListIdRes.data;
-  }
-
-  async function createUser(username: string) {
-    const createUserReq: CreateUser = {
-      method: "POST",
-      url: `${url}/user/${username}`,
-    };
-
-    return await axios(createUserReq);
-  }
 
   /**
    *  @desc attempts login and creates user if user does not exist.
@@ -77,8 +33,9 @@ const LoginForm = () => {
     }
 
     const username = usernameRef.current.value;
-
-    const readUserInDBRes = await readUserInDB(username);
+    const readUserInDBRes = await readUserInDB(username).then(
+      (res) => res.data
+    );
 
     if (readUserInDBRes === undefined) {
       console.log(
@@ -89,12 +46,10 @@ const LoginForm = () => {
       console.log(readUserInDBRes.error);
     } else if (readUserInDBRes.res === null) {
       //user does not exist
-      const createUserRes: AxiosResponse<CreateUserRes> = await createUser(
-        username
-      );
+      const createUserRes = await createUser(username).then((res) => res?.data);
 
-      if (!createUserRes.data.success) {
-        console.log(createUserRes.data.error);
+      if (!createUserRes.success) {
+        console.log(createUserRes.error);
       } else {
         router.push(`/user/${username}`);
       }

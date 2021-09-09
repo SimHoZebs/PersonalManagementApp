@@ -1,18 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import ItemModel, { ItemSchema } from '../../../schema/ItemSchema';
-import { AxiosRequestConfig } from 'axios';
 
 //interfaces
-import ApiRes from '../../../interface/ApiRes';
-
-export interface UpdateItem extends AxiosRequestConfig {
-  method: "patch" | "PATCH"
-  data: { newTitle: string }
-}
-
-export interface UpdateItemRes extends ApiRes {
-  res: ItemSchema;
-}
+import ApiRes from '../../../lib/api/ApiRes';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
   const { method, url, query, body } = req;

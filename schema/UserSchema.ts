@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 export interface UserSchema {
   username: string;
-  listId: mongoose.Schema.Types.ObjectId[];
+  listId?: mongoose.Schema.Types.ObjectId[];
 }
 
 const schema = new mongoose.Schema<UserSchema>({
