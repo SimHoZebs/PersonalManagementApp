@@ -14,8 +14,7 @@ const schema = new mongoose.Schema<ListSchema>({
   description: {
     type: String,
   },
-  itemIdArray: [mongoose.Types.ObjectId],
-
+  itemIdArray: [mongoose.Schema.Types.ObjectId],
 })
 
 export default mongoose.models.List || mongoose.model<ListSchema>('List', schema)

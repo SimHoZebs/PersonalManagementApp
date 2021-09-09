@@ -14,7 +14,7 @@ interface props {
   index: number;
   item: ItemSchema;
   setItemArray: React.Dispatch<React.SetStateAction<ItemSchema[]>>;
-  setCreatingNewItem: React.Dispatch<React.SetStateAction<boolean>>;
+  setCreatingItem: React.Dispatch<React.SetStateAction<boolean>>;
   isNewItem: boolean;
 }
 
@@ -39,7 +39,7 @@ const Item = (props: props) => {
   }
 
   async function handleOnBlur() {
-    props.setCreatingNewItem((prev) => false);
+    props.setCreatingItem((prev) => false);
 
     if (newTitle === "") {
       //If new title is empty, do not save the item

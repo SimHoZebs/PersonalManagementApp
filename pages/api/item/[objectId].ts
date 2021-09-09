@@ -35,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     case 'PATCH':
       try {
-        const updatedItem = await ItemModel.findOneAndUpdate({ _id: query.objectId }, { title: body.newTitle }, { new: true })
+        const updatedItem: ItemSchema = await ItemModel.findOneAndUpdate({ _id: query.objectId }, { title: body.newTitle }, { new: true })
         res.status(200).json({ res: updatedItem, success: true });
       } catch (error) {
         res.status(400).json({ error: error, success: false })

@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   switch (method) {
     case "GET":
       try {
-        const itemArray = await ItemCollection.find({}) 
+        const itemArray: ItemSchema[] = await ItemCollection.find({})
         res.status(200).json({ res: itemArray, success: true })
       } catch (error) {
         res.status(400).json({ error: error, success: false })
@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     case "POST":
       try {
-        const newItem = await ItemCollection.create(new ItemCollection(body.newItem));
+        const newItem: ItemSchema = await ItemCollection.create(new ItemCollection(body.newItem));
         res.status(201).json({ success: true, res: newItem })
       } catch (error) {
         res.status(400).json({ error: error, success: false })
@@ -43,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     case "DELETE":
       try {
-        const removedItem = await ItemCollection.findByIdAndRemove(req.body._id)
+        const removedItem: ItemSchema = await ItemCollection.findByIdAndRemove(req.body._id)
         res.status(201).json({ success: true, res: removedItem })
       } catch (error) {
         res.status(400).json({ error: error, success: false })

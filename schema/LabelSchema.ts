@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 export interface LabelSchema {
   title: string;
   itemIdArray: mongoose.Types.ObjectId[]
-  _id?: mongoose.Types.ObjectId;
+  _id?: mongoose.Schema.Types.ObjectId;
 }
 
 const schema = new mongoose.Schema<LabelSchema>({
@@ -11,7 +11,7 @@ const schema = new mongoose.Schema<LabelSchema>({
     type: String,
     required: true
   },
-  itemIdArray: [mongoose.Types.ObjectId]
+  itemIdArray: [mongoose.Schema.Types.ObjectId]
 })
 
 export default mongoose.models.Label || mongoose.model<LabelSchema>('Label', schema)
