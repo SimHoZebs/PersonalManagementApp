@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import ApiRes from "../../../lib/api/ApiRes";
-import labelCollection, { LabelSchema } from "../../../schema/LabelSchema"
+import ApiRes from "../../../../../../../lib/api/ApiRes";
+import labelCollection, { LabelSchema } from "../../../../../../../schema/LabelSchema"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
-  const { method, url, query, body } = req;
+  const { method, query, body } = req;
 
   switch (method) {
     case "GET":

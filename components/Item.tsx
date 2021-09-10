@@ -23,7 +23,7 @@ interface props {
  *@param props - title and setItemArray
  */
 const Item = (props: props) => {
-  const [{ title, _id }, setItem] = useState<ItemSchema>(props.item);
+  const [{ itemName: title, _id }, setItem] = useState<ItemSchema>(props.item);
   const [itemCardOpen, setItemCardOpen] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const textFieldRef = useRef<HTMLDivElement | null>(null);

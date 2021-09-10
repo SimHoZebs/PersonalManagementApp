@@ -10,8 +10,6 @@ import Brand from "./Brand";
 
 import { useRef } from "react";
 import { useRouter } from "next/router";
-import readUserInDB from "../lib/api/readUserInDB";
-import createUser from "../lib/api/createUser";
 
 const LoginForm = () => {
   const usernameRef = useRef<HTMLInputElement | null>(null);
@@ -33,30 +31,7 @@ const LoginForm = () => {
     }
 
     const username = usernameRef.current.value;
-    const readUserInDBRes = await readUserInDB(username).then(
-      (res) => res.data
-    );
-
-    if (readUserInDBRes === undefined) {
-      console.log(
-        "response is undefined. Looks like something went wrong during readUserInDB"
-      );
-    } else if (!readUserInDBRes.success) {
-      //request unsuccessful
-      console.log(readUserInDBRes.error);
-    } else if (readUserInDBRes.res === null) {
-      //user does not exist
-      const createUserRes = await createUser(username).then((res) => res?.data);
-
-      if (!createUserRes.success) {
-        console.log(createUserRes.error);
-      } else {
-        router.push(`/user/${username}`);
-      }
-    } else {
-      //user exists
-      router.push(`/user/${username}`);
-    }
+    router.push(`/user/${username}`);
   }
 
   return (

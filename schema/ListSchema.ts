@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
-export interface ListSchema {
-  title: string;
+export interface ListSchema extends Document {
+  listName: string;
   description: string;
   itemIdArray: mongoose.Schema.Types.ObjectId[];
 }
 
 const schema = new mongoose.Schema<ListSchema>({
-  title: {
+  listName: {
     type: String,
     required: true,
   },

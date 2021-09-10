@@ -1,13 +1,12 @@
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-export interface ItemSchema {
-  title: string;
+export interface ItemSchema extends Document {
+  itemName: string;
   labelIdArray: mongoose.Schema.Types.ObjectId[];
-  _id?: mongoose.Schema.Types.ObjectId;
 }
 
 const schema = new mongoose.Schema<ItemSchema>({
-  title: {
+  itemName: {
     type: String,
     required: [true, 'Title is empty'],
     maxLength: [64, 'Title cannot be more than 64 characters']

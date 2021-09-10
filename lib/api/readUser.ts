@@ -1,13 +1,14 @@
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
+import { UserSchema } from '../../schema/UserSchema';
 import request from '../request'
 import ApiRes from './ApiRes'
 
 /**
- * @returns string:  if request successful
+ * @returns UserSchema:  if request successful
  * @returns null: if request successful but user does not exist
  */
-interface ReadUserListIdRes extends ApiRes {
-  res: string | null | undefined
+interface Res extends ApiRes {
+  res: UserSchema | null
 }
 
 /**
@@ -17,13 +18,14 @@ interface ReadUserListIdRes extends ApiRes {
  * @returns User: UserSchema; if request successful and username exists
  */
 
-export default async function readUserInDB(username: string) {
+export default async function readUser(username: string) {
   const req: AxiosRequestConfig = {
     method: "GET",
-    url: `api/user/${username}`,
+    url: `api/user/`,
+    data: { username }
   };
 
-  const res: AxiosResponse<ReadUserListIdRes> = await request(
+  const res: AxiosResponse<Res> = await request(
     req
   );
   console.log(res.data.success)

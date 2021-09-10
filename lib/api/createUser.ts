@@ -4,14 +4,8 @@ import ApiRes from "./ApiRes";
 
 import { UserSchema } from "../../schema/UserSchema";
 
-interface CreateUser extends AxiosRequestConfig {
-  method: "post" | "POST"
-  url: string
-  data: UserSchema
-}
-
-interface CreateUserRes extends ApiRes {
-  res: string | undefined
+interface Res extends ApiRes {
+  res: UserSchema
 }
 
 export default async function createUser(username: string) {
@@ -21,7 +15,7 @@ export default async function createUser(username: string) {
     data: { username: username },
   };
 
-  const res: AxiosResponse<CreateUserRes> = await request(req)
+  const res: AxiosResponse<Res> = await request(req)
 
   return res
 }

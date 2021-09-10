@@ -1,8 +1,8 @@
-import mongoose from 'mongoose'
+import mongoose, { Document } from 'mongoose'
 
-export interface UserSchema {
+export interface UserSchema extends Document {
   username: string;
-  listId?: mongoose.Schema.Types.ObjectId[];
+  listIdArray: mongoose.Schema.Types.ObjectId[];
 }
 
 const schema = new mongoose.Schema<UserSchema>({
@@ -10,7 +10,7 @@ const schema = new mongoose.Schema<UserSchema>({
     type: String,
     required: true
   },
-  listId: [mongoose.Schema.Types.ObjectId]
+  listIdArray: [mongoose.Schema.Types.ObjectId]
 })
 
 export default mongoose.models.User || mongoose.model<UserSchema>('User', schema)

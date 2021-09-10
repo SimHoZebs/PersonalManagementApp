@@ -9,20 +9,20 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 //handles login.
 //If log in was successful, redirects to the main page.
 
-async function initServer() {
-  const serverReq: AxiosRequestConfig = { method: "get", url: "/api/" };
-  const initServerRes: AxiosResponse = await axios(serverReq);
-
-  //stop running if API server fails to run for some odd reason
-  if (!initServerRes.data.success) {
-    console.log(initServerRes.data.error);
-    console.log("Failed to get data from server");
-    return;
-  }
-}
-
 export default function Index() {
   useEffect(() => {
+    async function initServer() {
+      const serverReq: AxiosRequestConfig = { method: "get", url: "/api/" };
+      const initServerRes: AxiosResponse = await axios(serverReq);
+
+      //stop running if API server fails to run for some odd reason
+      if (!initServerRes.data.success) {
+        console.log(initServerRes.data.error);
+        console.log("Failed to get data from server");
+        return;
+      }
+    }
+
     initServer();
   }, []);
 
