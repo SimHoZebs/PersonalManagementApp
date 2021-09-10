@@ -89,17 +89,6 @@ export default function Home() {
     console.log("itemArray updated", itemArray);
   }, [itemArray]);
 
-  function handleCreateItemBtn() {
-    const newItem: ItemSchema = {
-      itemName: "",
-      labelIdArray: [],
-    };
-
-    setItemArray((prev) => [...prev, newItem]);
-
-    setCreatingItem((prev) => true);
-  }
-
   return isLoading ? (
     <Typography variant="h1">Loading</Typography>
   ) : (
@@ -114,6 +103,7 @@ export default function Home() {
           {itemArray.map((item, index) => (
             <Grid item key={index} xs={12}>
               <Item
+                listId={listArray[index]._id}
                 item={item}
                 index={index}
                 setItemArray={setItemArray}
@@ -127,11 +117,7 @@ export default function Home() {
         </Grid>
 
         <Grid item container>
-          <Button
-            variant="text"
-            color="primary"
-            onClick={() => handleCreateItemBtn()}
-          >
+          <Button variant="text" color="primary">
             New Item
           </Button>
         </Grid>

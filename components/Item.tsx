@@ -1,5 +1,4 @@
 import React, { useState, useEffect, MouseEvent, useRef } from "react";
-import axios, { AxiosResponse } from "axios";
 import { Grid, Backdrop, Paper, TextField } from "@material-ui/core";
 
 //components
@@ -9,6 +8,7 @@ import ItemCard from "./ItemCard";
 import { ItemSchema } from "../schema/ItemSchema";
 import createItem from "../lib/api/createItem";
 import updateItem from "../lib/api/updateItem";
+import mongoose from "mongoose";
 
 interface props {
   index: number;
@@ -16,6 +16,7 @@ interface props {
   setItemArray: React.Dispatch<React.SetStateAction<ItemSchema[]>>;
   setCreatingItem: React.Dispatch<React.SetStateAction<boolean>>;
   isNewItem: boolean;
+  listId: mongoose.Schema.Types.ObjectId;
 }
 
 /**
@@ -23,7 +24,9 @@ interface props {
  *@param props - title and setItemArray
  */
 const Item = (props: props) => {
-  const [{ itemName: title, _id }, setItem] = useState<ItemSchema>(props.item);
+  const [{ itemName: title, _id: userId }, setItem] = useState<ItemSchema>(
+    props.item
+  );
   const [itemCardOpen, setItemCardOpen] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const textFieldRef = useRef<HTMLDivElement | null>(null);
@@ -49,8 +52,8 @@ const Item = (props: props) => {
     } else if (newTitle !== title) {
       //if new title isn't empty and it's diff from the old one, save the item
       const res = props.isNewItem
-        ? await createItem(newTitle)
-        : await updateItem(_id, newTitle);
+        ? await createItem(userId, props.listId, newTitle)
+        : await updateItem(userId, newTitle);
 
       //is there more efficient way of setting a new array
       props.setItemArray((prev) => {
