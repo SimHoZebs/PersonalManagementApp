@@ -1,36 +1,32 @@
 import React, { useEffect, useState } from "react";
-import { Container, Typography, Grid, Button } from "@material-ui/core";
+import { Container, Typography, Grid } from "@material-ui/core";
+import List from "../../../components/List";
 import { useRouter } from "next/router";
 
-//components
-import Item from "../../../components/Item";
-import { ListSchema } from "../../../schema/ListSchema";
-import { ItemSchema } from "../../../schema/ItemSchema";
+//API functions
 import readUser from "../../../lib/api/readUser";
 import createUser from "../../../lib/api/createUser";
-import { UserSchema } from "../../../schema/UserSchema";
 import createList from "../../../lib/api/createList";
-import updateUserListArray from "../../../lib/api/updateUserListArray";
+import addListToUser from "../../../lib/api/addListToUser";
 
+//schema and interfaces
+import { UserSchema } from "../../../schema/UserSchema";
 //get user data from login form
 //fill page with user data
 
-export default function Home() {
-  const [listArray, setListArray] = useState<ListSchema[]>([]);
+export default function UserDashboard() {
   const [user, setUser] = useState<UserSchema | null>(null);
-  const [itemArray, setItemArray] = useState<ItemSchema[]>([]);
-  const [creatingItem, setCreatingItem] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
-  const [{ username }, setUsername] = useState(router.query);
+  console.log(router.query);
+  const [{ userId }, setUserId] = useState(router.query);
 
-  console.log("Hello,", username);
-  async function AddListToUser(createdUser: any) {
-    const createListRes = await createList(
-      createdUser._id,
-      "default list"
-    ).then((res) => res?.data);
+  console.log("Hello,", userId);
+  async function addDefaultListToUser(user: any) {
+    const createListRes = await createList(user.id, "default list").then(
+      (res) => res?.data
+    );
     if (createListRes.res._id === undefined) {
       console.log("error creating list, list id doesn't exist");
       console.log(createListRes.error);
@@ -38,9 +34,9 @@ export default function Home() {
     }
     const createdList = createListRes.res;
 
-    const updateUserListArrayRes = await updateUserListArray(
-      createdUser._id,
-      createdList._id
+    const updateUserListArrayRes = await addListToUser(
+      user.id,
+      createdList.id
     ).then((res) => res.data);
     if (!updateUserListArrayRes.success) {
       console.log(updateUserListArrayRes.error);
@@ -49,21 +45,19 @@ export default function Home() {
 
   useEffect(() => {
     /**
-     * Loads user data and creates new user if they don't exist.
+     * Reads user data and creates new user if they don't exist.
      */
-    async function initUserPage(username: string) {
+    async function initUserPage(userId: string) {
       let user: UserSchema;
 
-      const readUserRes = await readUser(username).then((res) => res.data);
+      const readUserRes = await readUser(userId).then((res) => res.data);
       if (!readUserRes.success) {
         console.log(readUserRes.error);
         return;
       }
 
       if (readUserRes.res === null) {
-        const createUserRes = await createUser(username).then(
-          (res) => res?.data
-        );
+        const createUserRes = await createUser(userId).then((res) => res?.data);
         if (!createUserRes.success) {
           console.log(createUserRes.error);
           return;
@@ -77,17 +71,13 @@ export default function Home() {
       setUser(user);
     }
 
-    if (typeof username !== "string") {
-      console.log("username is not a string. It is ", username);
+    if (typeof userId !== "string") {
+      console.log("userId is not a string. It is ", userId);
       return;
     }
-    initUserPage(username);
+    initUserPage(userId);
     setIsLoading(false);
-  }, [username]);
-
-  useEffect(() => {
-    console.log("itemArray updated", itemArray);
-  }, [itemArray]);
+  }, [userId]);
 
   return isLoading ? (
     <Typography variant="h1">Loading</Typography>
@@ -95,32 +85,12 @@ export default function Home() {
     <Container sx={{ padding: "30px" }}>
       <Grid container spacing={2} direction="column">
         <Grid item>
-          <Typography variant="h4"></Typography>
+          <Typography variant="h4">Hello, {user?.username}</Typography>
         </Grid>
 
-        {/*Need list component to load and display list*/}
-        <Grid item container spacing={1}>
-          {itemArray.map((item, index) => (
-            <Grid item key={index} xs={12}>
-              <Item
-                listId={listArray[index]._id}
-                item={item}
-                index={index}
-                setItemArray={setItemArray}
-                setCreatingItem={setCreatingItem}
-                isNewItem={
-                  creatingItem && index === itemArray.length - 1 ? true : false
-                }
-              />
-            </Grid>
-          ))}
-        </Grid>
-
-        <Grid item container>
-          <Button variant="text" color="primary">
-            New Item
-          </Button>
-        </Grid>
+        {user?.listIdArray.map((listId, index) => (
+          <List key={index} userId={user.id} listId={listId} />
+        ))}
       </Grid>
     </Container>
   );

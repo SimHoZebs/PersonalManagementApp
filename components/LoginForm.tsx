@@ -10,10 +10,37 @@ import Brand from "./Brand";
 
 import { useRef } from "react";
 import { useRouter } from "next/router";
+import { UserSchema } from "../schema/UserSchema";
+import readUser from "../lib/api/readUser";
+import createUser from "../lib/api/createUser";
 
 const LoginForm = () => {
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
+
+  async function initUserPage(username: string) {
+    let user: UserSchema;
+
+    const readUserRes = await readUser(username).then((res) => res.data);
+    if (!readUserRes.success) {
+      console.log(readUserRes.error);
+      return;
+    }
+
+    if (readUserRes.res === null) {
+      const createUserRes = await createUser(username).then((res) => res?.data);
+      if (!createUserRes.success) {
+        console.log(createUserRes.error);
+        return;
+      }
+
+      user = createUserRes.res;
+    } else {
+      user = readUserRes.res;
+    }
+
+    return user;
+  }
 
   /**
    *  @desc attempts login and creates user if user does not exist.
@@ -31,7 +58,21 @@ const LoginForm = () => {
     }
 
     const username = usernameRef.current.value;
-    router.push(`/user/${username}`);
+
+    if (typeof username !== "string") {
+      console.log("username is not a string. It is ", username);
+      return;
+    }
+
+    const user = await initUserPage(username);
+    if (user === undefined) {
+      console.log("user is undefined");
+      return;
+    }
+
+    router.push({
+      pathname: `/user/${user._id}`,
+    });
   }
 
   return (

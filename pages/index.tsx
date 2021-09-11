@@ -9,7 +9,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 //handles login.
 //If log in was successful, redirects to the main page.
 
-export default function Index() {
+export default function Login() {
   useEffect(() => {
     async function initServer() {
       const serverReq: AxiosRequestConfig = { method: "get", url: "/api/" };

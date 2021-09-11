@@ -2,7 +2,9 @@ import mongoose, { Document } from "mongoose";
 
 export interface ItemSchema extends Document {
   itemName: string;
-  labelIdArray: mongoose.Schema.Types.ObjectId[];
+  userId: string;
+  listId: string;
+  labelIdArray: string[] | never[];
 }
 
 const schema = new mongoose.Schema<ItemSchema>({
@@ -11,7 +13,9 @@ const schema = new mongoose.Schema<ItemSchema>({
     required: [true, 'Title is empty'],
     maxLength: [64, 'Title cannot be more than 64 characters']
   },
-  labelIdArray: [mongoose.Schema.Types.ObjectId]
+  userId: String,
+  listId: String,
+  labelIdArray: [String]
 })
 
 //mongoose.models.ItemSchema looks for a model called ItemSchema in the mongoDB connection that has been established.

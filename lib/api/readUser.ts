@@ -21,14 +21,13 @@ interface Res extends ApiRes {
 export default async function readUser(username: string) {
   const req: AxiosRequestConfig = {
     method: "GET",
-    url: `api/user/`,
-    data: { username }
+    url: `/api/user/`,
+    params: { username }
   };
 
   const res: AxiosResponse<Res> = await request(
     req
   );
-  console.log(res.data.success)
 
   return res
 }

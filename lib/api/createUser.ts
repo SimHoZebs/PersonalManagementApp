@@ -11,8 +11,8 @@ interface Res extends ApiRes {
 export default async function createUser(username: string) {
   const req: AxiosRequestConfig = {
     method: "POST",
-    url: `api/user/`,
-    data: { username: username },
+    url: `/api/user/`,
+    data: { username },
   };
 
   const res: AxiosResponse<Res> = await request(req)

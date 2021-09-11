@@ -1,21 +1,19 @@
-import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { ListSchema } from "../../schema/ListSchema";
-import request from "../request";
-import ApiRes from "./ApiRes";
-import mongoose from "mongoose";
-
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { UserSchema } from '../../schema/UserSchema'
+import request from '../request'
+import ApiRes from './ApiRes'
 
 interface Res extends ApiRes {
-  res: ListSchema;
+  res: UserSchema
 }
 
 export default async function createList(
-  userId: mongoose.Schema.Types.ObjectId,
+  userId: string,
   listName: string
 ) {
   const req: AxiosRequestConfig = {
     method: "POST",
-    url: `api/user/${userId}`,
+    url: `/api/user/${userId}`,
     data: { listName }
   }
 

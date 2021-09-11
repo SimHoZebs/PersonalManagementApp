@@ -4,22 +4,23 @@ import userCollection, { UserSchema } from '../../../../schema/UserSchema'
 import listCollection, { ListSchema } from '../../../../schema/ListSchema'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
-  const { method, body, query, } = req
+  const { method, body, query } = req
 
   switch (method) {
     case 'GET':
+
       try {
-        const user: UserSchema = await userCollection.findOne({ username: query.username })
-        res.status(200).json({ success: true, res: user })
-      }
-      catch (error) {
-        res.status(400).json({ success: false, error: error })
+        const listArray: ListSchema[] = await listCollection.find({})
+        res.status(200).json({ res: listArray, success: true })
+
+      } catch (error) {
+        res.status(400).json({ error: error, success: false })
       }
       break;
 
     case 'POST':
       try {
-        const list: ListSchema = await listCollection.create(new listCollection({ listName: query.listName }))
+        const list: ListSchema = await listCollection.create(new listCollection({ listName: body.listName }))
         res.status(201).json({ success: true, res: list })
       } catch (error) {
         res.status(400).json({ error: error, success: false })

@@ -1,5 +1,4 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios"
-import mongoose from "mongoose"
 
 import { ItemSchema } from "../../schema/ItemSchema"
 import ApiRes from "./ApiRes"
@@ -9,11 +8,7 @@ interface CreateItemRes extends ApiRes {
   res: ItemSchema | undefined
 }
 
-export default async function createItem(
-  userId: mongoose.Schema.Types.ObjectId,
-  listId: mongoose.Schema.Types.ObjectId,
-  itemName: string
-) {
+export default async function createItem(userId: string, listId: string, itemName: string) {
 
   const req: AxiosRequestConfig = {
     method: "post",

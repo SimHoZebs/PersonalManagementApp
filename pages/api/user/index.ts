@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   switch (method) {
     case 'GET':
       try {
-        const user: UserSchema = await userCollection.findOne({ username: body.username })
+        const user: UserSchema = await userCollection.findOne({ username: query.username })
         res.status(200).json({ success: true, res: user })
       }
       catch (error) {
@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     case 'POST':
       try {
-        const user: UserSchema = await userCollection.create(new userCollection({ username: query.username }))
+        const user: UserSchema = await userCollection.create(new userCollection({ username: body.username }))
         res.status(200).json({ success: true, res: user })
       }
       catch (error) {

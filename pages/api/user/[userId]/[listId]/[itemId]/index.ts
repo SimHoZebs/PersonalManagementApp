@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     case "DELETE":
       try {
-        const removedItem: ItemSchema = await ItemCollection.findByIdAndRemove(req.body._id)
+        const removedItem: ItemSchema = await ItemCollection.findByIdAndRemove(req.body.id)
         res.status(201).json({ success: true, res: removedItem })
       } catch (error) {
         res.status(400).json({ error: error, success: false })
