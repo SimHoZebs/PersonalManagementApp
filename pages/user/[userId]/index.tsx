@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Typography, Grid } from "@material-ui/core";
-import List from "../../../components/List";
+import List from "../../../lib/components/List";
 import { useRouter } from "next/router";
 
 //API functions
@@ -10,7 +10,7 @@ import createList from "../../../lib/api/createList";
 import addListToUser from "../../../lib/api/addListToUser";
 
 //schema and interfaces
-import { UserSchema } from "../../../schema/UserSchema";
+import { UserSchema } from "../../../lib/schema/UserSchema";
 //get user data from login form
 //fill page with user data
 

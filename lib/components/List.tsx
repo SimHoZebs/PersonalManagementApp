@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
 import Item from "./Item";
-import readAllItem from "../lib/api/readAllItem";
+import readAllItem from "../api/readAllItem";
 import { ItemSchema } from "../schema/ItemSchema";
 
 interface Props {

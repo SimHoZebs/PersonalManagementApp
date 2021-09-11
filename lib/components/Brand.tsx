@@ -2,7 +2,7 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 import Image from "next/image";
-import theme from "../styles/theme";
+import theme from "../theme";
 
 const Brand = () => {
   return (

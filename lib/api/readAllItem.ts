@@ -2,7 +2,7 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
 import request from "../request";
 import ApiRes from "./ApiRes";
 
-import { ItemSchema } from "../../schema/ItemSchema";
+import { ItemSchema } from "../schema/ItemSchema";
 
 interface Res extends ApiRes {
   res: ItemSchema[]

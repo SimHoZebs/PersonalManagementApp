@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import ApiRes from "../../../../../../../lib/api/ApiRes";
-import labelCollection, { LabelSchema } from "../../../../../../../schema/LabelSchema"
+import labelCollection, { LabelSchema } from "../../../../../../../lib/schema/LabelSchema"
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
   const { method, query, body } = req;

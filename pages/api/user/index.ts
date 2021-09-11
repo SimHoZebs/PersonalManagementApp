@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import ApiRes from "../../../lib/api/ApiRes";
-import userCollection, { UserSchema } from '../../../schema/UserSchema'
+import userCollection, { UserSchema } from '../../../lib/schema/UserSchema'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
   const { method, body, query } = req

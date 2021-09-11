@@ -2,7 +2,7 @@ import request from "../request"
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import ApiRes from "./ApiRes";
 
-import { UserSchema } from "../../schema/UserSchema";
+import { UserSchema } from "../schema/UserSchema";
 
 interface Res extends ApiRes {
   res: UserSchema

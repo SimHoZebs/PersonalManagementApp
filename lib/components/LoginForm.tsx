@@ -4,15 +4,15 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Backdrop from "@material-ui/core/Backdrop";
-import theme from "../styles/theme";
+import theme from "../theme";
 
 import Brand from "./Brand";
 
 import { useRef } from "react";
 import { useRouter } from "next/router";
 import { UserSchema } from "../schema/UserSchema";
-import readUser from "../lib/api/readUser";
-import createUser from "../lib/api/createUser";
+import readUser from "../api/readUser";
+import createUser from "../api/createUser";
 
 const LoginForm = () => {
   const usernameRef = useRef<HTMLInputElement | null>(null);

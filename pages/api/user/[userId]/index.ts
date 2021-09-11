@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import ApiRes from '../../../../lib/api/ApiRes'
-import userCollection, { UserSchema } from '../../../../schema/UserSchema'
-import listCollection, { ListSchema } from '../../../../schema/ListSchema'
+import userCollection, { UserSchema } from '../../../../lib/schema/UserSchema'
+import listCollection, { ListSchema } from '../../../../lib/schema/ListSchema'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
   const { method, body, query } = req

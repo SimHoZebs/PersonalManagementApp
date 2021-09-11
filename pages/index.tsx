@@ -1,7 +1,7 @@
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 
-import LoginForm from "../components/LoginForm";
+import LoginForm from "../lib/components/LoginForm";
 import { useEffect } from "react";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 

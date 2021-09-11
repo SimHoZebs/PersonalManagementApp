@@ -1,5 +1,5 @@
 import { AxiosResponse, AxiosRequestConfig } from 'axios';
-import { UserSchema } from '../../schema/UserSchema';
+import { UserSchema } from '../schema/UserSchema';
 import request from '../request'
 import ApiRes from './ApiRes'
 

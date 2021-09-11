@@ -1,11 +1,11 @@
-import * as React from 'react';
-import Head from 'next/head';
-import { AppProps } from 'next/app';
-import { ThemeProvider } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import theme from '../styles/theme';
-import createEmotionCache from '../lib/createEmotionCache';
+import * as React from "react";
+import Head from "next/head";
+import { AppProps } from "next/app";
+import { ThemeProvider } from "@material-ui/core/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import theme from "../lib/theme";
+import createEmotionCache from "../lib/createEmotionCache";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

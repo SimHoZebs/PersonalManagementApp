@@ -6,8 +6,8 @@ import ItemCard from "./ItemCard";
 
 //interfaces
 import { ItemSchema } from "../schema/ItemSchema";
-import createItem from "../lib/api/createItem";
-import updateItem from "../lib/api/updateItem";
+import createItem from "../api/createItem";
+import updateItem from "../api/updateItem";
 
 interface Props {
   item: ItemSchema;
