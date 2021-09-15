@@ -18,7 +18,12 @@ const LoginForm = () => {
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
-  async function initUserPage(username: string) {
+  /**
+   * User initialization. Reads user from database and creates user if they don't exist.
+   * @param username
+   * @returns
+   */
+  async function initUser(username: string) {
     let user: UserSchema;
 
     const readUserRes = await readUser(username).then((res) => res.data);
@@ -64,7 +69,7 @@ const LoginForm = () => {
       return;
     }
 
-    const user = await initUserPage(username);
+    const user = await initUser(username);
     if (user === undefined) {
       console.log("user is undefined");
       return;

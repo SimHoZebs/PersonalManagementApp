@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import React, { useEffect, useState } from "react";
 import { Container, Typography, Grid } from "@material-ui/core";
 import List from "../../../lib/components/List";
@@ -19,10 +20,9 @@ export default function UserDashboard() {
   const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter();
-  console.log(router.query);
+  console.log("router query", router.query);
   const [{ userId }, setUserId] = useState(router.query);
 
-  console.log("Hello,", userId);
   async function addDefaultListToUser(user: any) {
     const createListRes = await createList(user.id, "default list").then(
       (res) => res?.data
@@ -45,29 +45,20 @@ export default function UserDashboard() {
 
   useEffect(() => {
     /**
-     * Reads user data and creates new user if they don't exist.
+     * Reads user data with given userId.
      */
     async function initUserPage(userId: string) {
       let user: UserSchema;
 
-      const readUserRes = await readUser(userId).then((res) => res.data);
+      const readUserRes = await readUser(null, userId).then((res) => res.data);
       if (!readUserRes.success) {
         console.log(readUserRes.error);
         return;
       }
 
-      if (readUserRes.res === null) {
-        const createUserRes = await createUser(userId).then((res) => res?.data);
-        if (!createUserRes.success) {
-          console.log(createUserRes.error);
-          return;
-        }
+      user = readUserRes.res;
 
-        user = createUserRes.res;
-      } else {
-        user = readUserRes.res;
-      }
-
+      console.log(user);
       setUser(user);
     }
 

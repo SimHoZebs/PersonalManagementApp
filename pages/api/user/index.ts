@@ -8,7 +8,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   switch (method) {
     case 'GET':
       try {
-        const user: UserSchema = await userCollection.findOne({ username: query.username })
+        let user: UserSchema | undefined;
+        if (query.username != null) {
+          user = await userCollection.findOne({ username: query.username })
+        }
+        else if (query.userId != null) {
+          user = await userCollection.findOne({ _id: query.userId })
+        }
         res.status(200).json({ success: true, res: user })
       }
       catch (error) {

@@ -8,7 +8,7 @@ import ApiRes from './ApiRes'
  * @returns null: if request successful but user does not exist
  */
 interface Res extends ApiRes {
-  res: UserSchema | null
+  res: UserSchema
 }
 
 /**
@@ -18,11 +18,12 @@ interface Res extends ApiRes {
  * @returns User: UserSchema; if request successful and username exists
  */
 
-export default async function readUser(username: string) {
+export default async function readUser(username: string | null = null, userId: string | null = null) {
+  console.log("readUser called, username is ", username, "userId is ", userId)
   const req: AxiosRequestConfig = {
     method: "GET",
     url: `/api/user/`,
-    params: { username }
+    params: { username, userId }
   };
 
   const res: AxiosResponse<Res> = await request(
