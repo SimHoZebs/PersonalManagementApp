@@ -3,9 +3,11 @@ import mongoose, { Document } from "mongoose"
 export interface LabelSchema extends Document {
   title: string;
   itemIdArray: string[]
+  listId: string;
+  userId: string;
 }
 
-const schema = new mongoose.Schema<LabelSchema>({
+export const labelModel = new mongoose.Schema<LabelSchema>({
   title: {
     type: String,
     required: true
@@ -13,4 +15,4 @@ const schema = new mongoose.Schema<LabelSchema>({
   itemIdArray: [String]
 })
 
-export default mongoose.models.Label || mongoose.model<LabelSchema>('Label', schema)
+export default mongoose.models.Label || mongoose.model<LabelSchema>('Label', labelModel)

@@ -1,22 +1,24 @@
-import { AxiosRequestConfig, AxiosResponse } from "axios"
-
-import { ItemSchema } from "../schema/ItemSchema"
-import ApiRes from "./ApiRes"
+import { AxiosRequestConfig } from "axios"
 import request from "../request"
+import { ItemSchema } from "../schema/ItemSchema"
+import NewApiRes from "./newApiRes"
 
-interface CreateItemRes extends ApiRes {
-  res: ItemSchema | undefined
-}
-
+/**
+ * 
+ * @param userId 
+ * @param listId 
+ * @param itemName 
+ * @returns 
+ */
 export default async function createItem(userId: string, listId: string, itemName: string) {
 
   const req: AxiosRequestConfig = {
     method: "post",
     url: `/api/user/${userId}/${listId}`,
-    data: { newItem: { itemName: itemName, labelIdArray: [] } },
+    data: { newItem: { itemName, labelIdArray: [], userId, listId } },
   }
 
-  const res: AxiosResponse<CreateItemRes> = await request(req)
+  const res: NewApiRes<ItemSchema[]> = await request(req)
 
   return res
 }

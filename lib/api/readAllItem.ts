@@ -1,12 +1,9 @@
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosRequestConfig } from "axios";
 import request from "../request";
-import ApiRes from "./ApiRes";
 
 import { ItemSchema } from "../schema/ItemSchema";
+import NewApiRes from "./newApiRes";
 
-interface Res extends ApiRes {
-  res: ItemSchema[]
-}
 
 export default async function readAllItem(userId: string, listId: string) {
   const req: AxiosRequestConfig = {
@@ -14,7 +11,7 @@ export default async function readAllItem(userId: string, listId: string) {
     url: `/api/user/${userId}/${listId}`,
   }
 
-  const res: AxiosResponse<Res> = await request(req)
+  const res: NewApiRes<ItemSchema[]> = await request(req)
 
   return res
 }

@@ -1,13 +1,14 @@
 import mongoose, { Document } from "mongoose";
+import { labelModel, LabelSchema } from "./LabelSchema";
 
 export interface ItemSchema extends Document {
   itemName: string;
   userId: string;
   listId: string;
-  labelIdArray: string[] | never[];
+  labelArray: LabelSchema[]
 }
 
-const schema = new mongoose.Schema<ItemSchema>({
+export const ItemModel = new mongoose.Schema<ItemSchema>({
   itemName: {
     type: String,
     required: [true, 'Title is empty'],
@@ -15,9 +16,9 @@ const schema = new mongoose.Schema<ItemSchema>({
   },
   userId: String,
   listId: String,
-  labelIdArray: [String]
+  labelArray: [labelModel]
 })
 
 //mongoose.models.ItemSchema looks for a model called ItemSchema in the mongoDB connection that has been established.
 
-export default mongoose.models.Item || mongoose.model<ItemSchema>('Item', schema)
+export default mongoose.models.Item || mongoose.model<ItemSchema>('Item', ItemModel)

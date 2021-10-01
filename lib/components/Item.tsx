@@ -15,6 +15,7 @@ interface Props {
   setItemArray: React.Dispatch<React.SetStateAction<ItemSchema[]>>;
   setCreatingItem: React.Dispatch<React.SetStateAction<boolean>>;
   isNewItem: boolean;
+  listId: string;
 }
 
 /**
@@ -22,7 +23,7 @@ interface Props {
  * This is needed as existing items can behave like new items if user clicks away while creating new item.
  */
 const Item = (props: Props) => {
-  const [{ itemName, userId, listId }, setItem] = useState<ItemSchema>(
+  const [{ itemName, userId, _id: itemId }, setItem] = useState<ItemSchema>(
     props.item
   );
   const [itemCardOpen, setItemCardOpen] = useState(false);
@@ -31,9 +32,8 @@ const Item = (props: Props) => {
   const paperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    console.log("props.item updated", props.index);
     setItem(props.item);
-  }, [props.index, props.item]);
+  }, [props.item]);
 
   /**
    * prevents click on textField from opening ItemCard
@@ -45,6 +45,7 @@ const Item = (props: Props) => {
   /**
    * When user clicks away from item textField.
    * Creates new item if it's new, or updates existing item.
+   * Add or update item to list.
    */
   async function handleOnBlur() {
     props.setCreatingItem((prev) => false);
@@ -56,16 +57,17 @@ const Item = (props: Props) => {
       );
     } else if (newItemName !== itemName) {
       //if new title isn't empty and it's diff from the old one, save the item
-      const res = props.isNewItem
-        ? await createItem(userId, listId, newItemName)
-        : await updateItem(userId, newItemName);
+      const updatedItemArray = props.isNewItem
+        ? await createItem(userId, props.listId, newItemName)
+        : await updateItem(userId, props.listId, props.index, newItemName);
 
-      //is there more efficient way of setting a new array
       props.setItemArray((prev) => {
-        console.log("itemarray updating...");
-        const newArray = [...prev, res.data.res] as ItemSchema[];
-        newArray.splice(newArray.length - 2, 1);
-        return newArray;
+        if (updatedItemArray.data.res === undefined) {
+          console.log("updatedItemArray error", updatedItemArray.data.error);
+          return prev;
+        }
+
+        return [...updatedItemArray.data.res];
       });
     }
   }

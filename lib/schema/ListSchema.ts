@@ -1,12 +1,13 @@
 import mongoose, { Document } from 'mongoose';
+import { ItemModel, ItemSchema } from './ItemSchema';
 
 export interface ListSchema extends Document {
   listName: string;
   description: string;
-  itemIdArray: string[];
+  itemArray: ItemSchema[]
 }
 
-const schema = new mongoose.Schema<ListSchema>({
+const listModel = new mongoose.Schema<ListSchema>({
   listName: {
     type: String,
     required: true,
@@ -14,7 +15,7 @@ const schema = new mongoose.Schema<ListSchema>({
   description: {
     type: String,
   },
-  itemIdArray: [String],
+  itemArray: { type: [ItemModel], default: [] }
 })
 
-export default mongoose.models.List || mongoose.model<ListSchema>('List', schema)
+export default mongoose.models.List || mongoose.model<ListSchema>('List', listModel)

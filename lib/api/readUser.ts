@@ -19,7 +19,6 @@ interface Res extends ApiRes {
  */
 
 export default async function readUser(username: string | null = null, userId: string | null = null) {
-  console.log("readUser called, username is ", username, "userId is ", userId)
   const req: AxiosRequestConfig = {
     method: "GET",
     url: `/api/user/`,

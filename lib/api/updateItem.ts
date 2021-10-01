@@ -1,21 +1,18 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosRequestConfig } from 'axios';
 import { ItemSchema } from '../schema/ItemSchema';
-import ApiRes from './ApiRes';
 import request from '../request';
+import NewApiRes from './newApiRes';
 
-interface Res extends ApiRes {
-  res: ItemSchema;
-}
 
-export default async function updateItem(itemId: string | undefined, newTitle: string) {
+export default async function updateItem(userId: string, listId: string, itemIndex: number, newItemName: string) {
 
   const req: AxiosRequestConfig = {
-    method: "patch",
-    url: `/api/item/${itemId}`,
-    data: { newTitle },
+    method: "PATCH",
+    url: `api/user/${userId}/${listId}`,
+    data: { itemIndex, newItemName },
   };
 
-  const res: AxiosResponse<Res> = await request(req)
+  const res: NewApiRes<ItemSchema[]> = await request(req)
 
   return res
 }

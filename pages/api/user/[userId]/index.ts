@@ -8,11 +8,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
   switch (method) {
     case 'GET':
-
       try {
         const listArray: ListSchema[] = await listCollection.find({})
-        res.status(200).json({ res: listArray, success: true })
 
+        res.status(200).json({ res: listArray, success: true })
       } catch (error) {
         res.status(400).json({ error: error, success: false })
       }
@@ -20,7 +19,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     case 'POST':
       try {
-        const list: ListSchema = await listCollection.create(new listCollection({ listName: body.listName }))
+        const list: ListSchema = await listCollection.create(new listCollection({ listName: body.listName, userId: query.userId }))
+
         res.status(201).json({ success: true, res: list })
       } catch (error) {
         res.status(400).json({ error: error, success: false })
@@ -29,14 +29,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     case 'PATCH':
       try {
-        let user: UserSchema = await userCollection.findOne({ _id: query.userId })
-        user.listIdArray?.push(body.listId)
-        await user.save()
+        const user: UserSchema = await userCollection.findOne({ _id: query.userId })
 
-        res.status(200).json({ success: true, res: user })
-      }
-      catch (error) {
-        res.status(400).json({ success: false, error: error })
+        if (body.target === "selectedListId") {
+          user.selectedListId = body.listId
+        }
+        else {
+          user.listIdArray.push(body.listId)
+        }
+
+        await user.save()
+        res.status(201).json({ success: true, res: user })
+      } catch (error) {
+        res.status(400).json({ error: error, success: false })
       }
       break;
   }
