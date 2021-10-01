@@ -1,8 +1,7 @@
 import mongoose from "mongoose"
-import ApiRes from '../../lib/api/ApiRes'
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
 
 
@@ -14,10 +13,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         } else {
           throw new Error('DB_URI is not defined');
         }
-        res.status(200).json({ success: true })
+        res.status(200).json({})
       }
       catch (error) {
-        res.status(500).json({ error: error, success: false })
+        res.status(500).json({ error })
       }
   }
 }

@@ -31,7 +31,7 @@ export default function List({ userId, listId }: Props) {
     async function initList() {
       const readListRes = await readList(userId, listId);
       if (typeof readListRes === "string") {
-        console.log("readListRes error", readListRes);
+        console.log(readListRes);
         return;
       }
 

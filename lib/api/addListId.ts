@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from "axios"
 import request from "../request"
 import { UserSchema } from "../schema/UserSchema"
-import NewApiRes from "./newApiRes"
+import ApiRes from "./ApiRes"
 
 /**
  * adds listId to user's listIdArray.
@@ -16,7 +16,21 @@ export default async function addListId(userId: string, listId: string) {
     data: { listId }
   }
 
-  const res: NewApiRes<UserSchema> = await request(req)
+  try {
+    const res: ApiRes<UserSchema> = await request(req)
 
-  return res
+    switch (res.data.res) {
+      case undefined:
+        return `addListId server error, ${JSON.stringify(res.data.error)}`
+
+      default:
+        return res.data.res
+    }
+  }
+  catch (error) {
+    return `addListId client error ${JSON.stringify(error)}`
+  }
+
+
+
 }

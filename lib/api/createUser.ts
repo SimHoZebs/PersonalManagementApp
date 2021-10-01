@@ -1,12 +1,8 @@
 import request from "../request"
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosRequestConfig } from "axios";
 import ApiRes from "./ApiRes";
 
 import { UserSchema } from "../schema/UserSchema";
-
-interface Res extends ApiRes {
-  res: UserSchema
-}
 
 export default async function createUser(username: string) {
   const req: AxiosRequestConfig = {
@@ -15,7 +11,13 @@ export default async function createUser(username: string) {
     data: { username },
   };
 
-  const res: AxiosResponse<Res> = await request(req)
+  try {
+    const res: ApiRes<UserSchema> = await request(req)
 
-  return res
+    return res.data.res !== undefined ? res.data.res : `createUser server error ${JSON.stringify(res.data.error)}`
+  }
+  catch (error) {
+    return `createUser client error ${JSON.stringify(error)}`
+  }
+
 }

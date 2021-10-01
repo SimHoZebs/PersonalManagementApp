@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from "axios"
 import request from "../request"
 import { ListSchema } from "../schema/ListSchema"
-import NewApiRes from "./newApiRes"
+import ApiRes from "./ApiRes"
 
 export default async function readList(userId: string, listId: string) {
   const req: AxiosRequestConfig = {
@@ -10,13 +10,18 @@ export default async function readList(userId: string, listId: string) {
   }
 
   try {
-    const res: NewApiRes<ListSchema> = await request(req)
+    const res: ApiRes<ListSchema> = await request(req)
 
-    return res.data.res !== undefined ? res.data.res : JSON.stringify(res.data.error)
+    if (!res.data.res) {
+      return `readList server error ${JSON.stringify(res.data.error)}`
+    }
+    else {
+      return res.data.res
+    }
+
   }
   catch (error) {
-    return JSON.stringify(error)
+    return `readList client error ${JSON.stringify(error)}`
   }
-
 
 }

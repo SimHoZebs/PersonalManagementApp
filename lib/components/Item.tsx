@@ -62,12 +62,12 @@ const Item = (props: Props) => {
         : await updateItem(userId, props.listId, props.index, newItemName);
 
       props.setItemArray((prev) => {
-        if (updatedItemArray.data.res === undefined) {
-          console.log("updatedItemArray error", updatedItemArray.data.error);
+        if (typeof updatedItemArray === "string") {
+          console.log(updatedItemArray);
           return prev;
         }
 
-        return [...updatedItemArray.data.res];
+        return [...updatedItemArray];
       });
     }
   }

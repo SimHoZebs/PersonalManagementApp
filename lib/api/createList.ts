@@ -1,11 +1,7 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { AxiosRequestConfig } from 'axios'
 import request from '../request'
 import ApiRes from './ApiRes'
 import { ListSchema } from '../schema/ListSchema'
-
-interface Res extends ApiRes {
-  res: ListSchema
-}
 
 /**
  * Creates a new list for user.
@@ -23,7 +19,18 @@ export default async function createList(
     data: { listName }
   }
 
-  const res: AxiosResponse<Res> = await request(req)
+  try {
+    const res: ApiRes<ListSchema> = await request(req)
 
-  return res
+    switch (res.data.res) {
+      case undefined:
+        return `createList server error, ${JSON.stringify(res.data.error)}`
+
+      default:
+        return res.data.res
+    }
+  }
+  catch (error) {
+    return `createList client erorr, ${JSON.stringify(error)}`
+  }
 }

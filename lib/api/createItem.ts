@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from "axios"
 import request from "../request"
 import { ItemSchema } from "../schema/ItemSchema"
-import NewApiRes from "./newApiRes"
+import ApiRes from "./ApiRes"
 
 /**
  * 
@@ -18,7 +18,19 @@ export default async function createItem(userId: string, listId: string, itemNam
     data: { newItem: { itemName, labelIdArray: [], userId, listId } },
   }
 
-  const res: NewApiRes<ItemSchema[]> = await request(req)
+  try {
+    const res: ApiRes<ItemSchema[]> = await request(req)
 
-  return res
+    switch (res.data.res) {
+      case undefined:
+        return `createItem server error ${JSON.stringify(res.data.error)}`
+
+      default:
+        return res.data.res
+    }
+  }
+  catch (error) {
+    return `createItem client error ${JSON.stringify(error)}`
+  }
+
 }

@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import ApiRes from "../../../lib/api/ApiRes";
 import userCollection, { UserSchema } from '../../../lib/schema/UserSchema'
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiRes>) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body, query } = req
 
   switch (method) {
@@ -15,20 +14,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         else if (query.userId != null) {
           user = await userCollection.findOne({ _id: query.userId })
         }
-        res.status(200).json({ success: true, res: user })
+        res.status(200).json({ res: user })
       }
       catch (error) {
-        res.status(400).json({ success: false, error: error })
+        res.status(400).json({ error })
       }
       break;
 
     case 'POST':
       try {
         const user: UserSchema = await userCollection.create(new userCollection({ username: body.username }))
-        res.status(200).json({ success: true, res: user })
+        res.status(200).json({ res: user })
       }
       catch (error) {
-        res.status(400).json({ success: false, error: error })
+        res.status(400).json({ error })
       }
       break;
   }

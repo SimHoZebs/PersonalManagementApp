@@ -1,8 +1,8 @@
-/**
- * @returns undefined: if request failed
- */
-export default interface ApiRes {
-  res?: unknown;
-  error?: unknown;
-  success: boolean;
+import { AxiosResponse } from "axios";
+
+export default interface ApiRes<T> extends AxiosResponse {
+  data: {
+    res?: T;
+    error?: unknown;
+  }
 }

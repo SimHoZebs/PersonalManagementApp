@@ -29,35 +29,28 @@ export default function Dashboard() {
      * @returns userSchema
      */
     async function addTempDefaults(userId: string) {
-      const createListRes = await createList(userId, "default list").then(
-        (res) => res.data
-      );
-      if (createListRes.res._id === undefined) {
-        console.log("error creating list, list id doesn't exist");
-        console.log(createListRes.error);
+      const createListRes = await createList(userId, "default list");
+      if (typeof createListRes === "string") {
+        console.log(createListRes);
         return;
       }
 
-      const addListRes = await addListId(userId, createListRes.res._id).then(
-        (res) => res.data
-      );
-      if (addListRes.res === undefined) {
-        console.log("error adding list id to user");
-        console.log(addListRes.error);
+      const addListRes = await addListId(userId, createListRes._id);
+      if (typeof addListRes === "string") {
+        console.log(addListRes);
         return;
       }
 
       const updateSelectedListIdRes = await updateSelectedListId(
         userId,
-        createListRes.res._id
-      ).then((res) => res.data);
-      if (updateSelectedListIdRes.res === undefined) {
-        console.log("error updating selected list id to user");
-        console.log(updateSelectedListIdRes.error);
+        createListRes._id
+      );
+      if (typeof updateSelectedListIdRes === "string") {
+        console.log(updateSelectedListIdRes);
         return;
       }
 
-      return updateSelectedListIdRes.res;
+      return updateSelectedListIdRes;
     }
 
     /**
@@ -66,13 +59,13 @@ export default function Dashboard() {
     async function initUserPage(userId: string) {
       let user: UserSchema;
 
-      const readUserRes = await readUser(null, userId).then((res) => res.data);
-      if (!readUserRes.success) {
-        console.log("readUserRes error", readUserRes.error);
+      const readUserRes = await readUser(null, userId);
+      if (typeof readUserRes === "string") {
+        console.log(readUserRes);
         return;
       }
 
-      user = readUserRes.res;
+      user = readUserRes;
 
       if (user.listIdArray.length === 0) {
         const addTempDefaultsRes = await addTempDefaults(userId);

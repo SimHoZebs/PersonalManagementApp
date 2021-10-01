@@ -26,22 +26,22 @@ const LoginForm = () => {
   async function initUser(username: string) {
     let user: UserSchema;
 
-    const readUserRes = await readUser(username).then((res) => res.data);
-    if (!readUserRes.success) {
-      console.log(readUserRes.error);
+    const readUserRes = await readUser(username);
+    if (typeof readUserRes === "string") {
+      console.log(readUserRes);
       return;
     }
 
-    if (readUserRes.res === null) {
-      const createUserRes = await createUser(username).then((res) => res?.data);
-      if (!createUserRes.success) {
-        console.log(createUserRes.error);
+    if (readUserRes === null) {
+      const createUserRes = await createUser(username);
+      if (typeof createUserRes === "string") {
+        console.log(createUserRes);
         return;
       }
 
-      user = createUserRes.res;
+      user = createUserRes;
     } else {
-      user = readUserRes.res;
+      user = readUserRes;
     }
 
     return user;
