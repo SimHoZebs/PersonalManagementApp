@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
 
 import Item from "./Item";
 import { ItemSchema } from "../schema/ItemSchema";
 import readList from "../api/readList";
-import { Typography } from "@material-ui/core";
 
 interface Props {
   userId: string;
   listId: string;
 }
 
-export default function List({ userId, listId }: Props) {
+const List = ({ userId, listId }: Props) => {
   const [itemArray, setItemArray] = useState<ItemSchema[]>([]);
   const [creatingItem, setCreatingItem] = useState(false);
 
@@ -73,4 +73,6 @@ export default function List({ userId, listId }: Props) {
       </Grid>
     </Grid>
   );
-}
+};
+
+export default List;

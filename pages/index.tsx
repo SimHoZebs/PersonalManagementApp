@@ -1,9 +1,11 @@
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 
 import LoginForm from "../lib/components/LoginForm";
 import { useEffect } from "react";
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosRequestConfig } from "axios";
+import request from "../lib/request";
+import ApiRes from "../lib/api/ApiRes";
 
 //Initialize server on load
 //handles login.
@@ -13,12 +15,10 @@ export default function Login() {
   useEffect(() => {
     async function initServer() {
       const serverReq: AxiosRequestConfig = { method: "get", url: "/api/" };
-      const initServerRes: AxiosResponse = await axios(serverReq);
-
+      const initServerRes: ApiRes<never> = await request(serverReq);
       //stop running if API server fails to run for some odd reason
-      if (!initServerRes.data.success) {
-        console.log(initServerRes.data.error);
-        console.log("Failed to get data from server");
+      if (initServerRes.status !== 200) {
+        console.log("server error", initServerRes.data.error);
         return;
       }
     }

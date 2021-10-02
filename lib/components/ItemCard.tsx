@@ -1,18 +1,13 @@
 import React, { useState } from "react";
-import {
-  Backdrop,
-  Card,
-  Typography,
-  Grid,
-  Container,
-  TextField,
-} from "@material-ui/core";
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
 
-interface props {
+interface Props {
   title: string;
 }
 
-const ItemCard = (props: props) => {
+const ItemCard = (props: Props) => {
   const [title, setTitle] = useState(props.title);
 
   function handleDetailedCardClick(e: React.MouseEvent) {
