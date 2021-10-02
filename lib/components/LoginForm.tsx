@@ -1,0 +1,121 @@
+//mui components
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Backdrop from "@mui/material/Backdrop";
+import theme from "../theme";
+
+import Brand from "./Brand";
+
+import { useRef } from "react";
+import { useRouter } from "next/router";
+import { UserSchema } from "../schema/UserSchema";
+import readUser from "../api/readUser";
+import createUser from "../api/createUser";
+
+const LoginForm = () => {
+  const usernameRef = useRef<HTMLInputElement | null>(null);
+  const router = useRouter();
+
+  /**
+   * User initialization. Reads user from database and creates user if they don't exist.
+   * @param username
+   * @returns
+   */
+  async function initUser(username: string) {
+    let user: UserSchema;
+
+    const readUserRes = await readUser(username);
+    if (typeof readUserRes === "string") {
+      console.log(readUserRes);
+      return;
+    }
+
+    if (readUserRes === null) {
+      const createUserRes = await createUser(username);
+      if (typeof createUserRes === "string") {
+        console.log(createUserRes);
+        return;
+      }
+
+      user = createUserRes;
+    } else {
+      user = readUserRes;
+    }
+
+    return user;
+  }
+
+  /**
+   *  @desc attempts login and creates user if user does not exist.
+   * @param e Optional. Only to prevent event default.
+   * @Note Intentionally not preventing button defaults but I don't think it matters.
+   */
+  async function handleFormSubmit(
+    e: React.FormEvent<HTMLFormElement> | undefined = undefined
+  ) {
+    e?.preventDefault();
+
+    if (usernameRef.current === null) {
+      console.log("usernameRef.current is null");
+      return;
+    }
+
+    const username = usernameRef.current.value;
+
+    if (typeof username !== "string") {
+      console.log("username is not a string. It is ", username);
+      return;
+    }
+
+    const user = await initUser(username);
+    if (user === undefined) {
+      console.log("user is undefined");
+      return;
+    }
+
+    router.push({
+      pathname: `/user/${user._id}`,
+    });
+  }
+
+  return (
+    <Backdrop open={true}>
+      <Paper
+        elevation={8}
+        sx={{ paddingTop: theme.spacing(5), height: "400px" }}
+      >
+        <form onSubmit={(e) => handleFormSubmit(e)}>
+          <Grid container alignItems="center" direction="column">
+            <Grid item>
+              <Brand />
+            </Grid>
+
+            <Grid item sx={{ marginY: theme.spacing(6) }}>
+              <TextField
+                autoComplete="off"
+                id="username"
+                inputRef={usernameRef}
+                variant="filled"
+                label="Username"
+              />
+            </Grid>
+
+            <Grid item>
+              <Button
+                variant="contained"
+                size="large"
+                onClick={() => handleFormSubmit()}
+              >
+                Log in
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
+      </Paper>
+    </Backdrop>
+  );
+};
+
+export default LoginForm;

@@ -1,96 +1,38 @@
-import React, { useState, useEffect } from "react";
-import { Container, Typography, Grid, Button } from "@material-ui/core";
-import axios, { AxiosResponse } from "axios";
-import { useStyles } from "../styles/index";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 
-//components
-import Item from "../components/Item";
+import LoginForm from "../lib/components/LoginForm";
+import { useEffect } from "react";
+import { AxiosRequestConfig } from "axios";
+import request from "../lib/request";
+import ApiRes from "../lib/api/ApiRes";
 
-//interfaces
-import { IItemModel } from "../schema/ItemSchema";
-import { IGetRes, IGetReq } from "./api/item/index";
+//Initialize server on load
+//handles login.
+//If log in was successful, redirects to the main page.
 
-interface IProps {}
-
-export default function Home(props: IProps) {
-  const styles = useStyles();
-  const [itemList, setItemList] = useState<IItemModel[]>([]);
-  const [creatingNewItem, setCreatingNewItem] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-
+export default function Login() {
   useEffect(() => {
-    async function getItemList() {
-      let url = `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/item`;
-
-      if (!url.includes("localhost")) {
-        url = "https://" + url;
+    async function initServer() {
+      const serverReq: AxiosRequestConfig = { method: "get", url: "/api/" };
+      const initServerRes: ApiRes<never> = await request(serverReq);
+      //stop running if API server fails to run for some odd reason
+      if (initServerRes.status !== 200) {
+        console.log("server error", initServerRes.data.error);
+        return;
       }
-
-      const req: IGetReq = { method: "get", url: url };
-
-      const itemListGetRes: AxiosResponse<IGetRes> = await axios(req);
-
-      const itemList = itemListGetRes.data.res;
-      console.log(itemListGetRes.data.error);
-      setItemList(itemList);
     }
 
-    getItemList();
-    setIsLoading(false);
+    initServer();
   }, []);
 
-  useEffect(() => {
-    console.log("itemList updated", itemList);
-  }, [itemList]);
-
-  function handleNewItemBtn() {
-    const newItem: IItemModel = {
-      title: "",
-      groups: [],
-    };
-
-    setItemList((prev) => [...prev, newItem]);
-
-    setCreatingNewItem((prev) => true);
-  }
-
-  return isLoading ? (
-    <Typography variant="h1">Loading</Typography>
-  ) : (
-    <Container className={styles.root}>
-      <Grid container spacing={2} direction="column">
-        <Grid item>
-          <Typography variant="h4">Item list title</Typography>
-        </Grid>
-
-        <Grid item container spacing={1}>
-          {itemList.map((item, index) => (
-            <Grid item key={index} xs={12}>
-              <Item
-                item={item}
-                index={index}
-                setItemList={setItemList}
-                setCreatingNewItem={setCreatingNewItem}
-                isNewItem={
-                  creatingNewItem && index === itemList.length - 1
-                    ? true
-                    : false
-                }
-              />
-            </Grid>
-          ))}
-        </Grid>
-
-        <Grid item container>
-          <Button
-            variant="text"
-            color="primary"
-            onClick={() => handleNewItemBtn()}
-          >
-            New Item
-          </Button>
+  return (
+    <Box sx={{ display: "flex", height: "100vh" }}>
+      <Grid container justifyContent="center" alignItems="center">
+        <Grid item xs={6}>
+          <LoginForm />
         </Grid>
       </Grid>
-    </Container>
+    </Box>
   );
 }
