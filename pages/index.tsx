@@ -20,6 +20,8 @@ export default function Login() {
       if (initServerRes.status !== 200) {
         console.log("server error", initServerRes.data.error);
         return;
+      } else {
+        console.log("server started");
       }
     }
 

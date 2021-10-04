@@ -6,7 +6,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { method, body } = req;
 
   await NextCors(req, res, {
-    origin: "https://anothertodoapp-git-v2-yusukzebs.vercel.app/",
+    origin: "*",
     methods: ['GET']
   });
 

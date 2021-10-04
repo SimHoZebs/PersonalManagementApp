@@ -1,9 +1,15 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import userCollection, { UserSchema } from '../../../../lib/schema/UserSchema'
 import listCollection, { ListSchema } from '../../../../lib/schema/ListSchema'
+import NextCors from '../../../../lib/initMiddleware';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body, query } = req
+
+  await NextCors(req, res, {
+    origin: "*",
+    methods: ['GET', 'POST', 'PATCH']
+  });
 
   switch (method) {
     case 'GET':
