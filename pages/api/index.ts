@@ -3,12 +3,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import NextCors from '../../lib/initMiddleware';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { method, body } = req;
 
   await NextCors(req, res, {
     origin: "*",
     methods: ['GET']
   });
+
+  const { method, body } = req;
 
   switch (method) {
     case 'GET':
