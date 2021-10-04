@@ -6,7 +6,11 @@ import initMiddleware from '../../lib/initMiddleware';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
 
-  const cors = initMiddleware(Cors());
+  const cors = initMiddleware(Cors(
+    {
+      origin: "https://anothertodoapp-git-v2-yusukzebs.vercel.app/",
+      methods: ['GET']
+    }));
 
   await cors(req, res);
 
