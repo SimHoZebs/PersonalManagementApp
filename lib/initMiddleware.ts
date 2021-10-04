@@ -11,18 +11,15 @@ interface Res {
 
 export default function initMiddleware(
   middleware: (
-    arg: CorsRequest,
+    req: CorsRequest,
     res: Res,
-    fn: (result: unknown) => void
+    fn: (result: any) => void
   ) => void
 ) {
   return (req: CorsRequest, res: Res) =>
     new Promise((resolve, reject) => {
       middleware(req, res, (result) => {
-        if (result instanceof Error) {
-          return reject(result)
-        }
-        return resolve(result)
+        return result instanceof Error ? reject(result) : resolve(result)
       })
     })
 }

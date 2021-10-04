@@ -6,10 +6,7 @@ import initMiddleware from '../../lib/initMiddleware';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
 
-  const cors = initMiddleware(Cors({
-    origin: "*",
-    methods: ['GET']
-  }));
+  const cors = initMiddleware(Cors());
 
   await cors(req, res);
 
