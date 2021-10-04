@@ -1,9 +1,17 @@
+import Cors from 'cors'
 import mongoose from "mongoose"
 import { NextApiRequest, NextApiResponse } from 'next';
+import initMiddleware from '../../lib/initMiddleware';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
 
+  const cors = initMiddleware(Cors({
+    origin: "*",
+    methods: ['GET']
+  }));
+
+  await cors(req, res);
 
   switch (method) {
     case 'GET':
