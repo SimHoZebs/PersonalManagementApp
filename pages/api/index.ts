@@ -1,13 +1,7 @@
 import mongoose from "mongoose"
 import { NextApiRequest, NextApiResponse } from 'next';
-import NextCors from '../../lib/initMiddleware';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-
-  await NextCors(req, res, {
-    origin: "*",
-    methods: ['GET']
-  });
 
   const { method, body } = req;
 

@@ -13,7 +13,7 @@ import ApiRes from './ApiRes'
 export default async function readUser(username: string | null = null, userId: string | null = null) {
   const req: AxiosRequestConfig = {
     method: "GET",
-    url: `/api/user/`,
+    url: `api/user/`,
     params: { username, userId }
   };
 
