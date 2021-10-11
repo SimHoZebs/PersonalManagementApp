@@ -66,6 +66,10 @@ export default function Dashboard() {
         console.log(readUserRes);
         return;
       }
+      if (readUserRes === null) {
+        console.log(`User with id ${userId} does not exist.`);
+        return;
+      }
 
       user = readUserRes;
 
