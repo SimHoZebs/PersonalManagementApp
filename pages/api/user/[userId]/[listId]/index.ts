@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   switch (method) {
     case 'GET':
       try {
-        const list: ListSchema = await listCollection.findOne({ listId })
+        const list: ListSchema = await listCollection.findOne({ _id: listId })
         res.status(200).json({ res: list })
       }
       catch (error) {
@@ -18,7 +18,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     case "POST":
       try {
-        const list: ListSchema = await listCollection.findOne({ listId })
+        const list: ListSchema = await listCollection.findOne({ _id: listId })
         list.itemArray.push(body.newItem)
         list.save()
         res.status(201).json({ res: list.itemArray })
@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         const index = parseInt(body.itemIndex as string)
 
-        const list: ListSchema = await listCollection.findOne({ listId })
+        const list: ListSchema = await listCollection.findOne({ _id: listId })
         const targetItem = list.itemArray[index]
         targetItem.itemName = body.newItemName as string
         list.itemArray[index] = targetItem
