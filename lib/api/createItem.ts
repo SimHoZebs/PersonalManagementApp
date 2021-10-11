@@ -14,7 +14,7 @@ export default async function createItem(userId: string, listId: string, itemNam
 
   const req: AxiosRequestConfig = {
     method: "post",
-    url: `/api/user/${userId}/${listId}`,
+    url: `api/user/${userId}/${listId}`,
     data: { newItem: { itemName, labelIdArray: [], userId, listId } },
   }
 

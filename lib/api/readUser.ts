@@ -4,16 +4,19 @@ import request from '../request'
 import ApiRes from './ApiRes'
 
 /**
- * @description Checks if username exists in DB.
- * @returns undefined; if request failed
- * @returns null; if request successful but username does not exist
- * @returns User: UserSchema; if request successful and username exists
+ * @description Checks if user exists in DB.
+ * @param username Leave empty if userId is provided.
+ * @param userId Leave empty if username is provided.
+ * @returns string; Client or server error
+ * @returns null; Request successful but username does not exist
+ * @returns User: UserSchema; Request successful and username exists
  */
+
 
 export default async function readUser(username: string | null = null, userId: string | null = null) {
   const req: AxiosRequestConfig = {
     method: "GET",
-    url: `/api/user/`,
+    url: `api/user/`,
     params: { username, userId }
   };
 
@@ -24,7 +27,7 @@ export default async function readUser(username: string | null = null, userId: s
       case undefined:
         return `readUser server error, ${JSON.stringify(res.data.error)}`
       case null:
-        return `User ${username} does not exist in database`
+        return null
       default:
         return res.data.res
     }

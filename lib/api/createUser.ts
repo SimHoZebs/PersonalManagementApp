@@ -7,7 +7,7 @@ import { UserSchema } from "../schema/UserSchema";
 export default async function createUser(username: string) {
   const req: AxiosRequestConfig = {
     method: "POST",
-    url: `/api/user/`,
+    url: `api/user/`,
     data: { username },
   };
 

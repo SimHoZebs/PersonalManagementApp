@@ -15,7 +15,7 @@ export default async function createList(
 ) {
   const req: AxiosRequestConfig = {
     method: "POST",
-    url: `/api/user/${userId}`,
+    url: `api/user/${userId}`,
     data: { listName }
   }
 
