@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         } else {
           throw new Error('DB_URI is not defined');
         }
-        res.status(200)
+        res.status(200).json({})
       }
       catch (error) {
         res.status(500).json({ error })

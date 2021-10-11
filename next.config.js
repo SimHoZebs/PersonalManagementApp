@@ -4,8 +4,9 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: process.env.NEXT_PUBLIC_VERCEL_URL,
-        permanent: true,
+        destination: `${process.env.NEXT_PUBLIC_VERCEL_URL}/login`,
+        basePath: false,
+        permanent: false,
       },
     ]
   }
