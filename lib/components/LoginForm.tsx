@@ -1,3 +1,7 @@
+//misc
+import { useRef, useState, useEffect } from "react";
+import { useRouter } from "next/router";
+
 //mui components
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
@@ -6,16 +10,19 @@ import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
 import theme from "../theme";
 
+//components
 import Brand from "./Brand";
 
-import { useRef } from "react";
-import { useRouter } from "next/router";
+//api & schema
 import { UserSchema } from "../schema/UserSchema";
 import readUser from "../api/readUser";
 import createUser from "../api/createUser";
 
 const LoginForm = () => {
-  const usernameRef = useRef<HTMLInputElement | null>(null);
+  const [username, setUsername] = useState("");
+  const [usernameError, setUsernameError] = useState(false);
+  const [usernameErrorMsg, setUsernameErrorMsg] = useState(" ");
+  const [loginBtnIsDisabled, setLoginBtnIsDisabled] = useState(false);
   const router = useRouter();
 
   /**
@@ -49,23 +56,18 @@ const LoginForm = () => {
 
   /**
    *  @desc attempts login and creates user if user does not exist.
-   * @param e Optional. Only to prevent event default.
-   * @Note Intentionally not preventing button defaults but I don't think it matters.
+   * @param e Optional; Only to prevent event default.
+   * @Note Intentionally allowing button defaults, but I don't think it matters.
    */
   async function handleFormSubmit(
     e: React.FormEvent<HTMLFormElement> | undefined = undefined
   ) {
     e?.preventDefault();
 
-    if (usernameRef.current === null) {
-      console.log("usernameRef.current is null");
-      return;
-    }
-
-    const username = usernameRef.current.value;
-
-    if (typeof username !== "string") {
-      console.log("username is not a string. It is ", username);
+    if (username === "") {
+      setUsernameErrorMsg("Username can't be blank.");
+      setLoginBtnIsDisabled(true);
+      setUsernameError(true);
       return;
     }
 
@@ -79,6 +81,18 @@ const LoginForm = () => {
       pathname: `/user/${user._id}`,
     });
   }
+
+  useEffect(() => {
+    if (username.includes(" ")) {
+      setUsernameErrorMsg("Username can't include spaces.");
+      setLoginBtnIsDisabled(true);
+      setUsernameError(true);
+    } else {
+      setUsernameErrorMsg(" ");
+      setLoginBtnIsDisabled(false);
+      setUsernameError(false);
+    }
+  }, [username]);
 
   return (
     <Backdrop open={true}>
@@ -94,9 +108,12 @@ const LoginForm = () => {
 
             <Grid item sx={{ marginY: theme.spacing(6) }}>
               <TextField
+                error={usernameError}
+                helperText={usernameErrorMsg}
                 autoComplete="off"
                 id="username"
-                inputRef={usernameRef}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 variant="filled"
                 label="Username"
               />
@@ -106,6 +123,7 @@ const LoginForm = () => {
               <Button
                 variant="contained"
                 size="large"
+                disabled={loginBtnIsDisabled}
                 onClick={() => handleFormSubmit()}
               >
                 Log in
