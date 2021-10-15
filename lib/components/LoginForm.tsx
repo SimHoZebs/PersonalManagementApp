@@ -1,5 +1,5 @@
 //misc
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 //mui components
@@ -26,40 +26,11 @@ const LoginForm = () => {
   const router = useRouter();
 
   /**
-   * User initialization. Reads user from database and creates user if they don't exist.
-   * @param username
-   * @returns
-   */
-  async function initUser(username: string) {
-    let user: UserSchema;
-
-    const readUserRes = await readUser(username);
-    if (typeof readUserRes === "string") {
-      console.log(readUserRes);
-      return;
-    }
-
-    if (readUserRes === null) {
-      const createUserRes = await createUser(username);
-      if (typeof createUserRes === "string") {
-        console.log(createUserRes);
-        return;
-      }
-
-      user = createUserRes;
-    } else {
-      user = readUserRes;
-    }
-
-    return user;
-  }
-
-  /**
    *  @desc attempts login and creates user if user does not exist.
    * @param e Optional; Only to prevent event default.
    * @Note Intentionally allowing button defaults, but I don't think it matters.
    */
-  async function handleFormSubmit(
+  async function processLogin(
     e: React.FormEvent<HTMLFormElement> | undefined = undefined
   ) {
     e?.preventDefault();
@@ -71,15 +42,23 @@ const LoginForm = () => {
       return;
     }
 
-    const user = await initUser(username);
-    if (user === undefined) {
-      console.log("user is undefined");
-      return;
+    let user: UserSchema | string;
+    const readUserRes = await readUser(username);
+    if (readUserRes === null) {
+      const createUserRes = await createUser(username);
+
+      user = createUserRes;
+    } else {
+      user = readUserRes;
     }
 
-    router.push({
-      pathname: `/user/${user._id}`,
-    });
+    if (typeof user === "string") {
+      console.log(user);
+    } else {
+      router.push({
+        pathname: `/user/${user._id}`,
+      });
+    }
   }
 
   useEffect(() => {
@@ -100,7 +79,7 @@ const LoginForm = () => {
         elevation={8}
         sx={{ paddingTop: theme.spacing(5), height: "400px" }}
       >
-        <form onSubmit={(e) => handleFormSubmit(e)}>
+        <form onSubmit={(e) => processLogin(e)}>
           <Grid container alignItems="center" direction="column">
             <Grid item>
               <Brand />
@@ -124,7 +103,7 @@ const LoginForm = () => {
                 variant="contained"
                 size="large"
                 disabled={loginBtnIsDisabled}
-                onClick={() => handleFormSubmit()}
+                onClick={() => processLogin()}
               >
                 Log in
               </Button>
