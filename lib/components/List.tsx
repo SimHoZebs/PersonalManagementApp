@@ -12,15 +12,20 @@ interface Props {
   listId: string;
 }
 
-const List = ({ userId, listId }: Props) => {
+const List = (props: Props) => {
+  const [listName, setListName] = useState("");
   const [itemArray, setItemArray] = useState<ItemSchema[]>([]);
   const [creatingItem, setCreatingItem] = useState(false);
 
+  /**
+   * @description Readies list to respond accoridngly to new item interaction.
+   * @note For more info, check Item.tsx
+   */
   function createItemBtn() {
     const newItem = {
       itemName: "",
-      userId,
-      listId,
+      userId: props.userId,
+      listId: props.listId,
     } as ItemSchema;
 
     setItemArray((prev) => [...prev, newItem]);
@@ -29,20 +34,24 @@ const List = ({ userId, listId }: Props) => {
 
   useEffect(() => {
     async function initList() {
-      const readListRes = await readList(userId, listId);
+      const readListRes = await readList(props.userId, props.listId);
       if (typeof readListRes === "string") {
         console.log(readListRes);
         return;
       }
 
       setItemArray((prev) => readListRes.itemArray);
+      setListName(readListRes.listName);
     }
 
     initList();
-  }, [userId, listId]);
+  }, [props.userId, props.listId]);
 
   return (
-    <Grid container>
+    <Grid container spacing={1}>
+      <Grid item>
+        <Typography variant="h4">{listName}</Typography>
+      </Grid>
       <Grid item container spacing={1}>
         {itemArray.length !== 0 ? (
           itemArray.map((item, index) => (
@@ -51,7 +60,7 @@ const List = ({ userId, listId }: Props) => {
                 item={item}
                 index={index}
                 setItemArray={setItemArray}
-                listId={listId}
+                listId={props.listId}
                 setCreatingItem={setCreatingItem}
                 isNewItem={
                   creatingItem && index === itemArray.length - 1 ? true : false
