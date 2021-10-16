@@ -27,31 +27,26 @@ export default function Dashboard() {
 
   useEffect(() => {
     /**
-     * creates a list and adds it to user. Sets that list as selected list.
-     * @returns userSchema
+     * Creates a list and adds it to a user.
+     * Sets that list as selected list.
+     * @returns userSchema; The user the temp defaults were applied.
+     * @returns string; if any error occurs.
      */
     async function addTempDefaults(userId: string) {
       const createListRes = await createList(userId, "default list");
       if (typeof createListRes === "string") {
-        console.log(createListRes);
-        return;
+        return createListRes;
       }
 
-      const addListRes = await addListId(userId, createListRes._id);
-      if (typeof addListRes === "string") {
-        console.log(addListRes);
-        return;
+      const addListIdRes = await addListId(userId, createListRes._id);
+      if (typeof addListIdRes === "string") {
+        return addListIdRes;
       }
 
       const updateSelectedListIdRes = await updateSelectedListId(
         userId,
         createListRes._id
       );
-      if (typeof updateSelectedListIdRes === "string") {
-        console.log(updateSelectedListIdRes);
-        return;
-      }
-
       return updateSelectedListIdRes;
     }
 
@@ -59,8 +54,6 @@ export default function Dashboard() {
      * Reads user data with given userId.
      */
     async function initUserPage(userId: string) {
-      let user: UserSchema;
-
       const readUserRes = await readUser(null, userId);
       if (typeof readUserRes === "string") {
         console.log(readUserRes);
@@ -68,15 +61,16 @@ export default function Dashboard() {
       }
       if (readUserRes === null) {
         console.log(`User with id ${userId} does not exist.`);
+        //route back to login screen?
         return;
       }
 
-      user = readUserRes;
+      let user = readUserRes;
 
       if (user.listIdArray.length === 0) {
         const addTempDefaultsRes = await addTempDefaults(userId);
-        if (addTempDefaultsRes === undefined) {
-          console.log("addTempDefaultsRes error");
+        if (typeof addTempDefaultsRes === "string") {
+          console.log(addTempDefaultsRes);
           return;
         }
         user = addTempDefaultsRes;
@@ -86,6 +80,7 @@ export default function Dashboard() {
     }
 
     const userId = router.query.userId;
+
     if (typeof userId !== "string") {
       console.log("userId is not a string. It is ", userId);
       return;
@@ -99,8 +94,8 @@ export default function Dashboard() {
   ) : (
     <Container sx={{ padding: "30px" }}>
       <Grid container spacing={2} direction="column">
-        <Grid item>
-          <Typography variant="h4">Hello, {user?.username}</Typography>
+        <Grid item textAlign="right">
+          <Typography variant="caption">Hello, {user?.username}</Typography>
         </Grid>
         {user !== undefined ? (
           <List userId={user?._id} listId={user?.selectedListId} />
