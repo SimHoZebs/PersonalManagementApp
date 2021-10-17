@@ -1,6 +1,6 @@
 import request from "../request";
 import { AxiosRequestConfig } from "axios";
-import correctRes from "./correctRes";
+import correctRes from "../correctRes";
 import { UserSchema } from "../schema/UserSchema";
 
 export default async function createUser(username: string) {

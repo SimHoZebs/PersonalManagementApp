@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 import { UserSchema } from '../schema/UserSchema';
 import request from '../request';
-import correctRes from './correctRes';
+import correctRes from '../correctRes';
 
 /**
  * @description Checks if user exists in DB.

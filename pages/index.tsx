@@ -6,7 +6,7 @@ import LoginForm from "../lib/components/LoginForm";
 import { useState, useEffect } from "react";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import request from "../lib/request";
-import correctRes from "../lib/api/correctRes";
+import correctRes from "../lib/correctRes";
 
 //Initialize server on load
 //handles login.

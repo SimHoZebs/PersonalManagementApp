@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 import { ItemSchema } from '../schema/ItemSchema';
 import request from '../request';
-import correctRes from './correctRes';
+import correctRes from '../correctRes';
 
 
 export default async function updateItem(userId: string, listId: string, itemIndex: number, newItemName: string) {

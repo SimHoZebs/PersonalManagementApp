@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from "axios";
 import request from "../request";
 import { ItemSchema } from "../schema/ItemSchema";
-import correctRes from "./correctRes";
+import correctRes from "../correctRes";
 
 /**
  * 

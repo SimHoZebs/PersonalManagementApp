@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from "axios";
 import request from "../request";
 import { UserSchema } from "../schema/UserSchema";
-import correctRes from "./correctRes";
+import correctRes from "../correctRes";
 
 export default async function updateSelectedListId(userId: string, listId: string) {
   const req: AxiosRequestConfig = {

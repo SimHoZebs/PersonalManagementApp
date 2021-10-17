@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 import request from '../request';
-import correctRes from './correctRes';
+import correctRes from '../correctRes';
 import { ListSchema } from '../schema/ListSchema';
 
 /**
