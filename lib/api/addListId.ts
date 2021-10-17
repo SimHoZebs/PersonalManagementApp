@@ -1,7 +1,7 @@
-import { AxiosRequestConfig } from "axios"
-import request from "../request"
-import { UserSchema } from "../schema/UserSchema"
-import ApiRes from "./ApiRes"
+import { AxiosRequestConfig } from "axios";
+import request from "../request";
+import { UserSchema } from "../schema/UserSchema";
+import correctRes from "./correctRes";
 
 /**
  * adds listId to user's listIdArray.
@@ -14,23 +14,19 @@ export default async function addListId(userId: string, listId: string) {
     method: "PATCH",
     url: `api/user/${userId}`,
     data: { listId }
-  }
+  };
 
-  try {
-    const res: ApiRes<UserSchema> = await request(req)
+  const res = await request(req);
 
+  if (correctRes(res)) {
     switch (res.data.res) {
       case undefined:
-        return `addListId server error, ${JSON.stringify(res.data.error)}`
-
+        return `addListId server error, ${JSON.stringify(res.data.error)}`;
       default:
-        return res.data.res
+        return res.data.res as UserSchema;
     }
   }
-  catch (error) {
-    return `addListId client error ${JSON.stringify(error)}`
+  else {
+    return `Client Error. res: ${JSON.stringify(res, null, 2)}`;
   }
-
-
-
 }

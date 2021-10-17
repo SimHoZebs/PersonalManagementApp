@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from "axios";
 import request from "../request";
 import { UserSchema } from "../schema/UserSchema";
-import ApiRes from "./ApiRes";
+import correctRes from "./correctRes";
 
 export default async function updateSelectedListId(userId: string, listId: string) {
   const req: AxiosRequestConfig = {
@@ -9,20 +9,20 @@ export default async function updateSelectedListId(userId: string, listId: strin
     url: `api/user/${userId}`,
     data: { target: "selectedListId", listId },
     params: {}
-  }
+  };
 
-  try {
-    const res: ApiRes<UserSchema> = await request(req)
+  const res = await request(req);
 
+  if (correctRes(res)) {
     switch (res.data.res) {
       case undefined:
         return `updateSelectedListId server error ${JSON.stringify(res.data.error)}`;
 
       default:
-        return res.data.res
+        return res.data.res as UserSchema;
     }
   }
-  catch (error) {
-    return `updateSelectedListId client error ${JSON.stringify(error)}`
+  else {
+    return `Client Error. res: ${JSON.stringify(req, null, 2)}`;
   }
 }

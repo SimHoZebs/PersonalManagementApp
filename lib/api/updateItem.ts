@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 import { ItemSchema } from '../schema/ItemSchema';
 import request from '../request';
-import ApiRes from './ApiRes';
+import correctRes from './correctRes';
 
 
 export default async function updateItem(userId: string, listId: string, itemIndex: number, newItemName: string) {
@@ -12,18 +12,18 @@ export default async function updateItem(userId: string, listId: string, itemInd
     data: { itemIndex, newItemName },
   };
 
-  try {
-    const res: ApiRes<ItemSchema[]> = await request(req)
+  const res = await request(req);
 
+  if (correctRes(res)) {
     switch (res.data.res) {
       case undefined:
-        return `updateItem server error: ${JSON.stringify(res.data.error)}`
+        return `updateItem server error: ${JSON.stringify(res.data.error)}`;
 
       default:
-        return res.data.res
+        return res.data.res as ItemSchema[];
     }
+  } else {
+    return `Client Error. res: ${JSON.stringify(req, null, 2)}`;
   }
-  catch (error) {
-    return `updateItem client error, ${JSON.stringify(error)}`
-  }
+
 }
