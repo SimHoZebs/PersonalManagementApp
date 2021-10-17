@@ -1,7 +1,7 @@
-import { AxiosRequestConfig } from 'axios'
-import request from '../request'
-import ApiRes from './ApiRes'
-import { ListSchema } from '../schema/ListSchema'
+import { AxiosRequestConfig } from 'axios';
+import request from '../request';
+import correctRes from './correctRes';
+import { ListSchema } from '../schema/ListSchema';
 
 /**
  * Creates a new list for user.
@@ -17,20 +17,19 @@ export default async function createList(
     method: "POST",
     url: `api/user/${userId}`,
     data: { listName }
-  }
+  };
 
-  try {
-    const res: ApiRes<ListSchema> = await request(req)
+  const res = await request(req);
 
+  if (correctRes(res)) {
     switch (res.data.res) {
       case undefined:
-        return `createList server error, ${JSON.stringify(res.data.error)}`
+        return `createList server error, ${JSON.stringify(res.data.error)}`;
 
       default:
-        return res.data.res
+        return res.data.res as ListSchema;
     }
-  }
-  catch (error) {
-    return `createList client erorr, ${JSON.stringify(error)}`
+  } else {
+    return `Client Error. res: ${JSON.stringify(req, null, 2)}`;
   }
 }

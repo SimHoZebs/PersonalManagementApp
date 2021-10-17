@@ -1,7 +1,7 @@
-import axios from "axios"
+import axios from "axios";
 
 const request = axios.create({
   baseURL: process.env.NEXT_PUBLIC_URL
-})
+});
 
-export default request
+export default request;

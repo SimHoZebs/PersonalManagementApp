@@ -13,21 +13,21 @@
     "@emotion/react": "latest",
     "@emotion/server": "latest",
     "@emotion/styled": "latest",
-    "@mui/material": "^5.0.2",
+    "@mui/material": "^5.0.4",
     "@mui/styles": "^5.0.1",
-    "axios": "^0.22.0",
+    "axios": "^0.23.0",
     "clsx": "latest",
-    "mongoose": "^6.0.8",
+    "mongoose": "^6.0.11",
     "next": "^11.1.2",
     "react": "latest",
     "react-dom": "latest"
   },
   "devDependencies": {
-    "@types/node": "^16.10.2",
-    "@types/react": "^17.0.27",
+    "@types/node": "^16.11.1",
+    "@types/react": "^17.0.30",
     "@types/react-dom": "latest",
-    "eslint": "latest",
+    "eslint": "^8.0.1",
     "eslint-config-next": "^11.1.0",
-    "typescript": "^4.4.3"
+    "typescript": "^4.4.4"
   }
 }

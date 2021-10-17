@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 import request from '../request';
 import { ListSchema } from '../schema/ListSchema';
-import ApiRes from './ApiRes';
+import correctRes from './correctRes';
 
 /**
  * 
@@ -25,19 +25,18 @@ export default async function updateList(
     params: {}
   };
 
-  try {
+  const res = await request(req);
 
-    const res: ApiRes<ListSchema> = await request(req);
-
+  if (correctRes(res)) {
     switch (res.data.res) {
       case undefined:
         return `updateList server error ${JSON.stringify(res.data.error)}`;
 
       default:
-        return res.data.res;
+        return res.data.res as ListSchema;
     }
   }
-  catch (error) {
-    return `updateList client error ${JSON.stringify(error)}`;
+  else {
+    return `Client Error. res: ${JSON.stringify(req, null, 2)}`;
   }
 }

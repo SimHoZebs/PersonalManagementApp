@@ -1,7 +1,6 @@
-import request from "../request"
+import request from "../request";
 import { AxiosRequestConfig } from "axios";
-import ApiRes from "./ApiRes";
-
+import correctRes from "./correctRes";
 import { UserSchema } from "../schema/UserSchema";
 
 export default async function createUser(username: string) {
@@ -11,13 +10,12 @@ export default async function createUser(username: string) {
     data: { username },
   };
 
-  try {
-    const res: ApiRes<UserSchema> = await request(req)
+  const res = await request(req);
 
-    return res.data.res !== undefined ? res.data.res : `createUser server error ${JSON.stringify(res.data.error)}`
+  if (correctRes(res)) {
+    return res.data.res !== undefined ? res.data.res as UserSchema : `createUser server error ${JSON.stringify(res.data.error)}`;
   }
-  catch (error) {
-    return `createUser client error ${JSON.stringify(error)}`
+  else {
+    return `Client Error. res: ${JSON.stringify(req, null, 2)}`;
   }
-
 }
