@@ -5,7 +5,7 @@ export interface ItemSchema extends Document {
   itemName: string;
   userId: string;
   listId: string;
-  labelArray: LabelSchema[]
+  labelArray: LabelSchema[];
 }
 
 export const ItemModel = new mongoose.Schema<ItemSchema>({
@@ -17,8 +17,7 @@ export const ItemModel = new mongoose.Schema<ItemSchema>({
   userId: String,
   listId: String,
   labelArray: [labelModel]
-})
+});
 
-//mongoose.models.ItemSchema looks for a model called ItemSchema in the mongoDB connection that has been established.
 
-export default mongoose.models.Item || mongoose.model<ItemSchema>('Item', ItemModel)
+export default mongoose.models.Item || mongoose.model<ItemSchema>('Item', ItemModel);

@@ -2,11 +2,7 @@ import { ItemSchema } from "../schema/ItemSchema";
 import apiMiddleware from "../apiMiddleware";
 
 /**
- * 
- * @param userId 
- * @param listId 
- * @param itemName 
- * @returns 
+ * Updates List's ItemArray by appending a new item to it.
  */
 export default async function createItem(userId: string, listId: string, itemName: string) {
 

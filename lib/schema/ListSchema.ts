@@ -4,7 +4,7 @@ import { ItemModel, ItemSchema } from './ItemSchema';
 export interface ListSchema extends Document {
   listName: string;
   description: string;
-  itemArray: ItemSchema[]
+  itemArray: ItemSchema[];
 }
 
 const listModel = new mongoose.Schema<ListSchema>({
@@ -16,6 +16,6 @@ const listModel = new mongoose.Schema<ListSchema>({
     type: String,
   },
   itemArray: { type: [ItemModel], default: [] }
-})
+});
 
-export default mongoose.models.List || mongoose.model<ListSchema>('List', listModel)
+export default mongoose.models.List || mongoose.model<ListSchema>('List', listModel);

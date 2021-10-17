@@ -2,7 +2,7 @@ import { UserSchema } from '../schema/UserSchema';
 import apiMiddleware from '../apiMiddleware';
 
 /**
- * @description Checks if user exists in DB.
+ * Checks if user exists in DB.
  * @param username Leave empty if userId is provided.
  * @param userId Leave empty if username is provided.
  * @returns string; Client or server error
@@ -11,16 +11,11 @@ import apiMiddleware from '../apiMiddleware';
  */
 export default async function readUser(username: string | null = null, userId: string | null = null) {
 
-  return await apiMiddleware<UserSchema>(
+  return await apiMiddleware<UserSchema | null>(
     {
       method: "GET",
       url: `api/user/`,
       params: { username, userId }
     },
-
-    [
-      { value: null, return: null },
-    ]
   );
-
-};
+}

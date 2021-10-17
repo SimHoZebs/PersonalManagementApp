@@ -29,7 +29,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     case "PATCH":
       try {
-        const index = parseInt(body.itemIndex as string);
 
         const list: ListSchema = await listCollection.findOne({ _id: listId });
 
@@ -42,13 +41,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             break;
 
           default:
+            const index = parseInt(body.itemIndex as string);
             const targetItem = list.itemArray[index];
+
             targetItem.itemName = body.newItemName as string;
             list.itemArray[index] = targetItem;
 
             response = list.itemArray;
             break;
-
         }
 
         list.save();
