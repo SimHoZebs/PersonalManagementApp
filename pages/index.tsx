@@ -4,9 +4,7 @@ import Typography from "@mui/material/Typography";
 
 import LoginForm from "../lib/components/LoginForm";
 import { useState, useEffect } from "react";
-import { AxiosRequestConfig, AxiosResponse } from "axios";
-import request from "../lib/request";
-import correctRes from "../lib/correctRes";
+import apiMiddleware from "../lib/apiMiddleware";
 
 //Initialize server on load
 //handles login.
@@ -17,19 +15,11 @@ export default function Login() {
 
   useEffect(() => {
     async function initServer() {
-      const serverReq: AxiosRequestConfig = { method: "get", url: "/api/" };
-      const initServerRes: AxiosResponse = await request(serverReq);
-      //stop running if API server fails to run for some odd reason
-      if (correctRes(initServerRes)) {
-        if (initServerRes.status !== 200) {
-          console.log("server error", initServerRes.data.error);
-          return;
-        } else {
-          console.log("server started");
-        }
-      } else {
-        return `Client Error. res: ${JSON.stringify(serverReq, null, 2)}`;
-      }
+      const res = apiMiddleware<{}>({
+        method: "get",
+        url: "/api/",
+      });
+      console.log(typeof res === "string" ? res : "server started");
     }
 
     initServer();

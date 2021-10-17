@@ -1,7 +1,5 @@
-import { AxiosRequestConfig } from 'axios';
 import { UserSchema } from '../schema/UserSchema';
-import request from '../request';
-import correctRes from '../correctRes';
+import apiMiddleware from '../apiMiddleware';
 
 /**
  * @description Checks if user exists in DB.
@@ -12,27 +10,17 @@ import correctRes from '../correctRes';
  * @returns User: UserSchema; Request successful and username exists
  */
 export default async function readUser(username: string | null = null, userId: string | null = null) {
-  const req: AxiosRequestConfig = {
-    method: "GET",
-    url: `api/user/`,
-    params: { username, userId }
-  };
 
-  const res = await request(req);
+  return await apiMiddleware<UserSchema>(
+    {
+      method: "GET",
+      url: `api/user/`,
+      params: { username, userId }
+    },
 
-  if (correctRes(res)) {
-    switch (res.data.res) {
-      case undefined:
-        return `readUser server error, ${JSON.stringify(res.data.error)}`;
+    [
+      { value: null, return: null },
+    ]
+  );
 
-      case null:
-        return null;
-
-      default:
-        return res.data.res as UserSchema;
-    }
-  }
-  else {
-    return `Client Error. res: ${JSON.stringify(req, null, 2)}`;
-  }
 };

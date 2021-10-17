@@ -1,9 +1,9 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
-  const { method, body } = req;
+  const { method } = req;
 
   switch (method) {
     case 'GET':
@@ -13,10 +13,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         } else {
           throw new Error('DB_URI is not defined');
         }
-        res.status(200).json({})
+        res.status(200).json({});
       }
       catch (error) {
-        res.status(500).json({ error })
+        res.status(500).json({ error });
       }
   }
 }

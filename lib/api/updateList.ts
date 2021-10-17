@@ -1,7 +1,5 @@
-import { AxiosRequestConfig } from 'axios';
-import request from '../request';
 import { ListSchema } from '../schema/ListSchema';
-import correctRes from '../correctRes';
+import apiMiddleware from '../apiMiddleware';
 
 /**
  * 
@@ -18,25 +16,10 @@ export default async function updateList(
   data: string
 ) {
 
-  const req: AxiosRequestConfig = {
+  return await apiMiddleware<ListSchema>({
     method: 'PATCH',
     url: `api/user/${userId}/${listId}`,
     data: { prop, data },
     params: {}
-  };
-
-  const res = await request(req);
-
-  if (correctRes(res)) {
-    switch (res.data.res) {
-      case undefined:
-        return `updateList server error ${JSON.stringify(res.data.error)}`;
-
-      default:
-        return res.data.res as ListSchema;
-    }
-  }
-  else {
-    return `Client Error. res: ${JSON.stringify(req, null, 2)}`;
-  }
+  });
 }
