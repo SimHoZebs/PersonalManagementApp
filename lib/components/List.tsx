@@ -6,6 +6,8 @@ import Typography from "@mui/material/Typography";
 import Item from "./Item";
 import { ItemSchema } from "../schema/ItemSchema";
 import readList from "../api/readList";
+import updateList from "../api/updateList";
+import TextFieldInvisible from "./TextFieldInvisible";
 
 interface Props {
   userId: string;
@@ -32,6 +34,18 @@ const List = (props: Props) => {
     setCreatingItem((prev) => true);
   }
 
+  async function saveListName(listName: string) {
+    const updateListRes = await updateList(
+      props.userId,
+      props.listId,
+      "listName",
+      listName
+    );
+    if (typeof updateListRes === "string") {
+      console.log(updateListRes);
+    }
+  }
+
   useEffect(() => {
     async function initList() {
       const readListRes = await readList(props.userId, props.listId);
@@ -48,10 +62,27 @@ const List = (props: Props) => {
   }, [props.userId, props.listId]);
 
   return (
-    <Grid container spacing={1}>
-      <Grid item>
-        <Typography variant="h4">{listName}</Typography>
+    <Grid container spacing={1} direction="column">
+      <Grid item container spacing={2}>
+        <Grid item xs={9}>
+          <TextFieldInvisible
+            value={listName}
+            onChange={(e) => setListName(e.target.value)}
+            fullWidth
+          />
+        </Grid>
+
+        <Grid item alignSelf="center">
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => saveListName(listName)}
+          >
+            Save
+          </Button>
+        </Grid>
       </Grid>
+
       <Grid item container spacing={1}>
         {itemArray.length !== 0 ? (
           itemArray.map((item, index) => (
