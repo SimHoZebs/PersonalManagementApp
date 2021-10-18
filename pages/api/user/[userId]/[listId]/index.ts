@@ -61,7 +61,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     case 'DELETE':
       try {
-        res.status(201).json({});
+
+        const list: ListSchema = await listCollection.findOne({ _id: listId });
+        list.itemArray.splice(parseInt(body.itemIndex as string), 1);
+        list.save();
+
+        res.status(201).json({ res: list.itemArray });
       } catch (error) {
         res.status(500).json({ error });
       }

@@ -1,24 +1,28 @@
 import React, { useState, useEffect, MouseEvent, useRef } from "react";
+
+//components
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import Grid from "@mui/material/Grid";
 import Backdrop from "@mui/material/Backdrop";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
-
-//components
 import ItemCard from "./ItemCard";
+import IconButton from "@mui/material/IconButton";
 
-//interfaces
+//api & schemas
 import { ItemSchema } from "../schema/ItemSchema";
 import createItem from "../api/createItem";
 import updateItem from "../api/updateItem";
+import deleteItem from "../api/deleteItem";
 
 interface Props {
   item: ItemSchema;
-  index: number;
+  itemIndex: number;
   setItemArray: React.Dispatch<React.SetStateAction<ItemSchema[]>>;
   setCreatingItem: React.Dispatch<React.SetStateAction<boolean>>;
   isNewItem: boolean;
   listId: string;
+  deleteItemBtn: (itemIndex: number) => Promise<void>;
 }
 
 /**
@@ -26,13 +30,10 @@ interface Props {
  * This is needed as existing items can behave like new items if user clicks away while creating new item.
  */
 const Item = (props: Props) => {
-  const [{ itemName, userId, _id: itemId }, setItem] = useState<ItemSchema>(
-    props.item
-  );
+  const [{ itemName, userId, _id }, setItem] = useState<ItemSchema>(props.item);
   const [itemCardOpen, setItemCardOpen] = useState(false);
   const [newItemName, setNewItemName] = useState(itemName);
   const textFieldRef = useRef<HTMLDivElement | null>(null);
-  const paperRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     setItem(props.item);
@@ -50,28 +51,39 @@ const Item = (props: Props) => {
    * Creates new item if it's new, or updates existing item.
    * Add or update item to list.
    */
-  async function handleOnBlur() {
+  async function onBlur() {
     props.setCreatingItem((prev) => false);
 
     if (newItemName === "") {
       //If new title is empty, do not save the item
-      props.setItemArray((prev) =>
-        prev.filter((item, index) => index !== props.index)
-      );
+      if (props.isNewItem) {
+        props.setItemArray((prev) =>
+          prev.filter((item, index) => index !== props.itemIndex)
+        );
+      } else {
+        const updatedItemArray = await deleteItem(
+          userId,
+          props.listId,
+          props.itemIndex
+        );
+        if (typeof updatedItemArray === "string") {
+          console.log(updatedItemArray);
+          return;
+        }
+
+        props.setItemArray(updatedItemArray);
+      }
     } else if (newItemName !== itemName) {
       //if new title isn't empty and it's diff from the old one, save the item
       const updatedItemArray = props.isNewItem
         ? await createItem(userId, props.listId, newItemName)
-        : await updateItem(userId, props.listId, props.index, newItemName);
+        : await updateItem(userId, props.listId, props.itemIndex, newItemName);
+      if (typeof updatedItemArray === "string") {
+        console.log(updatedItemArray);
+        return;
+      }
 
-      props.setItemArray((prev) => {
-        if (typeof updatedItemArray === "string") {
-          console.log(updatedItemArray);
-          return prev;
-        }
-
-        return [...updatedItemArray];
-      });
+      props.setItemArray(updatedItemArray);
     }
   }
 
@@ -93,10 +105,12 @@ const Item = (props: Props) => {
       <Grid item xs={12} sx={{ padding: 0 }}>
         <Paper
           component="div"
-          ref={paperRef}
           sx={{
             paddingX: "15px",
             paddingY: "20px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
           onClick={() => setItemCardOpen(true)}
         >
@@ -106,8 +120,15 @@ const Item = (props: Props) => {
             value={newItemName}
             onChange={(e) => setNewItemName(e.target.value)}
             onClick={handleOnClick}
-            onBlur={handleOnBlur}
+            onBlur={onBlur}
           />
+
+          <IconButton
+            onClick={() => props.deleteItemBtn(props.itemIndex)}
+            sx={{}}
+          >
+            <DeleteOutlineOutlinedIcon />
+          </IconButton>
         </Paper>
       </Grid>
 

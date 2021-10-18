@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
+
+// components
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-
 import Item from "./Item";
+import TextFieldInvisible from "./TextFieldInvisible";
+
+//api & schemas
 import { ItemSchema } from "../schema/ItemSchema";
 import readList from "../api/readList";
 import updateList from "../api/updateList";
-import TextFieldInvisible from "./TextFieldInvisible";
+import deleteItem from "../api/deleteItem";
 
 interface Props {
   userId: string;
@@ -32,6 +36,19 @@ const List = (props: Props) => {
 
     setItemArray((prev) => [...prev, newItem]);
     setCreatingItem((prev) => true);
+  }
+
+  async function deleteItemBtn(itemIndex: number) {
+    const deleteItemRes = await deleteItem(
+      props.userId,
+      props.listId,
+      itemIndex
+    );
+    if (typeof deleteItemRes === "string") {
+      console.log(deleteItemRes);
+    } else {
+      setItemArray(deleteItemRes);
+    }
   }
 
   async function saveListName(listName: string) {
@@ -89,10 +106,11 @@ const List = (props: Props) => {
             <Grid item key={index} xs={12}>
               <Item
                 item={item}
-                index={index}
+                itemIndex={index}
                 setItemArray={setItemArray}
                 listId={props.listId}
                 setCreatingItem={setCreatingItem}
+                deleteItemBtn={deleteItemBtn}
                 isNewItem={
                   creatingItem && index === itemArray.length - 1 ? true : false
                 }
