@@ -1,75 +1,58 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import apiEndpointMiddleware from '../../../../../lib/apiEndpointMiddleware';
 import listCollection, { ListSchema } from '../../../../../lib/schema/ListSchema';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { method, body } = req;
-  const { listId } = req.query;
+export default async function (req: NextApiRequest, res: NextApiResponse) {
+  const { body, query } = req;
 
-  switch (method) {
-    case 'GET':
-      try {
-        const list: ListSchema = await listCollection.findOne({ _id: listId });
-        res.status(200).json({ res: list });
+  const { status, response } = await apiEndpointMiddleware(req,
+
+    async function get() {
+      return await listCollection.findOne({ _id: query.listId }) as ListSchema;
+    },
+
+    async function post() {
+      const list: ListSchema = await listCollection.findOne({ _id: query.listId });
+      list.itemArray.push(body.newItem);
+      list.save();
+
+      return list.itemArray;
+    },
+
+    async function patch() {
+      const list: ListSchema = await listCollection.findOne({ _id: query.listId });
+
+      let response: unknown;
+      switch (body.prop) {
+        case "listName":
+          list.listName = body.data;
+
+          response = list;
+          break;
+
+        default:
+          const index = parseInt(body.itemIndex as string);
+          const targetItem = list.itemArray[index];
+
+          targetItem.itemName = body.newItemName as string;
+          list.itemArray[index] = targetItem;
+
+          response = list.itemArray;
+          break;
       }
-      catch (error) {
-        res.status(500).json({ error });
-      }
-      break;
 
-    case "POST":
-      try {
-        const list: ListSchema = await listCollection.findOne({ _id: listId });
-        list.itemArray.push(body.newItem);
-        list.save();
-        res.status(201).json({ res: list.itemArray });
-      } catch (error) {
-        res.status(500).json({ error });
-      }
-      break;
+      list.save();
+      return response;
+    },
 
-    case "PATCH":
-      try {
+    async function del() {
+      const list: ListSchema = await listCollection.findOne({ _id: query.listId });
+      list.itemArray.splice(parseInt(body.itemIndex as string), 1);
+      list.save();
 
-        const list: ListSchema = await listCollection.findOne({ _id: listId });
+      return list.itemArray;
+    }
+  );
 
-        let response: unknown;
-        switch (body.prop) {
-          case "listName":
-            list.listName = body.data;
-
-            response = list;
-            break;
-
-          default:
-            const index = parseInt(body.itemIndex as string);
-            const targetItem = list.itemArray[index];
-
-            targetItem.itemName = body.newItemName as string;
-            list.itemArray[index] = targetItem;
-
-            response = list.itemArray;
-            break;
-        }
-
-        list.save();
-        res.status(201).json({ res: response });
-      }
-      catch (error) {
-        res.status(500).json({ error });
-      }
-      break;
-
-    case 'DELETE':
-      try {
-
-        const list: ListSchema = await listCollection.findOne({ _id: listId });
-        list.itemArray.splice(parseInt(body.itemIndex as string), 1);
-        list.save();
-
-        res.status(201).json({ res: list.itemArray });
-      } catch (error) {
-        res.status(500).json({ error });
-      }
-      break;
-  }
+  res.status(status).json(response);
 }

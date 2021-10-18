@@ -1,35 +1,29 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import ItemCollection, { ItemSchema } from '../../../../../../lib/schema/ItemSchema'
+import apiEndpointMiddleware from '../../../../../../lib/apiEndpointMiddleware';
+import ItemCollection, { ItemSchema } from '../../../../../../lib/schema/ItemSchema';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { method, query, body } = req;
+export default async function (req: NextApiRequest, res: NextApiResponse) {
+  const { query, body } = req;
 
-  switch (method) {
-    case "GET":
-      try {
-        const itemArray: ItemSchema[] = await ItemCollection.find({})
-        res.status(200).json({ res: itemArray, })
-      } catch (error) {
-        res.status(400).json({ error })
-      }
-      break;
+  const { status, response } = await apiEndpointMiddleware(req,
 
-    case 'PATCH':
-      try {
-        const updatedItem: ItemSchema = await ItemCollection.findOneAndUpdate({ _id: query.itemId }, { title: body.newItemName }, { new: true })
-        res.status(200).json({ res: updatedItem, });
-      } catch (error) {
-        res.status(400).json({ error })
-      }
-      break;
+    async function get() {
+      return await ItemCollection.find({});
+    },
 
-    case "DELETE":
-      try {
-        const removedItem: ItemSchema = await ItemCollection.findByIdAndRemove(req.body.id)
-        res.status(201).json({ res: removedItem })
-      } catch (error) {
-        res.status(400).json({ error })
-      }
-      break;
-  }
+    async function post() {
+
+    },
+
+    async function patch() {
+      return await ItemCollection.findOneAndUpdate({ _id: query.itemId }, { title: body.newItemName }, { new: true }) as ItemSchema;
+    },
+
+    async function del() {
+      await ItemCollection.findByIdAndRemove(req.body.id) as ItemSchema;
+    }
+
+  );
+
+  res.status(status).json(response);
 }

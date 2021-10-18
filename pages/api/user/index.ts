@@ -1,34 +1,28 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import userCollection, { UserSchema } from '../../../lib/schema/UserSchema'
+import apiEndpointMiddleware from "../../../lib/apiEndpointMiddleware";
+import userCollection, { UserSchema } from '../../../lib/schema/UserSchema';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { method, body, query } = req
+export default async function (req: NextApiRequest, res: NextApiResponse) {
+  const { body, query } = req;
 
-  switch (method) {
-    case 'GET':
-      try {
-        let user: UserSchema | undefined;
-        if (query.username != null) {
-          user = await userCollection.findOne({ username: query.username })
-        }
-        else if (query.userId != null) {
-          user = await userCollection.findOne({ _id: query.userId })
-        }
-        res.status(200).json({ res: user })
-      }
-      catch (error) {
-        res.status(400).json({ error })
-      }
-      break;
+  const { status, response } = await apiEndpointMiddleware(req,
 
-    case 'POST':
-      try {
-        const user: UserSchema = await userCollection.create(new userCollection({ username: body.username }))
-        res.status(200).json({ res: user })
+    async function get() {
+      let user: UserSchema | undefined;
+      if (query.username != null) {
+        user = await userCollection.findOne({ username: query.username });
       }
-      catch (error) {
-        res.status(400).json({ error })
+      else if (query.userId != null) {
+        user = await userCollection.findOne({ _id: query.userId });
       }
-      break;
-  }
+      return user;
+    },
+
+    async function post() {
+      return await userCollection.create(new userCollection({ username: body.username }));
+    }
+
+  );
+
+  res.status(status).json(response);
 }

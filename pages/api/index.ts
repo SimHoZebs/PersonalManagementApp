@@ -1,22 +1,20 @@
 import mongoose from "mongoose";
 import { NextApiRequest, NextApiResponse } from 'next';
+import apiEndpointMiddleware from "../../lib/apiEndpointMiddleware";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function (req: NextApiRequest, res: NextApiResponse) {
 
-  const { method } = req;
+  const { status, response } = await apiEndpointMiddleware(req,
 
-  switch (method) {
-    case 'GET':
-      try {
-        if (process.env.DB_URI) {
-          await mongoose.connect(process.env.DB_URI);
-        } else {
-          throw new Error('DB_URI is not defined');
-        }
-        res.status(200).json({});
+    async function get() {
+      if (process.env.DB_URI) {
+        await mongoose.connect(process.env.DB_URI);
+      } else {
+        throw new Error('DB_URI is not defined');
       }
-      catch (error) {
-        res.status(500).json({ error });
-      }
-  }
+      return {};
+    }
+  );
+
+  res.status(status).json(response);
 }

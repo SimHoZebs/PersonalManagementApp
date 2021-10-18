@@ -15,7 +15,7 @@ export default function Login() {
 
   useEffect(() => {
     async function initServer() {
-      const res = apiFunctionMiddleware<{}>({
+      const res = await apiFunctionMiddleware<{}>({
         method: "get",
         url: "/api/",
       });
