@@ -1,12 +1,12 @@
 import { ItemSchema } from "../schema/ItemSchema";
-import apiMiddleware from "../apiMiddleware";
+import apiFunctionMiddleware from "../apiFunctionMiddleware";
 
 /**
  * Updates List's ItemArray by appending a new item to it.
  */
 export default async function createItem(userId: string, listId: string, itemName: string) {
 
-  return await apiMiddleware<ItemSchema[]>({
+  return await apiFunctionMiddleware<ItemSchema[]>({
     method: "post",
     url: `api/user/${userId}/${listId}`,
     data: {

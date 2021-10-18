@@ -1,5 +1,5 @@
 import { ListSchema } from '../schema/ListSchema';
-import apiMiddleware from '../apiMiddleware';
+import apiFunctionMiddleware from '../apiFunctionMiddleware';
 
 /**
  * 
@@ -16,7 +16,7 @@ export default async function updateList(
   data: string
 ) {
 
-  return await apiMiddleware<ListSchema>({
+  return await apiFunctionMiddleware<ListSchema>({
     method: 'PATCH',
     url: `api/user/${userId}/${listId}`,
     data: { prop, data },

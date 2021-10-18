@@ -1,9 +1,9 @@
 import { UserSchema } from "../schema/UserSchema";
-import apiMiddleware from "../apiMiddleware";
+import apiFunctionMiddleware from "../apiFunctionMiddleware";
 
 export default async function updateSelectedListId(userId: string, listId: string) {
 
-  return await apiMiddleware<UserSchema>({
+  return await apiFunctionMiddleware<UserSchema>({
     method: "PATCH",
     url: `api/user/${userId}`,
     data: { target: "selectedListId", listId },

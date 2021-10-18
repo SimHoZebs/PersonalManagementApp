@@ -1,5 +1,5 @@
 import { UserSchema } from "../schema/UserSchema";
-import apiMiddleware from "../apiMiddleware";
+import apiFunctionMiddleware from "../apiFunctionMiddleware";
 
 /**
  * adds listId to user's listIdArray.
@@ -9,7 +9,7 @@ import apiMiddleware from "../apiMiddleware";
  */
 export default async function addListId(userId: string, listId: string) {
 
-  return await apiMiddleware<UserSchema>({
+  return await apiFunctionMiddleware<UserSchema>({
     method: "PATCH",
     url: `api/user/${userId}`,
     data: { listId }

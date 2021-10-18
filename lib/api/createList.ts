@@ -1,4 +1,4 @@
-import apiMiddleware from '../apiMiddleware';
+import apiFunctionMiddleware from '../apiFunctionMiddleware';
 import { ListSchema } from '../schema/ListSchema';
 
 /**
@@ -9,7 +9,7 @@ import { ListSchema } from '../schema/ListSchema';
  */
 export default async function createList(userId: string, listName: string) {
 
-  return await apiMiddleware<ListSchema>(
+  return await apiFunctionMiddleware<ListSchema>(
     {
       method: "POST",
       url: `api/user/${userId}`,
