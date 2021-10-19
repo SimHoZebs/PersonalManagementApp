@@ -26,7 +26,7 @@ const LoginForm = () => {
   const router = useRouter();
 
   /**
-   *  @desc attempts login and creates user if user does not exist.
+   * attempts login and creates user if user does not exist.
    * @param e Optional; Only to prevent event default.
    * @Note Intentionally allowing button defaults, but I don't think it matters.
    */

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import userCollection, { UserSchema } from '../../../../lib/schema/UserSchema';
-import listCollection, { ListSchema } from '../../../../lib/schema/ListSchema';
+import listCollection from '../../../../lib/schema/ListSchema';
 import apiEndpointMiddleware from '../../../../lib/apiEndpointMiddleware';
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {

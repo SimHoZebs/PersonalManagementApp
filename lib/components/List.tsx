@@ -24,7 +24,7 @@ const List = (props: Props) => {
   const [creatingItem, setCreatingItem] = useState(false);
 
   /**
-   * @description Readies list to respond accoridngly to new item interaction.
+   * Readies list to respond accoridngly to new item interaction.
    * @note For more info, check Item.tsx
    */
   function createItemBtn() {
