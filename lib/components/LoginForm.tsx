@@ -8,7 +8,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Backdrop from "@mui/material/Backdrop";
-import theme from "../theme";
+import Box from "@mui/material/Box";
 
 //components
 import Brand from "./Brand";
@@ -75,17 +75,17 @@ const LoginForm = () => {
 
   return (
     <Backdrop open={true}>
-      <Paper
-        elevation={8}
-        sx={{ paddingTop: theme.spacing(5), height: "400px" }}
-      >
-        <form onSubmit={(e) => processLogin(e)}>
-          <Grid container alignItems="center" direction="column">
-            <Grid item>
+      <Grid item xs={3} maxWidth="sm">
+        <Paper elevation={8} sx={{ padding: 5 }}>
+          <form onSubmit={(e) => processLogin(e)}>
+            <Box
+              flexDirection="column"
+              alignItems="center"
+              sx={{ display: "flex" }}
+              rowGap={3}
+            >
               <Brand />
-            </Grid>
 
-            <Grid item sx={{ marginY: theme.spacing(6) }}>
               <TextField
                 error={usernameError}
                 helperText={usernameErrorMsg}
@@ -93,24 +93,24 @@ const LoginForm = () => {
                 id="username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                variant="filled"
+                variant="outlined"
                 label="Username"
+                sx={{ transition: "all 0.3s ease-in-out" }}
               />
-            </Grid>
 
-            <Grid item>
               <Button
                 variant="contained"
+                color="secondary"
                 size="large"
                 disabled={loginBtnIsDisabled}
                 onClick={() => processLogin()}
               >
                 Log in
               </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </Paper>
+            </Box>
+          </form>
+        </Paper>
+      </Grid>
     </Backdrop>
   );
 };

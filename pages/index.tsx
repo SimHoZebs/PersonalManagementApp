@@ -1,5 +1,6 @@
+import Head from "next/head";
+
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 import LoginForm from "../lib/components/LoginForm";
@@ -27,7 +28,10 @@ export default function Login() {
   }, []);
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
+    <>
+      <Head>
+        <title>Login - AnotherToDoApp</title>
+      </Head>
       <Grid container justifyContent="center" alignItems="center">
         <Grid item xs={6}>
           {serverReady ? (
@@ -37,6 +41,6 @@ export default function Login() {
           )}
         </Grid>
       </Grid>
-    </Box>
+    </>
   );
 }

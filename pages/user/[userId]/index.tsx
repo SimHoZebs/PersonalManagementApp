@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Head from "next/head";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -89,20 +90,27 @@ export default function Dashboard() {
     setIsLoading(false);
   }, [router.query.userId]);
 
-  return isLoading ? (
-    <Typography variant="h1">Loading</Typography>
-  ) : (
-    <Container sx={{ padding: "30px" }}>
-      <Grid container spacing={2} direction="column">
-        <Grid item textAlign="right">
-          <Typography variant="caption">Hello, {user?.username}</Typography>
-        </Grid>
-        {user !== undefined ? (
-          <List userId={user?._id} listId={user?.selectedListId} />
-        ) : (
-          <Typography>user is undefined</Typography>
-        )}
-      </Grid>
-    </Container>
+  return (
+    <>
+      <Head>
+        <title>Dashboard - AnotherToDoApp</title>
+      </Head>
+      {isLoading ? (
+        <Typography variant="h1">Loading</Typography>
+      ) : (
+        <Container sx={{ padding: "30px" }}>
+          <Grid container spacing={2} direction="column">
+            <Grid item textAlign="right">
+              <Typography variant="caption">Hello, {user?.username}</Typography>
+            </Grid>
+            {user !== undefined ? (
+              <List userId={user?._id} listId={user?.selectedListId} />
+            ) : (
+              <Typography>user is undefined</Typography>
+            )}
+          </Grid>
+        </Container>
+      )}
+    </>
   );
 }

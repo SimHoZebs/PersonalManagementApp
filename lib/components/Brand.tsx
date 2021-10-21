@@ -1,7 +1,6 @@
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-
-import Image from "next/image";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import theme from "../theme";
 
 const Brand = () => {
@@ -11,15 +10,13 @@ const Brand = () => {
         display: "flex",
         columnGap: theme.spacing(1),
         alignItems: "center",
+        justifyContent: "center",
       }}
     >
-      <Image
-        src="/logo.png"
-        layout="fixed"
-        alt="AnotherToDoList"
-        width={40}
-        height={40}
-      />
+      <AssignmentTurnedInIcon
+        fontSize="large"
+        color="primary"
+      ></AssignmentTurnedInIcon>
       <Typography variant="h6">AnotherToDoList</Typography>
     </Container>
   );
