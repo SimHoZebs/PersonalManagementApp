@@ -9,7 +9,7 @@ const TextFieldInvisible = (props: TextFieldProps) => {
       onChange={props.onChange}
       sx={{
         "& .MuiInputBase-root": {
-          fontSize: theme.typography.h4.fontSize,
+          fontSize: theme.typography.h3.fontSize,
           ":before": {
             borderBottom: 0,
           },

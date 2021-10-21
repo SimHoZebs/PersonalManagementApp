@@ -14,6 +14,7 @@ import createList from "../../../lib/api/createList";
 import { UserSchema } from "../../../lib/schema/UserSchema";
 import addListId from "../../../lib/api/addListId";
 import updateSelectedListId from "../../../lib/api/updateSelectedListId";
+import SideMenu from "../../../lib/components/SideMenu";
 //get user data from login form
 //fill page with user data
 
@@ -23,6 +24,7 @@ import updateSelectedListId from "../../../lib/api/updateSelectedListId";
  */
 export default function Dashboard() {
   const [user, setUser] = useState<UserSchema | undefined>();
+  const [currListName, setCurrListName] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
@@ -98,16 +100,34 @@ export default function Dashboard() {
       {isLoading ? (
         <Typography variant="h1">Loading</Typography>
       ) : (
-        <Container sx={{ padding: "30px" }}>
-          <Grid container spacing={2} direction="column">
-            <Grid item textAlign="right">
-              <Typography variant="caption">Hello, {user?.username}</Typography>
+        <Container
+          sx={{
+            paddingLeft: { xs: 0 },
+            paddingRight: { xs: 0 },
+          }}
+        >
+          <Grid container direction="row" spacing={2}>
+            <Grid item xs={3}>
+              <SideMenu currListName={currListName} />
             </Grid>
-            {user !== undefined ? (
-              <List userId={user?._id} listId={user?.selectedListId} />
-            ) : (
-              <Typography>user is undefined</Typography>
-            )}
+
+            <Grid item xs={9}>
+              <Container sx={{ flexDirection: "column", textAlign: "right" }}>
+                <Typography variant="caption">
+                  Hello, {user?.username}
+                </Typography>
+                {user !== undefined ? (
+                  <List
+                    userId={user?._id}
+                    listId={user?.selectedListId}
+                    currListName={currListName}
+                    setCurrListName={setCurrListName}
+                  />
+                ) : (
+                  <Typography>user is undefined</Typography>
+                )}
+              </Container>
+            </Grid>
           </Grid>
         </Container>
       )}

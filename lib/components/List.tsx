@@ -16,10 +16,11 @@ import deleteItem from "../api/deleteItem";
 interface Props {
   userId: string;
   listId: string;
+  currListName: string;
+  setCurrListName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const List = (props: Props) => {
-  const [listName, setListName] = useState("");
   const [itemArray, setItemArray] = useState<ItemSchema[]>([]);
   const [creatingItem, setCreatingItem] = useState(false);
 
@@ -56,7 +57,7 @@ const List = (props: Props) => {
       props.userId,
       props.listId,
       "listName",
-      listName
+      props.currListName
     );
     if (typeof updateListRes === "string") {
       console.log(updateListRes);
@@ -72,19 +73,19 @@ const List = (props: Props) => {
       }
 
       setItemArray((prev) => readListRes.itemArray);
-      setListName(readListRes.listName);
+      props.setCurrListName(readListRes.listName);
     }
 
     initList();
   }, [props.userId, props.listId]);
 
   return (
-    <Grid container spacing={1} direction="column">
+    <Grid item container spacing={1} direction="column">
       <Grid item container spacing={2}>
         <Grid item xs={9}>
           <TextFieldInvisible
-            value={listName}
-            onChange={(e) => setListName(e.target.value)}
+            value={props.currListName}
+            onChange={(e) => props.setCurrListName(e.target.value)}
             fullWidth
           />
         </Grid>
@@ -93,7 +94,7 @@ const List = (props: Props) => {
           <Button
             variant="contained"
             color="secondary"
-            onClick={() => saveListName(listName)}
+            onClick={() => saveListName(props.currListName)}
           >
             Save
           </Button>
