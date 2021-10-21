@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 
 // components
 import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Item from "./Item";
-import TextFieldInvisible from "./TextFieldInvisible";
+import ListHeader from "./ListHeader";
 
 //api & schemas
 import { ItemSchema } from "../schema/ItemSchema";
 import readList from "../api/readList";
-import updateList from "../api/updateList";
 import deleteItem from "../api/deleteItem";
+import Container from "@mui/material/Container";
 
 interface Props {
   userId: string;
@@ -22,6 +21,7 @@ interface Props {
 
 const List = (props: Props) => {
   const [itemArray, setItemArray] = useState<ItemSchema[]>([]);
+  const [description, setDescription] = useState("");
   const [creatingItem, setCreatingItem] = useState(false);
 
   /**
@@ -52,18 +52,6 @@ const List = (props: Props) => {
     }
   }
 
-  async function saveListName(listName: string) {
-    const updateListRes = await updateList(
-      props.userId,
-      props.listId,
-      "listName",
-      props.currListName
-    );
-    if (typeof updateListRes === "string") {
-      console.log(updateListRes);
-    }
-  }
-
   useEffect(() => {
     async function initList() {
       const readListRes = await readList(props.userId, props.listId);
@@ -73,6 +61,7 @@ const List = (props: Props) => {
       }
 
       setItemArray((prev) => readListRes.itemArray);
+      setDescription(readListRes.description);
       props.setCurrListName(readListRes.listName);
     }
 
@@ -80,57 +69,49 @@ const List = (props: Props) => {
   }, [props.userId, props.listId]);
 
   return (
-    <Grid item container spacing={1} direction="column">
-      <Grid item container spacing={2}>
-        <Grid item xs={9}>
-          <TextFieldInvisible
-            value={props.currListName}
-            onChange={(e) => props.setCurrListName(e.target.value)}
-            fullWidth
-          />
-        </Grid>
+    <Container disableGutters>
+      <ListHeader
+        userId={props.userId}
+        listId={props.listId}
+        description={description}
+        setDescription={setDescription}
+        setCurrListName={props.setCurrListName}
+        currListName={props.currListName}
+      />
 
-        <Grid item alignSelf="center">
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={() => saveListName(props.currListName)}
-          >
-            Save
-          </Button>
-        </Grid>
-      </Grid>
-
-      <Grid item container spacing={1}>
+      <Container
+        disableGutters
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          rowGap: 1,
+          alignItems: "flex-start",
+        }}
+      >
         {itemArray.length !== 0 ? (
           itemArray.map((item, index) => (
-            <Grid item key={index} xs={12}>
-              <Item
-                item={item}
-                itemIndex={index}
-                setItemArray={setItemArray}
-                listId={props.listId}
-                setCreatingItem={setCreatingItem}
-                deleteItemBtn={deleteItemBtn}
-                isNewItem={
-                  creatingItem && index === itemArray.length - 1 ? true : false
-                }
-              />
-            </Grid>
+            <Item
+              key={index}
+              item={item}
+              itemIndex={index}
+              setItemArray={setItemArray}
+              listId={props.listId}
+              setCreatingItem={setCreatingItem}
+              deleteItemBtn={deleteItemBtn}
+              isNewItem={
+                creatingItem && index === itemArray.length - 1 ? true : false
+              }
+            />
           ))
         ) : (
-          <Grid item>
-            <Typography>There is no item in list</Typography>
-          </Grid>
+          <Typography>There is no item in list</Typography>
         )}
-      </Grid>
 
-      <Grid item container>
-        <Button variant="text" color="primary" onClick={() => createItemBtn()}>
+        <Button variant="text" color="primary" onClick={createItemBtn}>
           Create Item
         </Button>
-      </Grid>
-    </Grid>
+      </Container>
+    </Container>
   );
 };
 

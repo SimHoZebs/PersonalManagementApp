@@ -14,6 +14,7 @@ const listModel = new mongoose.Schema<ListSchema>({
   },
   description: {
     type: String,
+    default: "",
   },
   itemArray: { type: [ItemModel], default: [] }
 });

@@ -100,12 +100,7 @@ export default function Dashboard() {
       {isLoading ? (
         <Typography variant="h1">Loading</Typography>
       ) : (
-        <Container
-          sx={{
-            paddingLeft: { xs: 0 },
-            paddingRight: { xs: 0 },
-          }}
-        >
+        <Container disableGutters>
           <Grid container direction="row" spacing={2}>
             <Grid item xs={3}>
               <SideMenu currListName={currListName} />

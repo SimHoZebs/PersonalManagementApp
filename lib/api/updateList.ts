@@ -12,7 +12,7 @@ import apiFunctionMiddleware from '../apiFunctionMiddleware';
 export default async function updateList(
   userId: string,
   listId: string,
-  prop: "listName" | "itemArray",
+  prop: "listName" | "description",
   data: string
 ) {
 

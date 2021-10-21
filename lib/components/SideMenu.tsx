@@ -1,14 +1,16 @@
-import Link from "next/link";
+import { useRouter } from "next/router";
 
-import { ListAltOutlined } from "@mui/icons-material";
+//components
+import ListAltOutlined from "@mui/icons-material/ListAltOutlined";
 import LogoutOutlined from "@mui/icons-material/LogoutOutlined";
-import { List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
-import React from "react";
 import Brand from "./Brand";
-import { useRouter } from "next/router";
 
 interface Props {
   currListName: string;
@@ -32,14 +34,16 @@ const SideMenu = (props: Props) => {
           justifyContent: "space-between",
         }}
       >
-        <Container sx={{ pl: { xs: 0 }, pr: { xs: 0 } }}>
+        <Container disableGutters>
           <Container sx={{ pb: 3 }}>
             <Brand />
           </Container>
+
           <List>
             <ListItem disablePadding>
               <ListItemButton>
                 <ListAltOutlined />
+
                 <ListItemText
                   primary={props.currListName}
                   sx={{ textAlign: "center" }}
@@ -48,6 +52,7 @@ const SideMenu = (props: Props) => {
             </ListItem>
           </List>
         </Container>
+
         <Button
           variant="outlined"
           endIcon={<LogoutOutlined />}
