@@ -1,46 +1,51 @@
-import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import readUser from "../lib/api/readUser";
+import createUser from "../lib/api/createUser";
+import { UserSchema } from "../lib/schema/UserSchema";
 
-import LoginForm from "../lib/components/LoginForm";
-import { useState, useEffect } from "react";
-import apiFunctionMiddleware from "../lib/apiFunctionMiddleware";
-
-//Initialize server on load
-//handles login.
-//If log in was successful, redirects to the main page.
-
-export default function Login() {
-  const [serverReady, setServerReady] = useState(false);
+export default function Index() {
+  const router = useRouter();
 
   useEffect(() => {
-    async function initServer() {
-      const res = await apiFunctionMiddleware<{}>({
-        method: "get",
-        url: "/api/",
+    async function initPreviewUser() {
+      let user: UserSchema;
+
+      const previewIdInLocalStorage = localStorage.getItem("userId");
+      if (previewIdInLocalStorage) {
+        const readUserRes = await readUser(previewIdInLocalStorage);
+        if (typeof readUserRes === "string") {
+          console.log(readUserRes);
+          return;
+        } else if (readUserRes === null) {
+          const createUserRes = await createUser("preview");
+          if (typeof createUserRes === "string") {
+            return createUserRes;
+          }
+
+          localStorage.setItem("userId", createUserRes._id);
+          user = createUserRes;
+          return;
+        }
+
+        user = readUserRes;
+      } else {
+        const createUserRes = await createUser("preview");
+        if (typeof createUserRes === "string") {
+          return createUserRes;
+        }
+        user = createUserRes;
+        localStorage.setItem("userId", createUserRes._id);
+      }
+
+      router.push({
+        pathname: `/user/${user._id}`,
       });
-      console.log(typeof res === "string" ? res : "server started");
     }
 
-    initServer();
-    setServerReady(true);
+    initPreviewUser();
   }, []);
 
-  return (
-    <>
-      <Head>
-        <title>Login - AnotherToDoApp</title>
-      </Head>
-      <Grid container justifyContent="center" alignItems="center">
-        <Grid item xs={6}>
-          {serverReady ? (
-            <LoginForm />
-          ) : (
-            <Typography>Server is loading...</Typography>
-          )}
-        </Grid>
-      </Grid>
-    </>
-  );
+  return <div>loading preview profile...</div>;
 }

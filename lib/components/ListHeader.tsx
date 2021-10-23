@@ -22,14 +22,14 @@ const ListHeader = (props: Props) => {
   //true for now for production
   const [isNameEditMode, setIsNameEditMode] = useState(true);
 
-  async function saveListName(listName: string) {
+  async function saveListName() {
     // setIsNameEditMode(false);
 
     const updateListRes = await updateList(
       props.userId,
       props.listId,
       "listName",
-      listName
+      props.currListName
     );
     if (typeof updateListRes === "string") {
       console.log(updateListRes);
@@ -48,7 +48,7 @@ const ListHeader = (props: Props) => {
         sx={{ display: "flex", textAlign: "left", alignItems: "center" }}
       >
         {isNameEditMode ? (
-          <IconButton onClick={() => saveListName(props.currListName)}>
+          <IconButton onClick={saveListName}>
             <Save />
           </IconButton>
         ) : (

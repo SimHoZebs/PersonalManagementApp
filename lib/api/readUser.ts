@@ -9,13 +9,13 @@ import apiFunctionMiddleware from '../apiFunctionMiddleware';
  * @returns null; Request successful but username does not exist
  * @returns User: UserSchema; Request successful and username exists
  */
-export default async function readUser(username: string | null = null, userId: string | null = null) {
+export default async function readUser(userId: string) {
 
   return await apiFunctionMiddleware<UserSchema | null>(
     {
       method: "GET",
       url: `api/user/`,
-      params: { username, userId }
+      params: { userId }
     },
   );
 }

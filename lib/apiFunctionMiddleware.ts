@@ -18,7 +18,7 @@ export default async function apiFunctionMiddleware<T>(req: AxiosRequestConfig) 
 
   if (correctRes(res)) {
     return res.data.res === undefined
-      ? `Server error, ${JSON.stringify(res.data.error)}`
+      ? `Server error, ${JSON.stringify(res, null, 2)}`
       : res.data.res as T;
   }
   else {

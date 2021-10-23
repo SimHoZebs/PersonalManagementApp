@@ -4,8 +4,15 @@ import listCollection from '../../../../lib/schema/ListSchema';
 import apiEndpointMiddleware from '../../../../lib/apiEndpointMiddleware';
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
+  const body: {
+    listName: string; //createList
+    listId: string; //addListId
+    target: string; //updateSelectedListId
+  } = req.body;
 
-  const { body, query } = req;
+  const {
+    userId //all
+  } = req.query;
 
   const { status, response } = await apiEndpointMiddleware(req,
 
@@ -14,11 +21,11 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
     },
 
     async function post() {
-      return await listCollection.create(new listCollection({ listName: body.listName, userId: query.userId }));
+      return await listCollection.create(new listCollection({ listName: body.listName, userId: userId }));
     },
 
     async function patch() {
-      const user: UserSchema = await userCollection.findOne({ _id: query.userId });
+      const user: UserSchema = await userCollection.findOne({ _id: userId });
 
       if (body.target === "selectedListId") {
         user.selectedListId = body.listId;
@@ -27,6 +34,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
       }
 
       await user.save();
+      return user;
     }
   );
 

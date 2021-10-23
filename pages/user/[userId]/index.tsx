@@ -8,15 +8,14 @@ import { useRouter } from "next/router";
 
 //API functions
 import readUser from "../../../lib/api/readUser";
+import addListId from "../../../lib/api/addListId";
 import createList from "../../../lib/api/createList";
+import updateSelectedListId from "../../../lib/api/updateSelectedListId";
 
 //schema and interfaces
 import { UserSchema } from "../../../lib/schema/UserSchema";
-import addListId from "../../../lib/api/addListId";
-import updateSelectedListId from "../../../lib/api/updateSelectedListId";
+import { ListSchema } from "../../../lib/schema/ListSchema";
 import SideMenu from "../../../lib/components/SideMenu";
-//get user data from login form
-//fill page with user data
 
 /**
  * displays user dashboard.
@@ -35,13 +34,16 @@ export default function Dashboard() {
      * @returns userSchema; The user the temp defaults were applied.
      * @returns string; if any error occurs.
      */
+
     async function addTempDefaults(userId: string) {
-      const createListRes = await createList(userId, "default list");
+      let createdList: ListSchema;
+      const createListRes = await createList(userId, "Welcome!");
       if (typeof createListRes === "string") {
         return createListRes;
       }
+      createdList = createListRes;
 
-      const addListIdRes = await addListId(userId, createListRes._id);
+      const addListIdRes = await addListId(userId, createdList._id);
       if (typeof addListIdRes === "string") {
         return addListIdRes;
       }
@@ -52,12 +54,16 @@ export default function Dashboard() {
       );
       return updateSelectedListIdRes;
     }
-
     /**
      * Reads user data with given userId.
      */
-    async function initUserPage(userId: string) {
-      const readUserRes = await readUser(null, userId);
+    async function initUserPage() {
+      const userId = router.query.userId;
+      if (typeof userId !== "string") {
+        return;
+      }
+
+      const readUserRes = await readUser(userId);
       if (typeof readUserRes === "string") {
         console.log(readUserRes);
         return;
@@ -82,13 +88,7 @@ export default function Dashboard() {
       setUser(user);
     }
 
-    const userId = router.query.userId;
-
-    if (typeof userId !== "string") {
-      console.log("userId is not a string. It is ", userId);
-      return;
-    }
-    initUserPage(userId);
+    initUserPage();
     setIsLoading(false);
   }, [router.query.userId]);
 

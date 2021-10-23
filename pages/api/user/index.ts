@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import apiEndpointMiddleware from "../../../lib/apiEndpointMiddleware";
-import userCollection, { UserSchema } from '../../../lib/schema/UserSchema';
+import userCollection from '../../../lib/schema/UserSchema';
 
 export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { body, query } = req;
@@ -8,14 +8,7 @@ export default async function (req: NextApiRequest, res: NextApiResponse) {
   const { status, response } = await apiEndpointMiddleware(req,
 
     async function get() {
-      let user: UserSchema | undefined;
-      if (query.username != null) {
-        user = await userCollection.findOne({ username: query.username });
-      }
-      else if (query.userId != null) {
-        user = await userCollection.findOne({ _id: query.userId });
-      }
-      return user;
+      return userCollection.findOne({ _id: query.userId });
     },
 
     async function post() {
