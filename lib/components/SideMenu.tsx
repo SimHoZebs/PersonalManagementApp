@@ -23,6 +23,7 @@ const SideMenu = (props: Props) => {
           alignItems: "center",
           justifyContent: "space-between",
         }}
+        disableGutters
       >
         <Container disableGutters>
           <Container sx={{ pb: 3 }}>
@@ -31,12 +32,12 @@ const SideMenu = (props: Props) => {
 
           <List>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton sx={{ columnGap: 1 }}>
                 <ListAltOutlined />
 
                 <ListItemText
                   primary={props.currListName}
-                  sx={{ textAlign: "center" }}
+                  sx={{ textAlign: "left" }}
                 />
               </ListItemButton>
             </ListItem>

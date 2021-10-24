@@ -4,14 +4,23 @@ import { useEffect } from "react";
 import readUser from "../lib/api/readUser";
 import createUser from "../lib/api/createUser";
 import { UserSchema } from "../lib/schema/UserSchema";
+import connectToDB from "../lib/api/connectToDB";
 
 export default function Index() {
   const router = useRouter();
 
   useEffect(() => {
-    async function initPreviewUser() {
-      let user: UserSchema;
+    /**
+     * Makes connection with DB. Uses userId from localStorage to get user data. Creates a new one if it doesn't exist.
+     */
+    async function initApp() {
+      const connectToDBRes = await connectToDB();
+      if (typeof connectToDBRes === "string") {
+        console.log(connectToDBRes);
+        return;
+      }
 
+      let user: UserSchema;
       const previewIdInLocalStorage = localStorage.getItem("userId");
       if (previewIdInLocalStorage) {
         const readUserRes = await readUser(previewIdInLocalStorage);
@@ -44,7 +53,7 @@ export default function Index() {
       });
     }
 
-    initPreviewUser();
+    initApp();
   }, []);
 
   return <div>loading preview profile...</div>;
