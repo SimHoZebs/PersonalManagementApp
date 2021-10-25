@@ -11,6 +11,7 @@ import { ItemSchema } from "../schema/ItemSchema";
 import readList from "../api/readList";
 import deleteItem from "../api/deleteItem";
 import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
 
 interface Props {
   userId: string;
@@ -69,7 +70,10 @@ const List = (props: Props) => {
   }, [props.userId, props.listId]);
 
   return (
-    <Container disableGutters>
+    <Container
+      disableGutters
+      sx={{ display: "flex", flexDirection: "column", rowGap: 1 }}
+    >
       <ListHeader
         userId={props.userId}
         listId={props.listId}
@@ -78,6 +82,8 @@ const List = (props: Props) => {
         setCurrListName={props.setCurrListName}
         currListName={props.currListName}
       />
+
+      <Divider />
 
       <Container
         disableGutters
@@ -104,7 +110,9 @@ const List = (props: Props) => {
             />
           ))
         ) : (
-          <Typography>There is no item in list</Typography>
+          <Typography variant="body1">
+            There is no item in the list! Start by adding one!
+          </Typography>
         )}
 
         <Button variant="text" color="primary" onClick={createItemBtn}>

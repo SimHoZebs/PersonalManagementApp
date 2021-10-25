@@ -7,6 +7,9 @@ interface Props extends StandardTextFieldProps {
 const CustomTextField = (props: Props) => {
   return (
     <TextField
+      onFocus={props.onFocus}
+      onBlur={props.onBlur}
+      inputRef={props.inputRef}
       placeholder={props.placeholder}
       multiline={props.multiline}
       fullWidth={props.fullWidth}

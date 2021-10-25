@@ -17,7 +17,13 @@ export default async function apiEndpointMiddleware(
       case "POST":
         return { status: 201, response: { res: await post() } };
       case "PATCH":
-        return { status: 201, response: { res: await patch() } };
+        try {
+          const res = await patch();
+          return { status: 201, response: { res } };
+        }
+        catch (error) {
+          return { status: 400, response: { error } };
+        }
       case 'DELETE':
         return { status: 201, response: { res: await del() } };
       default:
