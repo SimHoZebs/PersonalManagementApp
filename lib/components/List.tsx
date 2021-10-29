@@ -16,14 +16,15 @@ import Divider from "@mui/material/Divider";
 interface Props {
   userId: string;
   listId: string;
-  currListName: string;
-  setCurrListName: React.Dispatch<React.SetStateAction<string>>;
+  currListName: string | undefined;
+  setCurrListName: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const List = (props: Props) => {
   const [itemArray, setItemArray] = useState<ItemSchema[]>([]);
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState<string | undefined>();
   const [creatingItem, setCreatingItem] = useState(false);
+  const [listLoaded, setListLoaded] = useState(false);
 
   /**
    * Readies list to respond accoridngly to new item interaction.
@@ -67,13 +68,11 @@ const List = (props: Props) => {
     }
 
     initList();
+    setListLoaded(true);
   }, [props.userId, props.listId]);
 
   return (
-    <Container
-      disableGutters
-      sx={{ display: "flex", flexDirection: "column", rowGap: 1 }}
-    >
+    <Container disableGutters>
       <ListHeader
         userId={props.userId}
         listId={props.listId}

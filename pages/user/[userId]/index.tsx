@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import List from "../../../lib/components/List";
 import { useRouter } from "next/router";
+import isLoaded from "../../../lib/isLoaded";
 
 //API functions
 import readUser from "../../../lib/api/readUser";
@@ -16,6 +16,7 @@ import updateSelectedListId from "../../../lib/api/updateSelectedListId";
 import { UserSchema } from "../../../lib/schema/UserSchema";
 import { ListSchema } from "../../../lib/schema/ListSchema";
 import SideMenu from "../../../lib/components/SideMenu";
+import { Skeleton } from "@mui/material";
 
 /**
  * displays user dashboard.
@@ -23,8 +24,7 @@ import SideMenu from "../../../lib/components/SideMenu";
  */
 export default function Dashboard() {
   const [user, setUser] = useState<UserSchema | undefined>();
-  const [currListName, setCurrListName] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [currListName, setCurrListName] = useState<string | undefined>();
   const router = useRouter();
 
   useEffect(() => {
@@ -89,7 +89,6 @@ export default function Dashboard() {
     }
 
     initUserPage();
-    setIsLoading(false);
   }, [router.query.userId]);
 
   return (
@@ -97,35 +96,35 @@ export default function Dashboard() {
       <Head>
         <title>Dashboard - AnotherToDoApp</title>
       </Head>
-      {isLoading ? (
-        <Typography variant="h1">Loading</Typography>
-      ) : (
-        <Container disableGutters>
-          <Grid container direction="row" spacing={2}>
-            <Grid item xs={3}>
-              <SideMenu currListName={currListName} />
-            </Grid>
+      <Grid container direction="row">
+        <Grid item xs={3}>
+          <SideMenu currListName={currListName} />
+        </Grid>
 
-            <Grid item xs={9}>
-              <Container sx={{ flexDirection: "column", textAlign: "right" }}>
-                <Typography variant="caption">
-                  Hello, {user?.username}
-                </Typography>
-                {user !== undefined ? (
-                  <List
-                    userId={user?._id}
-                    listId={user?.selectedListId}
-                    currListName={currListName}
-                    setCurrListName={setCurrListName}
-                  />
-                ) : (
-                  <Typography>user is undefined</Typography>
-                )}
-              </Container>
-            </Grid>
-          </Grid>
-        </Container>
-      )}
+        <Grid
+          item
+          xs={9}
+          sx={{ display: "flex", flexDirection: "column", rowGap: 1, p: 1 }}
+        >
+          <Typography variant="caption">
+            {isLoaded<UserSchema>(user) ? (
+              `Hello, ${user?.username}`
+            ) : (
+              <Skeleton variant="text" width={80} height={14} />
+            )}
+          </Typography>
+          {isLoaded<UserSchema>(user) ? (
+            <List
+              userId={user._id}
+              listId={user.selectedListId}
+              currListName={currListName}
+              setCurrListName={setCurrListName}
+            />
+          ) : (
+            <div></div>
+          )}
+        </Grid>
+      </Grid>
     </>
   );
 }

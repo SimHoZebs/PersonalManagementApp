@@ -7,9 +7,12 @@ import ListItemText from "@mui/material/ListItemText";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Brand from "./Brand";
+import Skeleton from "@mui/material/Skeleton";
+
+import isLoaded from "../isLoaded";
 
 interface Props {
-  currListName: string;
+  currListName: string | undefined;
 }
 
 const SideMenu = (props: Props) => {
@@ -33,12 +36,18 @@ const SideMenu = (props: Props) => {
           <List>
             <ListItem disablePadding>
               <ListItemButton sx={{ columnGap: 1 }}>
-                <ListAltOutlined />
+                {isLoaded(props.currListName) ? (
+                  <>
+                    <ListAltOutlined />
 
-                <ListItemText
-                  primary={props.currListName}
-                  sx={{ textAlign: "left" }}
-                />
+                    <ListItemText
+                      primary={props.currListName}
+                      sx={{ textAlign: "left" }}
+                    />
+                  </>
+                ) : (
+                  <Skeleton variant="rectangular" width={200} height={32} />
+                )}
               </ListItemButton>
             </ListItem>
           </List>
