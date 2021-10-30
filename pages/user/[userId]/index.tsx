@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
 import List from "../../../lib/components/List";
 import { useRouter } from "next/router";
 import isLoaded from "../../../lib/isLoaded";
@@ -92,7 +93,7 @@ export default function Dashboard() {
   }, [router.query.userId]);
 
   return (
-    <>
+    <Container disableGutters>
       <Head>
         <title>Dashboard - AnotherToDoApp</title>
       </Head>
@@ -125,6 +126,6 @@ export default function Dashboard() {
           )}
         </Grid>
       </Grid>
-    </>
+    </Container>
   );
 }

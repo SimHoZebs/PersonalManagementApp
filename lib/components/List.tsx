@@ -72,7 +72,7 @@ const List = (props: Props) => {
   }, [props.userId, props.listId]);
 
   return (
-    <Container disableGutters>
+    <>
       <ListHeader
         userId={props.userId}
         listId={props.listId}
@@ -118,7 +118,7 @@ const List = (props: Props) => {
           Create Item
         </Button>
       </Container>
-    </Container>
+    </>
   );
 };
 
