@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/Grid";
-import Container from "@mui/material/Container";
-import List from "../../../lib/components/List";
 import { useRouter } from "next/router";
+
 import isLoaded from "../../../lib/isLoaded";
+
+//components
+import { Typography, Grid, Container, Skeleton } from "@mui/material";
+import List from "../../../lib/components/List";
 
 //API functions
 import readUser from "../../../lib/api/readUser";
@@ -17,7 +18,6 @@ import updateSelectedListId from "../../../lib/api/updateSelectedListId";
 import { UserSchema } from "../../../lib/schema/UserSchema";
 import { ListSchema } from "../../../lib/schema/ListSchema";
 import SideMenu from "../../../lib/components/SideMenu";
-import { Skeleton } from "@mui/material";
 
 /**
  * displays user dashboard.
@@ -35,7 +35,6 @@ export default function Dashboard() {
      * @returns userSchema; The user the temp defaults were applied.
      * @returns string; if any error occurs.
      */
-
     async function addTempDefaults(userId: string) {
       let createdList: ListSchema;
       const createListRes = await createList(userId, "Welcome!");
@@ -97,6 +96,7 @@ export default function Dashboard() {
       <Head>
         <title>Dashboard - AnotherToDoApp</title>
       </Head>
+
       <Grid container direction="row">
         <Grid item xs={3}>
           <SideMenu currListName={currListName} />

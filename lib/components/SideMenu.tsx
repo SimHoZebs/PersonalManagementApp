@@ -1,21 +1,47 @@
 //components
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Container,
+  Paper,
+  Skeleton,
+} from "@mui/material";
 import ListAltOutlined from "@mui/icons-material/ListAltOutlined";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
+import GoogleIcon from "@mui/icons-material/Google";
 import Brand from "./Brand";
-import Skeleton from "@mui/material/Skeleton";
 
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import isLoaded from "../isLoaded";
+import getFirebaseConfig from "../api/connectToFirebase";
 
 interface Props {
   currListName: string | undefined;
 }
 
 const SideMenu = (props: Props) => {
+  async function authentication() {
+    try {
+      const getFirebaseConfigRes = await getFirebaseConfig();
+      if (typeof getFirebaseConfigRes === "string") {
+        console.log(getFirebaseConfigRes);
+        return;
+      }
+
+      const provider = new GoogleAuthProvider();
+      const auth = getAuth();
+      const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential?.accessToken;
+      const user = result.user;
+      console.log(token);
+    } catch (error: any) {
+      console.log(error);
+    }
+  }
+
   return (
     <Paper elevation={3} sx={{ height: "100vh", pt: 2, pb: 2 }}>
       <Container
@@ -35,23 +61,29 @@ const SideMenu = (props: Props) => {
 
           <List>
             <ListItem disablePadding>
-              <ListItemButton sx={{ columnGap: 1 }}>
-                {isLoaded(props.currListName) ? (
-                  <>
-                    <ListAltOutlined />
+              {isLoaded(props.currListName) ? (
+                <ListItemButton sx={{ columnGap: 1 }}>
+                  <ListAltOutlined />
 
-                    <ListItemText
-                      primary={props.currListName}
-                      sx={{ textAlign: "left" }}
-                    />
-                  </>
-                ) : (
-                  <Skeleton variant="rectangular" width={200} height={32} />
-                )}
-              </ListItemButton>
+                  <ListItemText
+                    primary={props.currListName}
+                    sx={{ textAlign: "left" }}
+                  />
+                </ListItemButton>
+              ) : (
+                <Skeleton variant="rectangular" width="100%" height={32} />
+              )}
             </ListItem>
           </List>
         </Container>
+
+        <Button
+          startIcon={<GoogleIcon />}
+          variant="outlined"
+          onClick={authentication}
+        >
+          Login
+        </Button>
       </Container>
     </Paper>
   );

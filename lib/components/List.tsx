@@ -69,7 +69,7 @@ const List = (props: Props) => {
 
     initList();
     setListLoaded(true);
-  }, [props.userId, props.listId]);
+  }, [props]);
 
   return (
     <>

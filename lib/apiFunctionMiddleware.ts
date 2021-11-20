@@ -17,8 +17,8 @@ export default async function apiFunctionMiddleware<T>(req: AxiosRequestConfig) 
   const res = await request(req);
 
   if (correctRes(res)) {
-    return res.data.res === undefined
-      ? `Server error, ${JSON.stringify(res, null, 2)}`
+    return res.data.error !== undefined
+      ? `Server error, ${JSON.stringify(res.data, null, 2)}`
       : res.data.res as T;
   }
   else {

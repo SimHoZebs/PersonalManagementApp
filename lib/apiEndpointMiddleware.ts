@@ -1,33 +1,56 @@
 import { NextApiRequest } from "next";
 
+type MethodFunction = () => Promise<any>;
+
 export default async function apiEndpointMiddleware(
   req: NextApiRequest,
-  get: () => Promise<any> = async () => { },
-  post: () => Promise<any> = async () => { },
-  patch: () => Promise<any> = async () => { },
-  del: () => Promise<any> = async () => { },
+  get?: MethodFunction,
+  post?: MethodFunction,
+  patch?: MethodFunction,
+  del?: MethodFunction
 ) {
 
   const { method } = req;
 
+  let res;
   try {
     switch (method) {
       case 'GET':
-        return { status: 200, response: { res: await get() } };
+        if (!get) return { status: 404, response: { error: "get function doesn't exist" } };
+
+        res = await get();
+        return res instanceof Error
+          ? { status: 500, response: { error: res } }
+          : { status: 200, response: { res } };
+
       case "POST":
-        return { status: 201, response: { res: await post() } };
+        if (!post) return { status: 404, response: { error: "post function doesn't exist" } };
+
+        res = await post();
+        return res instanceof Error
+          ? { status: 500, response: { error: res } }
+          : { status: 200, response: { res } };
+
       case "PATCH":
-        try {
-          const res = await patch();
-          return { status: 201, response: { res } };
-        }
-        catch (error) {
-          return { status: 400, response: { error } };
-        }
+        if (!patch) return { status: 404, response: { error: "patch function doesn't exist" } };
+
+        res = await patch();
+        return res instanceof Error
+          ? { status: 500, response: { error: res } }
+          : { status: 200, response: { res } };
+
       case 'DELETE':
-        return { status: 201, response: { res: await del() } };
+        if (!del) return { status: 404, response: { error: "del function doesn't exist" } };
+
+        res = await del();
+        return res instanceof Error
+          ? { status: 500, response: { error: res } }
+          : { status: 200, response: { res } };
+
       default:
         return { status: 400, response: { error: "Unknown method" } };
+
+
     }
   }
   catch (error) {

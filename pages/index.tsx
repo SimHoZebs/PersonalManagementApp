@@ -1,6 +1,10 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
+//components
+import { Container, Typography } from "@mui/material";
+
+//apis & schemas
 import readUser from "../lib/api/readUser";
 import createUser from "../lib/api/createUser";
 import { UserSchema } from "../lib/schema/UserSchema";
@@ -54,7 +58,11 @@ export default function Index() {
     }
 
     initApp();
-  }, []);
+  }, [router]);
 
-  return <div>loading preview profile...</div>;
+  return (
+    <Container disableGutters>
+      <Typography>Loading app...</Typography>
+    </Container>
+  );
 }
