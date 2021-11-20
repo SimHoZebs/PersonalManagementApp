@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import apiEndpointMiddleware from "../../../lib/apiEndpointMiddleware";
 import userCollection from '../../../lib/schema/UserSchema';
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { body, query } = req;
 
   const { status, response } = await apiEndpointMiddleware(req,

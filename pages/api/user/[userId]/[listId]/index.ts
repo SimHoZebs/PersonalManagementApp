@@ -3,7 +3,7 @@ import apiEndpointMiddleware from '../../../../../lib/apiEndpointMiddleware';
 import { ItemSchema } from '../../../../../lib/schema/ItemSchema';
 import listCollection, { ListSchema } from '../../../../../lib/schema/ListSchema';
 
-export default async function (req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { body, query } = req;
 
   const { status, response } = await apiEndpointMiddleware(req,
