@@ -15,7 +15,8 @@ import Brand from "./Brand";
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import isLoaded from "../isLoaded";
-import getFirebaseConfig from "../api/connectToFirebase";
+import readFirebaseConfig from "../api/connectToFirebase";
+import { initializeApp } from "firebase/app";
 
 interface Props {
   currListName: string | undefined;
@@ -24,11 +25,12 @@ interface Props {
 const SideMenu = (props: Props) => {
   async function authentication() {
     try {
-      const getFirebaseConfigRes = await getFirebaseConfig();
-      if (typeof getFirebaseConfigRes === "string") {
-        console.log(getFirebaseConfigRes);
+      const firebaseConfig = await readFirebaseConfig();
+      if (typeof firebaseConfig === "string") {
+        console.log(firebaseConfig);
         return;
       }
+      const app = initializeApp(firebaseConfig);
 
       const provider = new GoogleAuthProvider();
       const auth = getAuth();
@@ -37,6 +39,7 @@ const SideMenu = (props: Props) => {
       const token = credential?.accessToken;
       const user = result.user;
       console.log(token);
+      console.log(user);
     } catch (error: any) {
       console.log(error);
     }
