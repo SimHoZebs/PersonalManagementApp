@@ -5,17 +5,11 @@ import apiEndpointHelper from "../../lib/apiEndpointHelper";
 export type Get = Awaited<ReturnType<typeof get>>;
 
 async function get() {
-  try {
-    if (!process.env.DB_URI) {
-      throw new Error('DB_URI is not defined');
-    } else {
-      await mongoose.connect(process.env.DB_URI);
-      return true;
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      return error;
-    }
+  if (!process.env.DB_URI) {
+    throw new Error('DB_URI is not defined');
+  } else {
+    await mongoose.connect(process.env.DB_URI);
+    return true;
   }
 }
 

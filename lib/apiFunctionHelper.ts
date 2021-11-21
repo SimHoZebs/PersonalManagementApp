@@ -14,14 +14,16 @@ function correctRes(res: AxiosResponse): res is ApiRes {
 
 export default async function apiFunctionHelper<T>(req: AxiosRequestConfig) {
 
-  const res = await request(req);
-
-  if (correctRes(res)) {
-    return res.data.error !== undefined
-      ? `Server error, ${JSON.stringify(res.data, null, 2)}`
-      : res.data.res as T;
+  try {
+    const res = await request(req);
+    if (correctRes(res)) {
+      return res.data.res as T;
+    }
+    else {
+      return `Possibly client error, ${JSON.stringify(res, null, 2)}`;
+    }
   }
-  else {
-    return `Client Error. res: ${JSON.stringify(req, null, 2)}`;
+  catch (error) {
+    return `Possibly server error, ${error instanceof Error ? error.message : JSON.stringify(error, null, 2)}`;
   }
 }
