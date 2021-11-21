@@ -1,3 +1,5 @@
+import { useRouter } from "next/router";
+
 //components
 import {
   Button,
@@ -17,12 +19,16 @@ import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import isLoaded from "../isLoaded";
 import readFirebaseConfig from "../api/connectToFirebase";
 import { initializeApp } from "firebase/app";
+import readUser from "../api/readUser";
+import createUser from "../api/createUser";
 
 interface Props {
   currListName: string | undefined;
 }
 
 const SideMenu = (props: Props) => {
+  const router = useRouter();
+
   async function authentication() {
     try {
       const firebaseConfig = await readFirebaseConfig();
@@ -30,18 +36,32 @@ const SideMenu = (props: Props) => {
         console.log(firebaseConfig);
         return;
       }
-      const app = initializeApp(firebaseConfig);
+      initializeApp(firebaseConfig);
 
       const provider = new GoogleAuthProvider();
       const auth = getAuth();
       const result = await signInWithPopup(auth, provider);
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential?.accessToken;
-      const user = result.user;
-      console.log(token);
-      console.log(user);
-    } catch (error: any) {
-      console.log(error);
+      const googleUser = result.user;
+      if (!googleUser.displayName) {
+        console.log("user has no display name");
+        return;
+      }
+
+      let user: Awaited<ReturnType<typeof readUser>>;
+      user = await readUser(googleUser.uid);
+      if (user === null) {
+        user = await createUser(googleUser.uid, googleUser.displayName);
+      }
+
+      if (typeof user === "string") {
+        console.log(user);
+        return;
+      }
+      router.push(`/user/${user._id}`);
+    } catch (error) {
+      console.log(error instanceof Error ? error.message : error);
     }
   }
 

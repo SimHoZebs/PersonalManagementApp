@@ -11,6 +11,7 @@ const userModel = new mongoose.Schema<UserSchema>({
     type: String,
     required: true
   },
+  _id: { type: String, required: true },
   listIdArray: [String],
   selectedListId: { type: String }
 });
