@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import apiEndpointMiddleware from "../../../lib/apiEndpointMiddleware";
+import apiEndpointHelper from "../../../lib/apiEndpointHelper";
 import userCollection from '../../../lib/schema/UserSchema';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return await userCollection.create(new userCollection({ username: body.username }));
   }
 
-  const { status, response } = await apiEndpointMiddleware(req,
+  const { status, response } = await apiEndpointHelper(req,
     get, post,
   );
 

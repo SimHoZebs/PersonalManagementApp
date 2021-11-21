@@ -1,9 +1,9 @@
 import { ItemSchema } from '../schema/ItemSchema';
-import apiFunctionMiddleware from '../apiFunctionMiddleware';
+import apiFunctionHelper from '../apiFunctionHelper';
 
 export default async function updateItem(userId: string, listId: string, itemIndex: number, newItemName: string) {
 
-  return await apiFunctionMiddleware<ItemSchema[]>(
+  return await apiFunctionHelper<ItemSchema[]>(
     {
       method: "PATCH",
       url: `api/user/${userId}/${listId}`,

@@ -1,10 +1,10 @@
 import { FirebaseOptions } from "firebase/app";
-import apiFunctionMiddleware from "../apiFunctionMiddleware";
+import apiFunctionHelper from "../apiFunctionHelper";
 import { initializeApp } from "firebase/app";
 
 export default async function getFirebaseConfig() {
 
-  const firebaseConfig = await apiFunctionMiddleware<FirebaseOptions>({
+  const firebaseConfig = await apiFunctionHelper<FirebaseOptions>({
     method: "GET",
     url: "api/firebase"
   });

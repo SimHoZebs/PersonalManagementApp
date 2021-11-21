@@ -2,7 +2,7 @@ import { NextApiRequest } from "next";
 
 type MethodFunction = () => Promise<any>;
 
-export default async function apiEndpointMiddleware(
+export default async function apiEndpointHelper(
   req: NextApiRequest,
   get?: MethodFunction,
   post?: MethodFunction,

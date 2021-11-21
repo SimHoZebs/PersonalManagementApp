@@ -1,5 +1,5 @@
 import { UserSchema } from '../schema/UserSchema';
-import apiFunctionMiddleware from '../apiFunctionMiddleware';
+import apiFunctionHelper from '../apiFunctionHelper';
 
 /**
  * Checks if user exists in DB.
@@ -11,7 +11,7 @@ import apiFunctionMiddleware from '../apiFunctionMiddleware';
  */
 export default async function readUser(userId: string) {
 
-  return await apiFunctionMiddleware<UserSchema | null>(
+  return await apiFunctionHelper<UserSchema | null>(
     {
       method: "GET",
       url: `api/user/`,

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { NextApiRequest, NextApiResponse } from 'next';
-import apiEndpointMiddleware from "../../lib/apiEndpointMiddleware";
+import apiEndpointHelper from "../../lib/apiEndpointHelper";
 
 export type Get = Awaited<ReturnType<typeof get>>;
 
@@ -21,7 +21,7 @@ async function get() {
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
-  const { status, response } = await apiEndpointMiddleware(req,
+  const { status, response } = await apiEndpointHelper(req,
     get
   );
 

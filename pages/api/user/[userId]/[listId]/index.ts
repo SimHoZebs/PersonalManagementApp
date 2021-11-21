@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import apiEndpointMiddleware from '../../../../../lib/apiEndpointMiddleware';
+import apiEndpointHelper from '../../../../../lib/apiEndpointHelper';
 import { ItemSchema } from '../../../../../lib/schema/ItemSchema';
 import listCollection, { ListSchema } from '../../../../../lib/schema/ListSchema';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { body, query } = req;
 
-  const { status, response } = await apiEndpointMiddleware(req,
+  const { status, response } = await apiEndpointHelper(req,
 
     async function get() {
       return await listCollection.findOne({ _id: query.listId }) as ListSchema;

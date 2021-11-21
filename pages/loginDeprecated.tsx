@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 
 import LoginForm from "../lib/components/LoginForm";
 import { useState, useEffect } from "react";
-import apiFunctionMiddleware from "../lib/apiFunctionMiddleware";
+import apiFunctionHelper from "../lib/apiFunctionHelper";
 
 //Initialize server on load
 //handles login.
@@ -16,7 +16,7 @@ export default function Login() {
 
   useEffect(() => {
     async function initServer() {
-      const res = await apiFunctionMiddleware<{}>({
+      const res = await apiFunctionHelper<{}>({
         method: "get",
         url: "/api/",
       });

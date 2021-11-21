@@ -1,8 +1,8 @@
 import { Get } from "../../pages/api/db";
-import apiFunctionMiddleware from "../apiFunctionMiddleware";
+import apiFunctionHelper from "../apiFunctionHelper";
 
 export default async function connectToDB() {
-  return await apiFunctionMiddleware<Get>({
+  return await apiFunctionHelper<Get>({
     method: "GET",
     url: "api/db"
   });

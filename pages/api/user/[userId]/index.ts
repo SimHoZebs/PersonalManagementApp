@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import userCollection, { UserSchema } from '../../../../lib/schema/UserSchema';
 import listCollection from '../../../../lib/schema/ListSchema';
-import apiEndpointMiddleware from '../../../../lib/apiEndpointMiddleware';
+import apiEndpointHelper from '../../../../lib/apiEndpointHelper';
 
 export default async function handlerc(req: NextApiRequest, res: NextApiResponse) {
   const body: {
@@ -14,7 +14,7 @@ export default async function handlerc(req: NextApiRequest, res: NextApiResponse
     userId //all
   } = req.query;
 
-  const { status, response } = await apiEndpointMiddleware(req,
+  const { status, response } = await apiEndpointHelper(req,
 
     async function get() {
       return await listCollection.find({});
