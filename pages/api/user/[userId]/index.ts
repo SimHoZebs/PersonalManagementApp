@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     },
 
     async function post() {
-      return await listCollection.create(new listCollection({ listName: body.listName, userId: userId }));
+      return await listCollection.create(new listCollection({ listName: body.listName, userId }));
     },
 
     async function patch() {

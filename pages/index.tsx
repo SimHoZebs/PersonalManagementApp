@@ -10,6 +10,9 @@ import createUser from "../lib/api/createUser";
 import { UserSchema } from "../lib/schema/UserSchema";
 import connectToDB from "../lib/api/connectToDB";
 
+const PREVIEW_USERID = "preview";
+const PREVIEW_USERNAME = "preview";
+
 export default function Index() {
   const router = useRouter();
 
@@ -25,31 +28,26 @@ export default function Index() {
       }
 
       let user: UserSchema;
-      const previewIdInLocalStorage = localStorage.getItem("userId");
-      if (previewIdInLocalStorage) {
-        const readUserRes = await readUser(previewIdInLocalStorage);
-        if (typeof readUserRes === "string") {
-          console.log(readUserRes);
-          return;
-        } else if (readUserRes === null) {
-          const createUserRes = await createUser("preview");
-          if (typeof createUserRes === "string") {
-            return createUserRes;
-          }
 
-          localStorage.setItem("userId", createUserRes._id);
-          user = createUserRes;
-          return;
-        }
+      const readUserRes = await readUser(PREVIEW_USERID);
+      if (typeof readUserRes === "string") {
+        console.log(readUserRes);
+        return;
+      }
 
-        user = readUserRes;
-      } else {
-        const createUserRes = await createUser("preview");
+      if (readUserRes === null) {
+        const createUserRes = await createUser(
+          PREVIEW_USERID,
+          PREVIEW_USERNAME
+        );
         if (typeof createUserRes === "string") {
-          return createUserRes;
+          console.log(createUserRes);
+          return;
         }
+
         user = createUserRes;
-        localStorage.setItem("userId", createUserRes._id);
+      } else {
+        user = readUserRes;
       }
 
       router.push({

@@ -60,6 +60,7 @@ export default function Dashboard() {
     async function initUserPage() {
       const userId = router.query.userId;
       if (typeof userId !== "string") {
+        console.log(userId);
         return;
       }
 

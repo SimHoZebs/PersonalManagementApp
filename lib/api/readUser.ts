@@ -3,8 +3,7 @@ import apiFunctionHelper from '../apiFunctionHelper';
 
 /**
  * Checks if user exists in DB.
- * @param username Leave empty if userId is provided.
- * @param userId Leave empty if username is provided.
+ * @param userId user unique id
  * @returns string; Client or server error
  * @returns null; Request successful but username does not exist
  * @returns User: UserSchema; Request successful and username exists
