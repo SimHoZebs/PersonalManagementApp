@@ -3,7 +3,7 @@ import userCollection, { UserSchema } from '../../../../lib/schema/UserSchema';
 import listCollection from '../../../../lib/schema/ListSchema';
 import apiEndpointHelper from '../../../../lib/apiEndpointHelper';
 
-export default async function handlerc(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const body: {
     listName: string; //createList
     listId: string; //addListId

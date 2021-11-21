@@ -122,7 +122,7 @@ const ListHeader = (props: Props) => {
 
         {isLoaded<string>(props.description) ? (
           <CustomTextField
-            placeholder="Add a description (description does not save yet!)"
+            placeholder="Add a description"
             inputRef={descRef}
             onFocus={editDesc}
             onBlur={saveDesc}
