@@ -63,7 +63,7 @@ const LoginForm = () => {
     let user: UserSchema | string;
     const readUserRes = await readUser(username);
     if (readUserRes === null) {
-      const createUserRes = await createUser(username);
+      const createUserRes = await createUser("temporary string", username);
 
       user = createUserRes;
     } else {

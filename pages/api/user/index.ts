@@ -6,17 +6,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { body, query } = req;
 
   async function get() {
-    try {
-      return userCollection.findOne({ _id: query.userId });
-    } catch (error) {
-      if (error instanceof Error) {
-        return error;
-      }
-    }
+    return await userCollection.findOne({ _id: query.userId });
   }
 
   async function post() {
-    return await userCollection.create(new userCollection({ username: body.username }));
+    return await userCollection.create(new userCollection({ username: body.username, _id: body.userId }));
   }
 
   const { status, response } = await apiEndpointHelper(req,
