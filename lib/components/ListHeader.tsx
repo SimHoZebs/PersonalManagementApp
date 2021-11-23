@@ -1,18 +1,17 @@
-import { useRef, useState } from "react";
-import isLoaded from "../isLoaded";
+import { useRef, useState, useContext, useCallback } from "react";
 
 //components
-import Skeleton from "@mui/material/Skeleton";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import CustomTextField from "./CustomTextField";
-import IconButton from "@mui/material/IconButton";
-import updateList from "../api/updateList";
+import { Skeleton, Typography, Container, IconButton } from "@mui/material";
 import ModeEdit from "@mui/icons-material/ModeEdit";
 import Save from "@mui/icons-material/Save";
+import CustomTextField from "./CustomTextField";
+
+//etc
+import updateList from "../api/updateList";
+import isLoaded from "../isLoaded";
+import { UserContext } from "../../pages/user/[userId]";
 
 interface Props {
-  userId: string;
   listId: string;
   currListName: string | undefined;
   description: string | undefined;
@@ -21,18 +20,19 @@ interface Props {
 }
 
 const ListHeader = (props: Props) => {
-  //true for now for production
+  const user = useContext(UserContext);
+
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingDesc, setEditingDesc] = useState(false);
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLInputElement>(null);
 
-  async function saveTitle() {
+  const saveTitle = useCallback(async () => {
     if (isLoaded<string>(props.currListName)) {
       setEditingTitle(false);
 
       const updateListRes = await updateList(
-        props.userId,
+        user?._id,
         props.listId,
         "listName",
         props.currListName
@@ -41,19 +41,19 @@ const ListHeader = (props: Props) => {
         console.log(updateListRes);
       }
     }
-  }
+  }, [user?._id, props.listId, props.currListName]);
 
-  function editTitle() {
+  const editTitle = useCallback(() => {
     setEditingTitle(() => true);
     titleRef.current?.focus();
-  }
+  }, []);
 
   async function saveDesc() {
     if (isLoaded<string>(props.description)) {
       setEditingDesc(false);
 
       const updateListRes = await updateList(
-        props.userId,
+        user?._id,
         props.listId,
         "description",
         props.description

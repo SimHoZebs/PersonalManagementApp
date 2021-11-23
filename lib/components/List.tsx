@@ -1,26 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 
 // components
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import { Button, Typography, Container, Divider } from "@mui/material";
 import Item from "./Item";
 import ListHeader from "./ListHeader";
 
-//api & schemas
+//etc
 import { ItemSchema } from "../schema/ItemSchema";
 import readList from "../api/readList";
-import deleteItem from "../api/deleteItem";
-import Container from "@mui/material/Container";
-import Divider from "@mui/material/Divider";
+import { UserContext } from "../../pages/user/[userId]";
 
 interface Props {
-  userId: string;
   listId: string;
   currListName: string | undefined;
   setCurrListName: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const List = (props: Props) => {
+  const user = useContext(UserContext);
   const [itemArray, setItemArray] = useState<ItemSchema[]>([]);
   const [description, setDescription] = useState<string | undefined>();
   const [creatingItem, setCreatingItem] = useState(false);
@@ -30,33 +27,20 @@ const List = (props: Props) => {
    * Readies list to respond accoridngly to new item interaction.
    * @note For more info, check Item.tsx
    */
-  function createItemBtn() {
+  const createItemBtn = useCallback((userId, listId) => {
     const newItem = {
       itemName: "",
-      userId: props.userId,
-      listId: props.listId,
+      userId: userId,
+      listId: listId,
     } as ItemSchema;
 
     setItemArray((prev) => [...prev, newItem]);
-    setCreatingItem((prev) => true);
-  }
-
-  async function deleteItemBtn(itemIndex: number) {
-    const deleteItemRes = await deleteItem(
-      props.userId,
-      props.listId,
-      itemIndex
-    );
-    if (typeof deleteItemRes === "string") {
-      console.log(deleteItemRes);
-    } else {
-      setItemArray(deleteItemRes);
-    }
-  }
+    setCreatingItem(true);
+  }, []);
 
   useEffect(() => {
     async function initList() {
-      const readListRes = await readList(props.userId, props.listId);
+      const readListRes = await readList(user?._id, props.listId);
       if (typeof readListRes === "string") {
         console.log(readListRes);
         return;
@@ -69,12 +53,11 @@ const List = (props: Props) => {
 
     initList();
     setListLoaded(true);
-  }, [props]);
+  }, [props, user?._id]);
 
   return (
     <>
       <ListHeader
-        userId={props.userId}
         listId={props.listId}
         description={description}
         setDescription={setDescription}
@@ -102,7 +85,6 @@ const List = (props: Props) => {
               setItemArray={setItemArray}
               listId={props.listId}
               setCreatingItem={setCreatingItem}
-              deleteItemBtn={deleteItemBtn}
               isNewItem={
                 creatingItem && index === itemArray.length - 1 ? true : false
               }
@@ -114,7 +96,11 @@ const List = (props: Props) => {
           </Typography>
         )}
 
-        <Button variant="text" color="primary" onClick={createItemBtn}>
+        <Button
+          variant="text"
+          color="primary"
+          onClick={() => createItemBtn(user?._id, props.listId)}
+        >
           Create Item
         </Button>
       </Container>

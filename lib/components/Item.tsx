@@ -1,17 +1,15 @@
-import React, { useState, useEffect, MouseEvent, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 //components
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
+import { Grid, Paper, TextField, IconButton } from "@mui/material";
 
-//api & schemas
+//etc
 import { ItemSchema } from "../schema/ItemSchema";
 import createItem from "../api/createItem";
 import updateItem from "../api/updateItem";
 import deleteItem from "../api/deleteItem";
+import deleteItemBtn from "../functions/deleteItemBtn";
 
 interface Props {
   item: ItemSchema;
@@ -20,7 +18,6 @@ interface Props {
   setCreatingItem: React.Dispatch<React.SetStateAction<boolean>>;
   isNewItem: boolean;
   listId: string;
-  deleteItemBtn: (itemIndex: number) => Promise<void>;
 }
 
 /**
@@ -28,7 +25,7 @@ interface Props {
  * This is needed as existing items can behave like new items if user clicks away while creating new item.
  */
 const Item = (props: Props) => {
-  const [{ itemName, userId, _id }, setItem] = useState<ItemSchema>(props.item);
+  const [{ itemName, userId }, setItem] = useState<ItemSchema>(props.item);
   const [newItemName, setNewItemName] = useState(itemName);
   const textFieldRef = useRef<HTMLDivElement | null>(null);
 
@@ -112,8 +109,14 @@ const Item = (props: Props) => {
         />
 
         <IconButton
-          onClick={() => props.deleteItemBtn(props.itemIndex)}
-          sx={{}}
+          onClick={() =>
+            deleteItemBtn(
+              userId,
+              props.listId,
+              props.itemIndex,
+              props.setItemArray
+            )
+          }
         >
           <DeleteOutlineOutlinedIcon />
         </IconButton>

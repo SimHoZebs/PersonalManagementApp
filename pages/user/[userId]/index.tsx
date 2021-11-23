@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import Head from "next/head";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 
@@ -19,9 +19,10 @@ import { UserSchema } from "../../../lib/schema/UserSchema";
 import { ListSchema } from "../../../lib/schema/ListSchema";
 import SideMenu from "../../../lib/components/SideMenu";
 
+export const UserContext = createContext<UserSchema | undefined>(undefined);
+
 /**
  * displays user dashboard.
- *
  */
 export default function Dashboard(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
@@ -49,23 +50,24 @@ export default function Dashboard(
           xs={9}
           sx={{ display: "flex", flexDirection: "column", rowGap: 1, p: 1 }}
         >
-          <Typography variant="caption">
+          <UserContext.Provider value={user}>
+            <Typography variant="caption">
+              {isLoaded<UserSchema>(user) ? (
+                `Hello, ${user?.username}`
+              ) : (
+                <Skeleton variant="text" width={80} height={14} />
+              )}
+            </Typography>
             {isLoaded<UserSchema>(user) ? (
-              `Hello, ${user?.username}`
+              <List
+                listId={user.selectedListId}
+                currListName={currListName}
+                setCurrListName={setCurrListName}
+              />
             ) : (
-              <Skeleton variant="text" width={80} height={14} />
+              <div></div>
             )}
-          </Typography>
-          {isLoaded<UserSchema>(user) ? (
-            <List
-              userId={user._id}
-              listId={user.selectedListId}
-              currListName={currListName}
-              setCurrListName={setCurrListName}
-            />
-          ) : (
-            <div></div>
-          )}
+          </UserContext.Provider>
         </Grid>
       </Grid>
     </Container>

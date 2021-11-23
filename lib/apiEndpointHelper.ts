@@ -12,8 +12,8 @@ export default async function apiEndpointHelper(
 
   console.log(`
   url: ${req.url} 
-  body: ${req.body}
-  query: ${req.query}
+  body: ${JSON.stringify(req.body, null, 2)}
+  query: ${JSON.stringify(req.query, null, 2)}
   methods: ${req.method}
   `);
   const { method } = req;

@@ -5,30 +5,24 @@ interface Props extends StandardTextFieldProps {
 }
 
 const CustomTextField = (props: Props) => {
+  const { sx, typography, ...rest } = props;
+
   return (
     <TextField
-      onFocus={props.onFocus}
-      onBlur={props.onBlur}
-      inputRef={props.inputRef}
-      placeholder={props.placeholder}
-      multiline={props.multiline}
-      fullWidth={props.fullWidth}
       variant="standard"
-      disabled={props.disabled}
-      value={props.value}
-      onChange={props.onChange}
       sx={{
         "& .MuiInputBase-root": {
           "& .Mui-disabled": {
             WebkitTextFillColor: "white",
           },
-          typography: `${props.typography}`,
+          typography: `${typography}`,
           ":before": {
             borderBottom: 0,
           },
         },
-        ...props.sx,
+        ...sx,
       }}
+      {...rest}
     />
   );
 };
