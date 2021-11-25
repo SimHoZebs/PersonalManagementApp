@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 //components
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
@@ -6,12 +6,9 @@ import { Grid, Paper, TextField, IconButton } from "@mui/material";
 
 //etc
 import { ItemSchema } from "../schema/ItemSchema";
-import createItem from "../api/createItem";
-import updateItem from "../api/updateItem";
-import deleteItem from "../api/deleteItem";
-import deleteItemBtn from "../functions/deleteItemBtn";
+import { onBlur, deleteItemBtn } from "./Item.util";
 
-interface Props {
+export interface Props {
   item: ItemSchema;
   itemIndex: number;
   setItemArray: React.Dispatch<React.SetStateAction<ItemSchema[]>>;
@@ -38,41 +35,6 @@ const Item = (props: Props) => {
    * Creates new item if it's new, or updates existing item.
    * Add or update item to list.
    */
-  async function onBlur() {
-    props.setCreatingItem((prev) => false);
-
-    if (newItemName === "") {
-      //If new title is empty, do not save the item
-      if (props.isNewItem) {
-        props.setItemArray((prev) =>
-          prev.filter((item, index) => index !== props.itemIndex)
-        );
-      } else {
-        const updatedItemArray = await deleteItem(
-          userId,
-          props.listId,
-          props.itemIndex
-        );
-        if (typeof updatedItemArray === "string") {
-          console.log(updatedItemArray);
-          return;
-        }
-
-        props.setItemArray(updatedItemArray);
-      }
-    } else if (newItemName !== itemName) {
-      //if new title isn't empty and it's diff from the old one, save the item
-      const updatedItemArray = props.isNewItem
-        ? await createItem(userId, props.listId, newItemName)
-        : await updateItem(userId, props.listId, props.itemIndex, newItemName);
-      if (typeof updatedItemArray === "string") {
-        console.log(updatedItemArray);
-        return;
-      }
-
-      props.setItemArray(updatedItemArray);
-    }
-  }
 
   //automatic itemName textField focus on creation.
   //isNewItem boolean prevents existing items from being focused
@@ -105,7 +67,9 @@ const Item = (props: Props) => {
           variant="outlined"
           value={newItemName}
           onChange={(e) => setNewItemName(e.target.value)}
-          onBlur={onBlur}
+          onBlur={() => {
+            onBlur(userId, itemName, newItemName, props);
+          }}
         />
 
         <IconButton

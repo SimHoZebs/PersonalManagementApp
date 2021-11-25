@@ -106,19 +106,16 @@ export const getServerSideProps = async (
   try {
     const userId = context.query.userId;
     if (typeof userId !== "string") {
-      console.log(userId);
-      throw new Error("something wrong with user");
+      throw new Error("userId is not a string");
     }
 
     const readUserRes = await readUser(userId);
     if (typeof readUserRes === "string") {
-      console.log(readUserRes);
-      throw new Error("something wrong with user");
+      throw new Error(readUserRes);
     }
     if (readUserRes === null) {
-      console.log(`User with id ${userId} does not exist.`);
       //route back to login screen?
-      throw new Error("something wrong with user");
+      throw new Error(`User with id ${userId} does not exist.`);
     }
 
     let user = readUserRes;
@@ -126,8 +123,7 @@ export const getServerSideProps = async (
     if (user.listIdArray.length === 0) {
       const addTempDefaultsRes = await addTempDefaults(userId);
       if (typeof addTempDefaultsRes === "string") {
-        console.log(addTempDefaultsRes);
-        throw new Error("something wrong with user");
+        throw new Error(addTempDefaultsRes);
       }
       user = addTempDefaultsRes;
     }

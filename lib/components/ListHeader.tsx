@@ -71,7 +71,7 @@ const ListHeader = (props: Props) => {
   }
 
   return (
-    <Container disableGutters>
+    <>
       <Container
         disableGutters
         sx={{ display: "flex", textAlign: "left", alignItems: "center" }}
@@ -136,7 +136,7 @@ const ListHeader = (props: Props) => {
           <Skeleton variant="text" width="100%" height={40} />
         )}
       </Container>
-    </Container>
+    </>
   );
 };
 
