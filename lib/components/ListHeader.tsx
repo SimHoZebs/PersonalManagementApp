@@ -1,4 +1,4 @@
-import { useRef, useState, useContext, useCallback } from "react";
+import { useRef, useState, useContext } from "react";
 
 //components
 import { Skeleton, Typography, Container, IconButton } from "@mui/material";
@@ -27,7 +27,7 @@ const ListHeader = (props: Props) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLInputElement>(null);
 
-  const saveTitle = useCallback(async () => {
+  async function saveTitle() {
     if (isLoaded<string>(props.currListName)) {
       setEditingTitle(false);
 
@@ -41,12 +41,12 @@ const ListHeader = (props: Props) => {
         console.log(updateListRes);
       }
     }
-  }, [user?._id, props.listId, props.currListName]);
+  }
 
-  const editTitle = useCallback(() => {
+  function editTitle() {
     setEditingTitle(() => true);
     titleRef.current?.focus();
-  }, []);
+  }
 
   async function saveDesc() {
     if (isLoaded<string>(props.description)) {

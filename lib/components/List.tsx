@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // components
 import { Button, Typography, Container, Divider } from "@mui/material";
@@ -27,16 +27,16 @@ const List = (props: Props) => {
    * Readies list to respond accoridngly to new item interaction.
    * @note For more info, check Item.tsx
    */
-  const createItemBtn = useCallback((userId, listId) => {
+  function createItemBtn() {
     const newItem = {
       itemName: "",
-      userId: userId,
-      listId: listId,
+      userId: user?._id,
+      listId: props.listId,
     } as ItemSchema;
 
     setItemArray((prev) => [...prev, newItem]);
     setCreatingItem(true);
-  }, []);
+  }
 
   useEffect(() => {
     async function initList() {
@@ -96,11 +96,7 @@ const List = (props: Props) => {
           </Typography>
         )}
 
-        <Button
-          variant="text"
-          color="primary"
-          onClick={() => createItemBtn(user?._id, props.listId)}
-        >
+        <Button variant="text" color="primary" onClick={() => createItemBtn()}>
           Create Item
         </Button>
       </Container>

@@ -6,7 +6,6 @@ import readUser from "../api/readUser";
 import createUser from "../api/createUser";
 
 export default async function authentication() {
-  console.log("it works");
 
   try {
     const firebaseConfig = await readFirebaseConfig();
@@ -25,8 +24,7 @@ export default async function authentication() {
       throw new Error("user has no display name");
     }
 
-    let user: Awaited<ReturnType<typeof readUser>>;
-    user = await readUser(googleUser.uid);
+    let user = await readUser(googleUser.uid);
     if (user === null) {
       user = await createUser(googleUser.uid, googleUser.displayName);
     }

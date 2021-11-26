@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { useCallback } from "react";
 
 //components
 import {
@@ -23,14 +22,14 @@ interface Props {
 
 const SideMenu = (props: Props) => {
   const router = useRouter();
-  const login = useCallback(async () => {
+  async function login() {
     const user = await (await import("../functions/authentication")).default();
     if (typeof user === "string") {
       console.log(user);
       return;
     }
     router.push(`/user/${user._id}`);
-  }, [router]);
+  }
 
   return (
     <Paper elevation={3} sx={{ height: "100vh", pt: 2, pb: 2 }}>
