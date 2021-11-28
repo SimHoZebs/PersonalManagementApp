@@ -1,7 +1,8 @@
 
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import readFirebaseConfig from "../api/connectToFirebase";
 import { initializeApp } from "firebase/app";
+
+import readFirebaseConfig from "../api/connectToFirebase";
 import readUser from "../api/readUser";
 import createUser from "../api/createUser";
 

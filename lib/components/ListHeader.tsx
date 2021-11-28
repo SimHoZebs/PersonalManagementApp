@@ -75,11 +75,11 @@ const ListHeader = (props: Props) => {
       <div className="flex text-left items-center gap-x-2">
         {editingTitle ? (
           <button onClick={saveTitle}>
-            <EditIcon className="h-7 w-7" />
+            <SaveIcon className="h-7 w-7" />
           </button>
         ) : (
           <button onClick={editTitle}>
-            <SaveIcon className="h-7 w-7" />
+            <EditIcon className="h-7 w-7" />
           </button>
         )}
 
