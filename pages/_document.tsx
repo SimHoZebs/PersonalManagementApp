@@ -17,7 +17,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
           />
         </Head>
-        <body>
+        <body className="font-roboto">
           <Main />
           <NextScript />
         </body>

@@ -1,24 +1,13 @@
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import theme from "../theme";
+import ClipboardCheck from "../icons/ClipboardCheck";
 
 const Brand = () => {
   return (
-    <Container
-      sx={{
-        display: "flex",
-        columnGap: theme.spacing(1),
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <AssignmentTurnedInIcon
-        fontSize="large"
-        color="primary"
-      ></AssignmentTurnedInIcon>
-      <Typography variant="h6">AnotherToDoList</Typography>
-    </Container>
+    <div className="flex flex-row gap-x-1">
+      <div className="text-blue-400 h-7 w-7">
+        <ClipboardCheck />
+      </div>
+      <p className="font-medium text-lg">AnotherToDoList</p>
+    </div>
   );
 };
 
