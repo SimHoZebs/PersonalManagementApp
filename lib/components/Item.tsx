@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 
 //components
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { Grid, Paper, TextField, IconButton } from "@mui/material";
+import DeleteIcon from "../icons/DeleteIcon";
+import CustomTextField from "./CustomTextField";
 
 //etc
 import { ItemSchema } from "../schema/ItemSchema";
@@ -24,7 +24,7 @@ export interface Props {
 const Item = (props: Props) => {
   const [{ itemName, userId }, setItem] = useState<ItemSchema>(props.item);
   const [newItemName, setNewItemName] = useState(itemName);
-  const textFieldRef = useRef<HTMLDivElement | null>(null);
+  const textFieldRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     setItem(props.item);
@@ -50,21 +50,10 @@ const Item = (props: Props) => {
   }, [props.isNewItem]);
 
   return (
-    <Grid item xs={12} sx={{ padding: 0 }}>
-      <Paper
-        component="div"
-        sx={{
-          paddingX: 2,
-          paddingY: 2,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          columnGap: 1,
-        }}
-      >
-        <TextField
+    <div>
+      <div className="p-3 flex items-center justify-between gap-x-1 bg-dark-700 rounded">
+        <CustomTextField
           ref={textFieldRef}
-          variant="outlined"
           value={newItemName}
           onChange={(e) => setNewItemName(e.target.value)}
           onBlur={() => {
@@ -72,7 +61,8 @@ const Item = (props: Props) => {
           }}
         />
 
-        <IconButton
+        <button
+          className="hover:bg-dark-300 rounded-full p-2"
           onClick={() =>
             deleteItemBtn(
               userId,
@@ -82,10 +72,12 @@ const Item = (props: Props) => {
             )
           }
         >
-          <DeleteOutlineOutlinedIcon />
-        </IconButton>
-      </Paper>
-    </Grid>
+          <div className="h-6 w-6">
+            <DeleteIcon />
+          </div>
+        </button>
+      </div>
+    </div>
   );
 };
 
