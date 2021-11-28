@@ -88,9 +88,9 @@ const ListHeader = (props: Props) => {
 
         {isLoaded<string>(props.currListName) ? (
           <CustomTextField
-            inputRef={titleRef}
+            className="text-3xl"
+            ref={titleRef}
             placeholder="Type List Name Here"
-            typography="h3"
             onFocus={editTitle}
             onBlur={saveTitle}
             value={props.currListName}
@@ -123,12 +123,9 @@ const ListHeader = (props: Props) => {
         {isLoaded<string>(props.description) ? (
           <CustomTextField
             placeholder="Add a description"
-            inputRef={descRef}
+            ref={descRef}
             onFocus={editDesc}
             onBlur={saveDesc}
-            typography="subtitle"
-            fullWidth
-            multiline
             value={props.description}
             onChange={(e) => props.setDescription(e.target.value)}
           />

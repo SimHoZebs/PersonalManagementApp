@@ -1,29 +1,15 @@
-import TextField, { StandardTextFieldProps } from "@mui/material/TextField";
-
-interface Props extends StandardTextFieldProps {
-  typography?: string;
-}
+import { DetailedHTMLProps, InputHTMLAttributes } from "react";
+interface Props
+  extends DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {}
 
 const CustomTextField = (props: Props) => {
-  const { sx, typography, ...rest } = props;
+  const { className, ...rest } = props;
 
   return (
-    <TextField
-      variant="standard"
-      sx={{
-        "& .MuiInputBase-root": {
-          "& .Mui-disabled": {
-            WebkitTextFillColor: "white",
-          },
-          typography: `${typography}`,
-          ":before": {
-            borderBottom: 0,
-          },
-        },
-        ...sx,
-      }}
-      {...rest}
-    />
+    <input type="text" className={`bg-transparent ${className}`} {...rest} />
   );
 };
 
