@@ -1,9 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-//components
-import { Typography } from "@mui/material";
-
 //apis & schemas
 import readUser from "../lib/api/readUser";
 import createUser from "../lib/api/createUser";
@@ -28,7 +25,7 @@ export default function Index(
     });
   }, [props.user?._id, router]);
 
-  return <Typography>Loading app...</Typography>;
+  return <div>Loading app...</div>;
 }
 
 export async function getServerSideProps() {
