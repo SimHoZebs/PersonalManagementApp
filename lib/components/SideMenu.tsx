@@ -1,27 +1,19 @@
 import { useRouter } from "next/router";
 
 //components
-import {
-  Button,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Container,
-  Paper,
-  Skeleton,
-} from "@mui/material";
-import ListAltOutlined from "@mui/icons-material/ListAltOutlined";
-import GoogleIcon from "@mui/icons-material/Google";
+import ListIcon from "../icons/ListIcon";
+import Login from "../icons/Login";
 import Brand from "./Brand";
 
 import isLoaded from "../isLoaded";
+
 interface Props {
   currListName: string | undefined;
 }
 
 const SideMenu = (props: Props) => {
   const router = useRouter();
+
   async function login() {
     const user = await (await import("../functions/authentication")).default();
     if (typeof user === "string") {
@@ -32,45 +24,40 @@ const SideMenu = (props: Props) => {
   }
 
   return (
-    <Paper elevation={3} sx={{ height: "100vh", pt: 2, pb: 2 }}>
-      <Container
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          height: "100%",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-        disableGutters
-      >
-        <Container disableGutters>
-          <Container sx={{ pb: 3 }}>
+    <div className="h-screen p-3 bg-dark-700">
+      <div className="flex flex-col h-full items-center justify-between">
+        <div className="flex flex-col gap-y-5 w-full">
+          <div className="self-center">
             <Brand />
-          </Container>
+          </div>
 
-          <List>
-            <ListItem disablePadding>
-              {isLoaded(props.currListName) ? (
-                <ListItemButton sx={{ columnGap: 1 }}>
-                  <ListAltOutlined />
+          <ol>
+            {isLoaded(props.currListName) ? (
+              <li>
+                <button className="w-full flex flex-row gap-x-1 items-center hover:bg-dark-300 py-2 px-1">
+                  <div className="h-6 w-6">
+                    <ListIcon />
+                  </div>
+                  <p>{props.currListName}</p>
+                </button>
+              </li>
+            ) : (
+              <div className="animate-pulse bg-dark-300 w-full h-8"></div>
+            )}
+          </ol>
+        </div>
 
-                  <ListItemText
-                    primary={props.currListName}
-                    sx={{ textAlign: "left" }}
-                  />
-                </ListItemButton>
-              ) : (
-                <Skeleton variant="rectangular" width="100%" height={32} />
-              )}
-            </ListItem>
-          </List>
-        </Container>
-
-        <Button startIcon={<GoogleIcon />} variant="outlined" onClick={login}>
-          Login
-        </Button>
-      </Container>
-    </Paper>
+        <button
+          className="flex flex-row border-1 px-2 py-1 gap-x-2 rounded border-blue-400 text-blue-400 items-center"
+          onClick={login}
+        >
+          <div className="h-6 w-6 ">
+            <Login />
+          </div>
+          <p className="font-medium text-sm">LOGIN</p>
+        </button>
+      </div>
+    </div>
   );
 };
 
