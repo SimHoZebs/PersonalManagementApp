@@ -5,8 +5,8 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import isLoaded from "../../../lib/isLoaded";
 
 //components
-import { Typography, Grid, Container, Skeleton } from "@mui/material";
 import List from "../../../lib/components/List";
+import Skeleton from "../../../lib/components/Skeleton";
 
 //API functions
 import readUser from "../../../lib/api/readUser";
@@ -35,42 +35,32 @@ export default function Dashboard(
   }, [props.user]);
 
   return (
-    <Container disableGutters>
+    <>
       <Head>
         <title>Dashboard - AnotherToDoApp</title>
       </Head>
 
-      <Grid container direction="row">
-        <Grid item xs={3}>
+      <div className="flex flex-row">
+        <div className="w-1/4 max-w-xs">
           <SideMenu currListName={currListName} />
-        </Grid>
+        </div>
 
-        <Grid
-          item
-          xs={9}
-          sx={{ display: "flex", flexDirection: "column", rowGap: 1, p: 1 }}
-        >
-          <UserContext.Provider value={user}>
-            <Typography variant="caption">
-              {isLoaded<UserSchema>(user) ? (
-                `Hello, ${user?.username}`
-              ) : (
-                <Skeleton variant="text" width={80} height={14} />
-              )}
-            </Typography>
-            {isLoaded<UserSchema>(user) ? (
+        <div className="flex flex-col gap-y-1 p-2 w-3/4">
+          {isLoaded<UserSchema>(user) ? (
+            <UserContext.Provider value={user}>
+              <p className="text-xs">Hello, {user?.username}</p>
               <List
                 listId={user.selectedListId}
                 currListName={currListName}
                 setCurrListName={setCurrListName}
               />
-            ) : (
-              <div></div>
-            )}
-          </UserContext.Provider>
-        </Grid>
-      </Grid>
-    </Container>
+            </UserContext.Provider>
+          ) : (
+            <Skeleton className="h-3 w-36" />
+          )}
+        </div>
+      </div>
+    </>
   );
 }
 
