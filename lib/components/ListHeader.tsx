@@ -1,10 +1,10 @@
 import { useRef, useState, useContext } from "react";
 
 //components
-import { Skeleton, Typography, Container, IconButton } from "@mui/material";
-import ModeEdit from "@mui/icons-material/ModeEdit";
-import Save from "@mui/icons-material/Save";
 import CustomTextField from "./CustomTextField";
+import Skeleton from "./Skeleton";
+import SaveIcon from "../icons/SaveIcon";
+import EditIcon from "../icons/EditIcon";
 
 //etc
 import updateList from "../api/updateList";
@@ -71,19 +71,16 @@ const ListHeader = (props: Props) => {
   }
 
   return (
-    <>
-      <Container
-        disableGutters
-        sx={{ display: "flex", textAlign: "left", alignItems: "center" }}
-      >
+    <header className="flex flex-col gap-y-2">
+      <div className="flex text-left items-center gap-x-2">
         {editingTitle ? (
-          <IconButton onClick={saveTitle}>
-            <Save />
-          </IconButton>
+          <button onClick={saveTitle}>
+            <EditIcon className="h-7 w-7" />
+          </button>
         ) : (
-          <IconButton onClick={editTitle}>
-            <ModeEdit />
-          </IconButton>
+          <button onClick={editTitle}>
+            <SaveIcon className="h-7 w-7" />
+          </button>
         )}
 
         {isLoaded<string>(props.currListName) ? (
@@ -97,27 +94,19 @@ const ListHeader = (props: Props) => {
             onChange={(e) => props.setCurrListName(e.target.value)}
           />
         ) : (
-          <Typography variant="h3">
-            <Skeleton variant="text" width={600} />
-          </Typography>
+          <Skeleton />
         )}
-      </Container>
+      </div>
 
-      <Container
-        disableGutters
-        sx={{
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
+      <div className="flex text-left items-center gap-x-2">
         {editingDesc ? (
-          <IconButton onClick={saveDesc}>
-            <Save />
-          </IconButton>
+          <button onClick={saveDesc}>
+            <SaveIcon className="w-7 h-7" />
+          </button>
         ) : (
-          <IconButton onClick={editDesc}>
-            <ModeEdit />
-          </IconButton>
+          <button onClick={editDesc}>
+            <EditIcon className="w-7 h-7" />
+          </button>
         )}
 
         {isLoaded<string>(props.description) ? (
@@ -130,10 +119,10 @@ const ListHeader = (props: Props) => {
             onChange={(e) => props.setDescription(e.target.value)}
           />
         ) : (
-          <Skeleton variant="text" width="100%" height={40} />
+          <Skeleton />
         )}
-      </Container>
-    </>
+      </div>
+    </header>
   );
 };
 
