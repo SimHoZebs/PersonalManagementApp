@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "noEmitHelpers": true,
+    "importHelpers": true,
     "target": "ESNext",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
