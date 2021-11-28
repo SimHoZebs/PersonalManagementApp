@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 
 // components
-import { Button, Typography, Container, Divider } from "@mui/material";
 import Item from "./Item";
 import ListHeader from "./ListHeader";
+import Button from "./Button";
 
 //etc
 import { ItemSchema } from "../schema/ItemSchema";
@@ -65,17 +65,9 @@ const List = (props: Props) => {
         currListName={props.currListName}
       />
 
-      <Divider />
+      <hr className="border-dark-300" />
 
-      <Container
-        disableGutters
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          rowGap: 1,
-          alignItems: "flex-start",
-        }}
-      >
+      <div className="flex flex-col gap-y-2 items-start">
         {itemArray.length !== 0 ? (
           itemArray.map((item, index) => (
             <Item
@@ -91,15 +83,11 @@ const List = (props: Props) => {
             />
           ))
         ) : (
-          <Typography variant="body1">
-            There is no item in the list! Start by adding one!
-          </Typography>
+          <p>There is no item in the list! Start by adding one!</p>
         )}
 
-        <Button variant="text" color="primary" onClick={() => createItemBtn()}>
-          Create Item
-        </Button>
-      </Container>
+        <Button onClick={() => createItemBtn()}>create item</Button>
+      </div>
     </>
   );
 };
