@@ -1,5 +1,5 @@
-import { UserSchema } from "../schema/UserSchema";
 import apiFunctionHelper from "../apiFunctionHelper";
+import { Patch } from "../../pages/api/user/[userId]";
 
 /**
  * adds listId to user's listIdArray.
@@ -9,7 +9,7 @@ import apiFunctionHelper from "../apiFunctionHelper";
  */
 export default async function addListId(userId: string, listId: string) {
 
-  return await apiFunctionHelper<UserSchema>({
+  return await apiFunctionHelper<Patch>({
     method: "PATCH",
     url: `api/user/${userId}`,
     data: { listId }

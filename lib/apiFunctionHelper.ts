@@ -20,10 +20,13 @@ export default async function apiFunctionHelper<T>(req: AxiosRequestConfig) {
       return res.data.res as T;
     }
     else {
-      return `Possibly client error, ${JSON.stringify(res, null, 2)}`;
+      const error = new Error(JSON.stringify(res, null, 2));
+      console.log(`Possibly client error, ${error}`);
+      return error;
     }
   }
   catch (error) {
-    return `Possibly server error, ${error instanceof Error ? error.message : JSON.stringify(error, null, 2)}`;
+    console.log(`Possibly server error, ${error instanceof Error ? error.message : JSON.stringify(error, null, 2)}`);
+    return error as Error;
   }
 }

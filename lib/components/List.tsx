@@ -41,14 +41,11 @@ const List = (props: Props) => {
   useEffect(() => {
     async function initList() {
       const readListRes = await readList(user?._id, props.listId);
-      if (typeof readListRes === "string") {
-        console.log(readListRes);
-        return;
+      if (!(readListRes instanceof Error)) {
+        setItemArray((prev) => readListRes.itemArray);
+        setDescription(readListRes.description);
+        props.setCurrListName(readListRes.listName);
       }
-
-      setItemArray((prev) => readListRes.itemArray);
-      setDescription(readListRes.description);
-      props.setCurrListName(readListRes.listName);
     }
 
     initList();

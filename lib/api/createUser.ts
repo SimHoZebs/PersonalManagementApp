@@ -1,9 +1,9 @@
+import { Post } from "../../pages/api/user";
 import apiFunctionHelper from "../apiFunctionHelper";
-import { UserSchema } from "../schema/UserSchema";
 
 export default async function createUser(userId: string, username: string) {
 
-  return await apiFunctionHelper<UserSchema>({
+  return await apiFunctionHelper<Post>({
     method: "POST",
     url: `api/user/`,
     data: { userId, username },

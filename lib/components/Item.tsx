@@ -32,7 +32,7 @@ const Item = (props: Props) => {
     props.setCreatingItem((prev) => false);
 
     if (itemName === "") {
-      //If new title is empty, do not save the item
+      //If item name is empty, do not save the item
       if (props.isNewItem) {
         props.setItemArray((prev) =>
           prev.filter((item, index) => index !== props.itemIndex)
@@ -43,29 +43,23 @@ const Item = (props: Props) => {
           props.listId,
           props.itemIndex
         );
-        if (typeof updatedItemArray === "string") {
-          console.log(updatedItemArray);
-          return;
+        if (!(updatedItemArray instanceof Error)) {
+          props.setItemArray(updatedItemArray);
         }
-
-        props.setItemArray(updatedItemArray);
       }
     } else if (itemName !== item.itemName) {
-      //if new title isn't empty and it's diff from the old one, save the item
+      //if item name isn't empty and diff from the old one, save the item
       const updatedItemArray = props.isNewItem
         ? await createItem(item.userId, props.listId, itemName)
-        : await updateItem(
+        : ((await updateItem(
             item.userId,
             props.listId,
             props.itemIndex,
             itemName
-          );
-      if (typeof updatedItemArray === "string") {
-        console.log(updatedItemArray);
-        return;
+          )) as ItemSchema[] | Error);
+      if (!(updatedItemArray instanceof Error)) {
+        props.setItemArray(updatedItemArray);
       }
-
-      props.setItemArray(updatedItemArray);
     }
   }
 
@@ -75,9 +69,7 @@ const Item = (props: Props) => {
       props.listId,
       props.itemIndex
     );
-    if (typeof deleteItemRes === "string") {
-      console.log(deleteItemRes);
-    } else {
+    if (!(deleteItemRes instanceof Error)) {
       props.setItemArray(deleteItemRes);
     }
   }

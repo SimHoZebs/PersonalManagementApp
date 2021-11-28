@@ -31,21 +31,21 @@ export default function Index(
 export async function getServerSideProps() {
   try {
     const connectToDBRes = await connectToDB();
-    if (typeof connectToDBRes === "string") {
-      throw new Error(connectToDBRes);
+    if (connectToDBRes instanceof Error) {
+      throw connectToDBRes;
     }
 
     let user: UserSchema;
 
     const readUserRes = await readUser(PREVIEW_USERID);
-    if (typeof readUserRes === "string") {
-      throw new Error(readUserRes);
+    if (readUserRes instanceof Error) {
+      throw readUserRes;
     }
 
     if (readUserRes === null) {
       const createUserRes = await createUser(PREVIEW_USERID, PREVIEW_USERNAME);
-      if (typeof createUserRes === "string") {
-        throw new Error(createUserRes);
+      if (createUserRes instanceof Error) {
+        throw createUserRes;
       }
 
       user = createUserRes;

@@ -31,15 +31,7 @@ const ListHeader = (props: Props) => {
     if (isLoaded<string>(props.currListName)) {
       setEditingTitle(false);
 
-      const updateListRes = await updateList(
-        user?._id,
-        props.listId,
-        "listName",
-        props.currListName
-      );
-      if (typeof updateListRes === "string") {
-        console.log(updateListRes);
-      }
+      await updateList(user?._id, props.listId, "listName", props.currListName);
     }
   }
 
@@ -52,16 +44,12 @@ const ListHeader = (props: Props) => {
     if (isLoaded<string>(props.description)) {
       setEditingDesc(false);
 
-      const updateListRes = await updateList(
+      await updateList(
         user?._id,
         props.listId,
         "description",
         props.description
       );
-
-      if (typeof updateListRes === "string") {
-        console.log(updateListRes);
-      }
     }
   }
 

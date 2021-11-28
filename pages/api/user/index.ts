@@ -1,20 +1,34 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import apiEndpointHelper from "../../../lib/apiEndpointHelper";
-import userCollection from '../../../lib/schema/UserSchema';
+import userCollection, { UserSchema } from '../../../lib/schema/UserSchema';
+
+export type Get = Awaited<ReturnType<typeof get>>;
+export type Post = Awaited<ReturnType<typeof post>>;
+
+async function get(userId: string) {
+  return await userCollection.findOne({ _id: userId }) as UserSchema | null;
+}
+
+async function post(body: Body) {
+  return await userCollection.create(new userCollection({ username: body.username, _id: body.userId })) as UserSchema;
+}
+
+interface Body {
+  userId: string;
+  username: string;
+}
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { body, query } = req;
-
-  async function get() {
-    return await userCollection.findOne({ _id: query.userId });
-  }
-
-  async function post() {
-    return await userCollection.create(new userCollection({ username: body.username, _id: body.userId }));
-  }
+  const body: Body = req.body;
+  const { userId } = req.query;
 
   const { status, response } = await apiEndpointHelper(req,
-    get, post,
+    async function getWrapper() {
+      return get(userId as string);
+    },
+    async function postWarpper() {
+      return post(body);
+    },
   );
 
   res.status(status).json(response);
