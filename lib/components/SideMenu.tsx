@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 //components
 import ListIcon from "../icons/ListIcon";
 import Login from "../icons/Login";
-import Brand from "./Brand";
+import Logo from "./Logo";
 
 import isLoaded from "../isLoaded";
 
@@ -26,7 +26,7 @@ const SideMenu = (props: Props) => {
       <div className="flex flex-col h-full items-center justify-between">
         <div className="flex flex-col gap-y-5 w-full">
           <div className="self-center">
-            <Brand />
+            <Logo />
           </div>
 
           <ol>
