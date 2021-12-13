@@ -83,7 +83,7 @@ const List = (props: Props) => {
           <p>There is no item in the list! Start by adding one!</p>
         )}
 
-        <Button onClick={() => createItemBtn()}>create item</Button>
+        <Button onClick={() => createItemBtn()}>CREATE TASK</Button>
       </div>
     </>
   );

@@ -6,6 +6,7 @@ import Login from "../icons/Login";
 import Logo from "./Logo";
 
 import isLoaded from "../isLoaded";
+import Button from "./Button";
 
 interface Props {
   currListName: string | undefined;
@@ -45,15 +46,15 @@ const SideMenu = (props: Props) => {
           </ol>
         </div>
 
-        <button
-          className="flex flex-row border-1 px-2 py-1 gap-x-2 rounded border-blue-400 text-blue-400 items-center"
+        <Button
+          className="flex flex-row border-1 px-2 py-1 gap-x-2 border-blue-400 items-center"
           onClick={login}
         >
           <div className="h-6 w-6 ">
             <Login />
           </div>
           <p className="font-medium text-sm">LOGIN</p>
-        </button>
+        </Button>
       </div>
     </div>
   );

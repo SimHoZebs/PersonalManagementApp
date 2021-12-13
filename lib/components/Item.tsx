@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 
 //components
-import DeleteIcon from "../icons/DeleteIcon";
 import CustomTextField from "./CustomTextField";
+import StatusButton from "./StatusButton";
+import SelectDateButton from "./SelectDateButton";
+import PriorityButton from "./PriorityButton";
+import MoreOptionsButton from "./MoreOptionsButton";
 
 //etc
 import createItem from "../api/createItem";
@@ -89,23 +92,20 @@ const Item = (props: Props) => {
   }, [props.isNewItem]);
 
   return (
-    <div>
-      <div className="p-3 flex items-center justify-between gap-x-1 bg-dark-700 rounded">
-        <CustomTextField
-          ref={textFieldRef}
-          value={itemName}
-          onChange={(e) => setItemName(e.target.value)}
-          onBlur={onBlur}
-        />
-
-        <button
-          className="hover:bg-dark-300 rounded-full p-2"
-          onClick={deleteItemBtn}
-        >
-          <div className="h-6 w-6">
-            <DeleteIcon />
-          </div>
-        </button>
+    <div className="p-2 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200">
+      <StatusButton />
+      <div className="flex flex-col gap-y-2">
+        <div className="flex items-center">
+          <CustomTextField
+            ref={textFieldRef}
+            value={itemName}
+            onChange={(e) => setItemName(e.target.value)}
+            onBlur={onBlur}
+          />
+          <PriorityButton />
+          <MoreOptionsButton />
+        </div>
+        <SelectDateButton />
       </div>
     </div>
   );

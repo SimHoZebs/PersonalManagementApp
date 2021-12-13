@@ -20,7 +20,7 @@ const CustomTextField = (
     <input
       ref={ref}
       type="text"
-      className={`bg-transparent p-1 hover:bg-dark-300 focus-visible:(outline-transparent bg-dark-300) ${className}`}
+      className={`bg-transparent p-1 text-xl hover:bg-dark-200 focus-visible:(outline-transparent bg-dark-200) ${className}`}
       {...rest}
     />
   );
