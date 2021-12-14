@@ -1,5 +1,5 @@
 import { Document, Schema, models, model } from "mongoose";
-import { GoalModel, GoalSchema } from "./GoalSchema";
+import { goalModel, GoalSchema } from "./GoalSchema";
 
 export interface CategorySchema extends Document {
   name: string;
@@ -7,7 +7,7 @@ export interface CategorySchema extends Document {
   goalArray: GoalSchema[];
 }
 
-export const CategoryModel = new Schema<CategorySchema>({
+export const categoryModel = new Schema<CategorySchema>({
   name: {
     type: String,
     required: [true, "Category name is empty"]
@@ -16,7 +16,7 @@ export const CategoryModel = new Schema<CategorySchema>({
     type: String,
     required: [true, "User id is empty"]
   },
-  goalArray: [GoalModel]
+  goalArray: [goalModel]
 });
 
-export default models.Category || model("Category", CategoryModel);
+export default models.Category || model("Category", categoryModel);

@@ -1,16 +1,24 @@
-import { Schema, Document, model, models } from "mongoose";
-import { ItemModel, ItemSchema } from "./ItemSchema";
+import mongoose, { Document } from 'mongoose';
+import { taskModel, TaskSchema } from './TaskSchema';
 
 export interface GoalSchema extends Document {
-  name: string;
-  ItemArray: ItemSchema[];
+  title: string;
+  description: string;
+  taskArray: TaskSchema[];
+  statusArray: ["planned", "ongoing", "completed"];
+  statusColorArray: ["#2563eb", "#9333ea", "#65a30d"];
 }
-export const GoalModel = new Schema<GoalSchema>({
-  name: {
+
+export const goalModel = new mongoose.Schema<GoalSchema>({
+  title: {
     type: String,
-    required: [true, "Goal name is empty"]
+    required: true,
   },
-  ItemArray: [ItemModel]
+  description: {
+    type: String,
+    default: "",
+  },
+  taskArray: { type: [taskModel], default: [] }
 });
 
-export default models.Goal || model<GoalSchema>("Goal", GoalModel);
+export default mongoose.models.Goal || mongoose.model<GoalSchema>('Goal', goalModel);

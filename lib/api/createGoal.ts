@@ -2,7 +2,7 @@ import { Post } from '../../pages/api/user/[userId]';
 import apiFunctionHelper from '../apiFunctionHelper';
 
 /**
- * Creates a new list for user.
+ * Creates a new goal for user.
  * @param userId 
  * @param title 
  * @returns 

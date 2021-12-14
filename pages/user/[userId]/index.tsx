@@ -3,7 +3,7 @@ import Head from "next/head";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 
 //components
-import List from "../../../lib/components/List";
+import Goal from "../../../lib/components/Goal";
 import Skeleton from "../../../lib/components/Skeleton";
 
 //etc
@@ -22,7 +22,7 @@ export default function Dashboard(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const [user, setUser] = useState<UserSchema | undefined>();
-  const [currListTitle, setCurrListTitle] = useState<string | undefined>();
+  const [currGoalTitle, setCurrGoalTitle] = useState<string | undefined>();
 
   useEffect(() => {
     setUser(props.user);
@@ -36,17 +36,17 @@ export default function Dashboard(
 
       <div className="flex flex-row">
         <div className="w-1/4 max-w-xs">
-          <SideMenu currListTitle={currListTitle} />
+          <SideMenu currGoalTitle={currGoalTitle} />
         </div>
 
         <div className="flex flex-col gap-y-1 p-2 w-3/4">
           {isLoaded<UserSchema>(user) ? (
             <UserContext.Provider value={user}>
               <p className="text-xs">Hello, {user?.title}</p>
-              <List
-                listId={user.selectedListId}
-                currListTitle={currListTitle}
-                setCurrListTitle={setCurrListTitle}
+              <Goal
+                goalId={user.selectedGoalId}
+                currGoalTitle={currGoalTitle}
+                setCurrGoalTitle={setCurrGoalTitle}
               />
             </UserContext.Provider>
           ) : (
@@ -77,7 +77,7 @@ export const getServerSideProps = async (
 
     let user = readUserRes;
 
-    if (user.listIdArray.length === 0) {
+    if (user.goalIdArray.length === 0) {
       const addUserDefaultsRes = await addUserDefaults(userId);
       if (addUserDefaultsRes instanceof Error) {
         throw addUserDefaultsRes;

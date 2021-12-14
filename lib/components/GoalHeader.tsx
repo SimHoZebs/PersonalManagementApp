@@ -6,15 +6,15 @@ import CustomTextField from "./CustomTextField";
 import Skeleton from "./Skeleton";
 
 //etc
-import updateList from "../api/updateList";
+import updateList from "../api/updateGoal";
 import isLoaded from "../isLoaded";
 import { UserContext } from "../../pages/user/[userId]";
 
 interface Props {
-  listId: string;
-  currListTitle: string | undefined;
+  goalId: string;
+  currGoalTitle: string | undefined;
   description: string | undefined;
-  setCurrListTitle: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setCurrGoalTitle: React.Dispatch<React.SetStateAction<string | undefined>>;
   setDescription: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
@@ -27,14 +27,14 @@ const ListHeader = (props: Props) => {
   const descRef = useRef<HTMLInputElement>(null);
 
   async function saveTitle() {
-    if (isLoaded<string>(props.currListTitle)) {
+    if (isLoaded<string>(props.currGoalTitle)) {
       setEditingTitle(false);
 
       await updateList(
         user?._id,
-        props.listId,
-        "listTitle",
-        props.currListTitle
+        props.goalId,
+        "goalTitle",
+        props.currGoalTitle
       );
     }
   }
@@ -50,7 +50,7 @@ const ListHeader = (props: Props) => {
 
       await updateList(
         user?._id,
-        props.listId,
+        props.goalId,
         "description",
         props.description
       );
@@ -75,15 +75,15 @@ const ListHeader = (props: Props) => {
           </button>
         )}
 
-        {isLoaded<string>(props.currListTitle) ? (
+        {isLoaded<string>(props.currGoalTitle) ? (
           <CustomTextField
             className="text-3xl"
             ref={titleRef}
             placeholder="Type List Name Here"
             onFocus={editTitle}
             onBlur={saveTitle}
-            value={props.currListTitle}
-            onChange={(e) => props.setCurrListTitle(e.target.value)}
+            value={props.currGoalTitle}
+            onChange={(e) => props.setCurrGoalTitle(e.target.value)}
           />
         ) : (
           <Skeleton />

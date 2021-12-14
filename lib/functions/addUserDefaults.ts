@@ -1,30 +1,30 @@
-import addListId from "../api/addListId";
-import createList from "../api/createList";
-import updateSelectedListId from "../api/updateSelectedListId";
-import { ListSchema } from "../schema/ListSchema";
+import addGoalId from "../api/addGoalId";
+import createGoal from "../api/createGoal";
+import updateSelectedGoalId from "../api/updateSelectedGoalId";
+import { GoalSchema } from "../schema/GoalSchema";
 
 /**
- * Creates a list and adds it to a user.
- * Sets that list as selected list.
+ * Creates a goal and adds it to a user.
+ * Sets that goal as selected goal.
  * @returns userSchema; The user the temp defaults were applied.
  * @returns string; if any error occurs.
  */
 export default async function addUserDefaults(userId: string) {
-  let createdList: ListSchema;
-  const createListRes = await createList(userId, "Welcome!");
-  if (createListRes instanceof Error) {
-    return createListRes;
+  let createdGoal: GoalSchema;
+  const createGoalRes = await createGoal(userId, "Welcome!");
+  if (createGoalRes instanceof Error) {
+    return createGoalRes;
   }
-  createdList = createListRes;
+  createdGoal = createGoalRes;
 
-  const addListIdRes = await addListId(userId, createdList._id);
-  if (addListIdRes instanceof Error) {
-    return addListIdRes;
+  const addGoalIdRes = await addGoalId(userId, createdGoal._id);
+  if (addGoalIdRes instanceof Error) {
+    return addGoalIdRes;
   }
 
-  const updateSelectedListIdRes = await updateSelectedListId(
+  const updateSelectedGoalIdRes = await updateSelectedGoalId(
     userId,
-    createListRes._id
+    createGoalRes._id
   );
-  return updateSelectedListIdRes;
+  return updateSelectedGoalIdRes;
 }

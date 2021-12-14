@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import userCollection, { UserSchema } from '../../../../lib/schema/UserSchema';
-import listCollection, { ListSchema } from '../../../../lib/schema/ListSchema';
+import goalCollection, { GoalSchema } from '../../../../lib/schema/GoalSchema';
 import apiEndpointHelper from '../../../../lib/apiEndpointHelper';
 
 export type Get = Awaited<ReturnType<typeof get>>;
@@ -8,20 +8,20 @@ export type Post = Awaited<ReturnType<typeof post>>;
 export type Patch = Awaited<ReturnType<typeof patch>>;
 
 async function get() {
-  return await listCollection.find({}) as ListSchema[];
+  return await goalCollection.find({}) as GoalSchema[];
 }
 
 async function post(body: Body, userId: string | string[]) {
-  return await listCollection.create(new listCollection({ title: body.title, userId })) as ListSchema;
+  return await goalCollection.create(new goalCollection({ title: body.title, userId })) as GoalSchema;
 }
 
 async function patch(body: Body, userId: string | string[],) {
   const user: UserSchema = await userCollection.findOne({ _id: userId });
 
-  if (body.target === "selectedListId") {
-    user.selectedListId = body.listId;
+  if (body.target === "selectedGoalId") {
+    user.selectedGoalId = body.goalId;
   } else {
-    user.listIdArray.push(body.listId);
+    user.goalIdArray.push(body.goalId);
   }
 
   await user.save();
@@ -30,9 +30,9 @@ async function patch(body: Body, userId: string | string[],) {
 
 
 interface Body {
-  title: string; //createList
-  listId: string; //addListId
-  target: string; //updateSelectedListId
+  title: string; //createGoal
+  goalId: string; //addGoalId
+  target: string; //updateSelectedGoalId
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

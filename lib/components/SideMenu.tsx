@@ -8,7 +8,7 @@ import isLoaded from "../isLoaded";
 import Button from "./Button";
 
 interface Props {
-  currListTitle: string | undefined;
+  currGoalTitle: string | undefined;
 }
 
 const SideMenu = (props: Props) => {
@@ -30,14 +30,14 @@ const SideMenu = (props: Props) => {
           </div>
 
           <ol>
-            {isLoaded(props.currListTitle) ? (
+            {isLoaded(props.currGoalTitle) ? (
               <li>
                 <button className="w-full flex flex-row gap-x-1 items-center hover:bg-dark-300 py-2 px-1">
                   <Icon
-                    icon="mdi:format-list-bulleted-type"
+                    icon="mdi:format-goal-bulleted-type"
                     className="w-6 h-6"
                   />
-                  <p>{props.currListTitle}</p>
+                  <p>{props.currGoalTitle}</p>
                 </button>
               </li>
             ) : (
