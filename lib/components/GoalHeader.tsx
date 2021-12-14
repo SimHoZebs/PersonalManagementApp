@@ -6,7 +6,7 @@ import CustomTextField from "./CustomTextField";
 import Skeleton from "./Skeleton";
 
 //etc
-import updateList from "../api/updateGoal";
+import updateGoal from "../api/updateGoal";
 import isLoaded from "../isLoaded";
 import { UserContext } from "../../pages/user/[userId]";
 
@@ -18,7 +18,7 @@ interface Props {
   setDescription: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
-const ListHeader = (props: Props) => {
+const GoalHeader = (props: Props) => {
   const user = useContext(UserContext);
 
   const [editingTitle, setEditingTitle] = useState(false);
@@ -30,7 +30,7 @@ const ListHeader = (props: Props) => {
     if (isLoaded<string>(props.currGoalTitle)) {
       setEditingTitle(false);
 
-      await updateList(
+      await updateGoal(
         user?._id,
         props.goalId,
         "goalTitle",
@@ -48,7 +48,7 @@ const ListHeader = (props: Props) => {
     if (isLoaded<string>(props.description)) {
       setEditingDesc(false);
 
-      await updateList(
+      await updateGoal(
         user?._id,
         props.goalId,
         "description",
@@ -79,7 +79,7 @@ const ListHeader = (props: Props) => {
           <CustomTextField
             className="text-3xl"
             ref={titleRef}
-            placeholder="Type List Name Here"
+            placeholder="Type Goal Name Here"
             onFocus={editTitle}
             onBlur={saveTitle}
             value={props.currGoalTitle}
@@ -118,4 +118,4 @@ const ListHeader = (props: Props) => {
   );
 };
 
-export default ListHeader;
+export default GoalHeader;

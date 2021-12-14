@@ -7,7 +7,7 @@ import apiFunctionHelper from '../apiFunctionHelper';
  * @param title 
  * @returns 
  */
-export default async function createList(userId: string, title: string) {
+export default async function createGoal(userId: string, title: string) {
 
   return await apiFunctionHelper<Post>(
     {

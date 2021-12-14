@@ -9,7 +9,7 @@ import { Patch } from '../../pages/api/user/[userId]/[goalId]';
  * @param data 
  * @returns 
  */
-export default async function updateList(
+export default async function updateGoal(
   userId: string,
   goalId: string,
   prop: "goalTitle" | "description",

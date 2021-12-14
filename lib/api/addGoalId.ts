@@ -7,7 +7,7 @@ import { Patch } from "../../pages/api/user/[userId]";
  * @param goalId 
  * @returns UserSchema
  */
-export default async function addListId(userId: string, goalId: string) {
+export default async function addGoalId(userId: string, goalId: string) {
 
   return await apiFunctionHelper<Patch>({
     method: "PATCH",

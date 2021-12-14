@@ -7,8 +7,9 @@ import Button from "./Button";
 
 //etc
 import { TaskSchema } from "../schema/TaskSchema";
-import readList from "../api/readGoal";
+import readGoal from "../api/readGoal";
 import { UserContext } from "../../pages/user/[userId]";
+import { GoalSchema } from "../schema/GoalSchema";
 
 interface Props {
   goalId: string;
@@ -16,12 +17,13 @@ interface Props {
   setCurrGoalTitle: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
-const List = (props: Props) => {
+const Goal = (props: Props) => {
   const user = useContext(UserContext);
   const [taskArray, setTaskArray] = useState<TaskSchema[]>([]);
   const [description, setDescription] = useState<string | undefined>();
   const [creatingTask, setCreatingTask] = useState(false);
-  const [goalLoaded, setListLoaded] = useState(false);
+  const [goalLoaded, setGoalLoaded] = useState(false);
+  const [goal, setGoal] = useState<GoalSchema | undefined>();
 
   /**
    * Readies goal to respond accoridngly to new task interaction.
@@ -39,17 +41,17 @@ const List = (props: Props) => {
   }
 
   useEffect(() => {
-    async function initList() {
-      const readListRes = await readList(user?._id, props.goalId);
-      if (!(readListRes instanceof Error)) {
-        setTaskArray((prev) => readListRes.taskArray);
-        setDescription(readListRes.description);
-        props.setCurrGoalTitle(readListRes.title);
+    async function initGoal() {
+      const readGoalRes = await readGoal(user?._id, props.goalId);
+      if (!(readGoalRes instanceof Error)) {
+        setTaskArray((prev) => readGoalRes.taskArray);
+        setDescription(readGoalRes.description);
+        props.setCurrGoalTitle(readGoalRes.title);
       }
     }
 
-    initList();
-    setListLoaded(true);
+    initGoal();
+    setGoalLoaded(true);
   }, [props, user?._id]);
 
   return (
@@ -89,4 +91,4 @@ const List = (props: Props) => {
   );
 };
 
-export default List;
+export default Goal;

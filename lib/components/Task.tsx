@@ -23,7 +23,7 @@ export interface Props {
 }
 
 /**
- *@note isNewTask may seem unnecessary with creatingTask in List component, but it makes sure only last task of array behaves as a new task.
+ *@note isNewTask may seem unnecessary with creatingTask in Goal component, but it makes sure only last task of array behaves as a new task.
  * This is needed as existing tasks can behave like new tasks if user clicks away while creating new task.
  */
 const Task = (props: Props) => {
