@@ -5,8 +5,8 @@ export interface GoalSchema extends Document {
   title: string;
   description: string;
   taskArray: TaskSchema[];
-  statusArray: ["planned", "ongoing", "completed"];
-  statusColorArray: ["#2563eb", "#9333ea", "#65a30d"];
+  statusArray: string[];
+  statusColorArray: string[];
 }
 
 export const goalModel = new mongoose.Schema<GoalSchema>({
@@ -18,7 +18,18 @@ export const goalModel = new mongoose.Schema<GoalSchema>({
     type: String,
     default: "",
   },
-  taskArray: { type: [taskModel], default: [] }
+  taskArray: {
+    type: [taskModel],
+    default: []
+  },
+  statusArray: {
+    type: [String],
+    default: ["planned", "ongoing", "completed"]
+  },
+  statusColorArray: {
+    type: [String],
+    default: ["#2563eb", "#9333ea", "#65a30d"]
+  },
 });
 
 export default mongoose.models.Goal || mongoose.model<GoalSchema>('Goal', goalModel);
