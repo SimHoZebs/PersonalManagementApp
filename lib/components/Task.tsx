@@ -16,10 +16,10 @@ import { TaskSchema } from "../schema/TaskSchema";
 export interface Props {
   task: TaskSchema;
   taskIndex: number;
+  statusColorArray: string[];
   setTaskArray: React.Dispatch<React.SetStateAction<TaskSchema[]>>;
   setCreatingTask: React.Dispatch<React.SetStateAction<boolean>>;
   isNewTask: boolean;
-  goalId: string;
 }
 
 /**
@@ -30,6 +30,11 @@ const Task = (props: Props) => {
   const [task, setTask] = useState(props.task);
   const textFieldRef = useRef<HTMLInputElement | null>(null);
 
+  /**
+   * When user clicks away from task textField.
+   * Creates new task if it's new, or updates existing task.
+   * Add or update task to goal.
+   */
   async function onBlur() {
     props.setCreatingTask((prev) => false);
 
@@ -42,8 +47,8 @@ const Task = (props: Props) => {
       } else {
         const updatedTaskArray = await deleteTask(
           task.userId,
-          props.goalId,
-          props.taskIndex
+          task.goalId,
+          props.task._id
         );
         if (!(updatedTaskArray instanceof Error)) {
           props.setTaskArray(updatedTaskArray);
@@ -52,13 +57,16 @@ const Task = (props: Props) => {
     } else if (task.title !== props.task.title) {
       //if task title isn't empty and diff from the old one, save the task
       const updatedTaskArray = props.isNewTask
-        ? await createTask(task.userId, props.goalId, task.title)
-        : ((await updateTask(
-            task.userId,
-            props.goalId,
-            props.taskIndex,
-            task.title
-          )) as TaskSchema[] | Error);
+        ? await createTask(task.userId, task.goalId, {
+            title: task.title,
+            userId: task.userId,
+            goalId: task.goalId,
+            statusColor: props.statusColorArray[0],
+          } as TaskSchema)
+        : ((await updateTask(task.userId, task.goalId, props.task._id, {
+            title: task.title,
+            statusColor: props.statusColorArray[0],
+          })) as TaskSchema[] | Error);
       if (!(updatedTaskArray instanceof Error)) {
         props.setTaskArray(updatedTaskArray);
       }
@@ -68,19 +76,13 @@ const Task = (props: Props) => {
   async function deleteTaskBtn() {
     const deleteTaskRes = await deleteTask(
       task.userId,
-      props.goalId,
-      props.taskIndex
+      task.goalId,
+      props.task._id
     );
     if (!(deleteTaskRes instanceof Error)) {
       props.setTaskArray(deleteTaskRes);
     }
   }
-
-  /**
-   * When user clicks away from task textField.
-   * Creates new task if it's new, or updates existing task.
-   * Add or update task to goal.
-   */
 
   //automatic taskName textField focus on creation.
   //isNewTask boolean prevents existing tasks from being focused
@@ -99,8 +101,8 @@ const Task = (props: Props) => {
             ref={textFieldRef}
             value={task.title}
             onChange={(e) =>
-              setTask(
-                (prev) => ({ ...prev, title: e.target.value } as TaskSchema)
+              setTask((prev) =>
+                prev ? ({ ...prev, title: e.target.value } as TaskSchema) : prev
               )
             }
             onBlur={onBlur}

@@ -23,28 +23,33 @@ async function post(body: Body, goalId: string) {
 async function patch(body: Body, goalId: string) {
   const goal: GoalSchema = await goalCollection.findOne({ _id: goalId });
 
-  let response;
+  let response: GoalSchema | TaskSchema[] | undefined;
   switch (body.prop) {
+    //modifying goal title
     case "title":
       goal.title = body.data;
 
       response = goal;
       break;
+
+    //modifying goal description
     case "description":
       goal.description = body.data;
 
       response = goal;
       break;
 
+    //modifying taskArray
     default:
-      const index = parseInt(body.taskIndex as string);
-      const targetTask = goal.taskArray[index];
+      const index = goal.taskArray.findIndex(task => task._id === body.taskId);
+      let targetTask = goal.taskArray[index];
 
-      targetTask.title = body.newTaskTitle as string;
-      goal.taskArray[index] = targetTask;
-
-      response = goal.taskArray;
-      break;
+      if (index !== -1) {
+        targetTask = { ...targetTask, ...body.modifiedTask, } as TaskSchema;
+        goal.taskArray[index] = targetTask;
+        response = goal.taskArray;
+        break;
+      }
   }
 
   goal.save();
@@ -53,7 +58,9 @@ async function patch(body: Body, goalId: string) {
 
 async function del(body: Body, goalId: string) {
   const goal: GoalSchema = await goalCollection.findOne({ _id: goalId });
-  goal.taskArray.splice(parseInt(body.taskIndex), 1);
+
+  const taskIndex = goal.taskArray.findIndex(task => task._id === body.taskId);
+  goal.taskArray.splice(taskIndex, 1);
   goal.save();
 
   return goal.taskArray;
@@ -62,8 +69,8 @@ async function del(body: Body, goalId: string) {
 interface Body {
   prop: string;
   data: string;
-  newTaskTitle: string;
-  taskIndex: string;
+  modifiedTask: TaskSchema;
+  taskId: string;
   newTask: TaskSchema;
 }
 

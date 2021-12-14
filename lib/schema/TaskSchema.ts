@@ -4,6 +4,7 @@ export interface TaskSchema extends Document {
   title: string;
   userId: string;
   goalId: string;
+  statusColor: string;
 }
 
 export const taskModel = new mongoose.Schema<TaskSchema>({
@@ -14,6 +15,7 @@ export const taskModel = new mongoose.Schema<TaskSchema>({
   },
   userId: String,
   goalId: String,
+  statusColor: String,
 });
 
 

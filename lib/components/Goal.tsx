@@ -16,6 +16,7 @@ import { TaskSchema } from "../schema/TaskSchema";
 import readGoal from "../api/readGoal";
 import { UserContext } from "../../pages/user/[userId]";
 import { GoalSchema } from "../schema/GoalSchema";
+import isLoaded from "../isLoaded";
 
 interface Props {
   goalId: string;
@@ -68,14 +69,14 @@ const Goal = (props: Props) => {
       <hr className="border-dark-300" />
 
       <div className="flex flex-col gap-y-2 items-start">
-        {taskArray.length !== 0 ? (
+        {taskArray.length !== 0 && isLoaded<GoalSchema>(goal) ? (
           taskArray.map((task, index) => (
             <Task
+              statusColorArray={goal.statusColorArray}
               key={index}
               task={task}
               taskIndex={index}
               setTaskArray={setTaskArray}
-              goalId={props.goalId}
               setCreatingTask={setCreatingTask}
               isNewTask={
                 creatingTask && index === taskArray.length - 1 ? true : false
