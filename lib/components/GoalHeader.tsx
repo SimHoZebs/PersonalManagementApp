@@ -2,7 +2,7 @@ import { useRef, useState, useContext, Dispatch, SetStateAction } from "react";
 import { Icon } from "@iconify/react";
 
 //components
-import CustomTextField from "./CustomTextField";
+import TextField from "./TextField";
 import Skeleton from "./Skeleton";
 
 //etc
@@ -71,7 +71,7 @@ const GoalHeader = (props: Props) => {
         )}
 
         {isLoaded<string>(props.title) ? (
-          <CustomTextField
+          <TextField
             className="text-3xl"
             ref={titleRef}
             placeholder="Type Goal Name Here"
@@ -101,7 +101,7 @@ const GoalHeader = (props: Props) => {
         )}
 
         {isLoaded<string>(props.description) ? (
-          <CustomTextField
+          <TextField
             placeholder="Add a description"
             ref={descRef}
             onFocus={editDesc}

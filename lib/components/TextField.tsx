@@ -10,7 +10,7 @@ interface Props
     HTMLInputElement
   > {}
 
-const CustomTextField = (
+const TextField = (
   props: Props,
   ref: ForwardedRef<HTMLInputElement> | undefined
 ) => {
@@ -26,4 +26,4 @@ const CustomTextField = (
   );
 };
 
-export default forwardRef(CustomTextField);
+export default forwardRef(TextField);

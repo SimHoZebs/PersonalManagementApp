@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 //components
-import CustomTextField from "./CustomTextField";
+import TextField from "./TextField";
 import StatusButton from "./StatusButton";
 import SelectDateButton from "./SelectDateButton";
 import PriorityButton from "./PriorityButton";
@@ -95,7 +95,7 @@ const Task = (props: Props) => {
       <StatusButton />
       <div className="flex flex-col gap-y-2">
         <div className="flex items-center">
-          <CustomTextField
+          <TextField
             ref={textFieldRef}
             value={task.title}
             onChange={(e) =>
