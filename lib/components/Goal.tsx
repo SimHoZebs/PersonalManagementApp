@@ -1,4 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 // components
 import Task from "./Task";
@@ -13,17 +19,14 @@ import { GoalSchema } from "../schema/GoalSchema";
 
 interface Props {
   goalId: string;
-  currGoalTitle: string | undefined;
-  setCurrGoalTitle: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setCurrGoalTitle: Dispatch<SetStateAction<string | undefined>>;
 }
 
 const Goal = (props: Props) => {
   const user = useContext(UserContext);
-  const [taskArray, setTaskArray] = useState<TaskSchema[]>([]);
-  const [description, setDescription] = useState<string | undefined>();
-  const [creatingTask, setCreatingTask] = useState(false);
-  const [goalLoaded, setGoalLoaded] = useState(false);
   const [goal, setGoal] = useState<GoalSchema | undefined>();
+  const [taskArray, setTaskArray] = useState<TaskSchema[]>([]);
+  const [creatingTask, setCreatingTask] = useState(false);
 
   /**
    * Readies goal to respond accoridngly to new task interaction.
@@ -44,24 +47,22 @@ const Goal = (props: Props) => {
     async function initGoal() {
       const readGoalRes = await readGoal(user?._id, props.goalId);
       if (!(readGoalRes instanceof Error)) {
+        setGoal(readGoalRes);
         setTaskArray((prev) => readGoalRes.taskArray);
-        setDescription(readGoalRes.description);
         props.setCurrGoalTitle(readGoalRes.title);
       }
     }
 
     initGoal();
-    setGoalLoaded(true);
   }, [props, user?._id]);
 
   return (
     <>
       <GoalHeader
-        goalId={props.goalId}
-        description={description}
-        setDescription={setDescription}
-        setCurrGoalTitle={props.setCurrGoalTitle}
-        currGoalTitle={props.currGoalTitle}
+        goalId={goal?._id}
+        description={goal?.description}
+        title={goal?.title}
+        setGoal={setGoal}
       />
 
       <hr className="border-dark-300" />

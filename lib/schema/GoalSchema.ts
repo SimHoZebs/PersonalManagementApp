@@ -28,7 +28,7 @@ export const goalModel = new mongoose.Schema<GoalSchema>({
   },
   statusColorArray: {
     type: [String],
-    default: ["#2563eb", "#9333ea", "#65a30d"]
+    default: ["bg-blue-600", "bg-purple-600", "bg-green-600"]
   },
 });
 

@@ -12,7 +12,7 @@ import { Patch } from '../../pages/api/user/[userId]/[goalId]';
 export default async function updateGoal(
   userId: string,
   goalId: string,
-  prop: "goalTitle" | "description",
+  prop: "title" | "description",
   data: string
 ) {
 

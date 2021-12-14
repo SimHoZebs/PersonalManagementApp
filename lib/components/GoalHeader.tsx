@@ -1,4 +1,4 @@
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext, Dispatch, SetStateAction } from "react";
 import { Icon } from "@iconify/react";
 
 //components
@@ -9,13 +9,13 @@ import Skeleton from "./Skeleton";
 import updateGoal from "../api/updateGoal";
 import isLoaded from "../isLoaded";
 import { UserContext } from "../../pages/user/[userId]";
+import { GoalSchema } from "../schema/GoalSchema";
 
 interface Props {
   goalId: string;
-  currGoalTitle: string | undefined;
+  title: string | undefined;
   description: string | undefined;
-  setCurrGoalTitle: React.Dispatch<React.SetStateAction<string | undefined>>;
-  setDescription: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setGoal: Dispatch<SetStateAction<GoalSchema | undefined>>;
 }
 
 const GoalHeader = (props: Props) => {
@@ -27,15 +27,10 @@ const GoalHeader = (props: Props) => {
   const descRef = useRef<HTMLInputElement>(null);
 
   async function saveTitle() {
-    if (isLoaded<string>(props.currGoalTitle)) {
+    if (isLoaded<string>(props.title)) {
       setEditingTitle(false);
 
-      await updateGoal(
-        user?._id,
-        props.goalId,
-        "goalTitle",
-        props.currGoalTitle
-      );
+      await updateGoal(user?._id, props.goalId, "title", props.title);
     }
   }
 
@@ -75,15 +70,19 @@ const GoalHeader = (props: Props) => {
           </button>
         )}
 
-        {isLoaded<string>(props.currGoalTitle) ? (
+        {isLoaded<string>(props.title) ? (
           <CustomTextField
             className="text-3xl"
             ref={titleRef}
             placeholder="Type Goal Name Here"
             onFocus={editTitle}
             onBlur={saveTitle}
-            value={props.currGoalTitle}
-            onChange={(e) => props.setCurrGoalTitle(e.target.value)}
+            value={props.title}
+            onChange={(e) =>
+              props.setGoal(
+                (prev) => ({ title: e.target.value, ...prev } as GoalSchema)
+              )
+            }
           />
         ) : (
           <Skeleton />
@@ -108,7 +107,12 @@ const GoalHeader = (props: Props) => {
             onFocus={editDesc}
             onBlur={saveDesc}
             value={props.description}
-            onChange={(e) => props.setDescription(e.target.value)}
+            onChange={(e) =>
+              props.setGoal(
+                (prev) =>
+                  ({ description: e.target.value, ...prev } as GoalSchema)
+              )
+            }
           />
         ) : (
           <Skeleton />

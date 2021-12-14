@@ -25,7 +25,7 @@ async function patch(body: Body, goalId: string) {
 
   let response;
   switch (body.prop) {
-    case "goalTitle":
+    case "title":
       goal.title = body.data;
 
       response = goal;
