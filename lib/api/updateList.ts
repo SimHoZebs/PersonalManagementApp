@@ -12,7 +12,7 @@ import { Patch } from '../../pages/api/user/[userId]/[listId]';
 export default async function updateList(
   userId: string,
   listId: string,
-  prop: "listName" | "description",
+  prop: "listTitle" | "description",
   data: string
 ) {
 

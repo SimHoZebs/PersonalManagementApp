@@ -12,9 +12,9 @@ import { UserContext } from "../../pages/user/[userId]";
 
 interface Props {
   listId: string;
-  currListName: string | undefined;
+  currListTitle: string | undefined;
   description: string | undefined;
-  setCurrListName: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setCurrListTitle: React.Dispatch<React.SetStateAction<string | undefined>>;
   setDescription: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
@@ -27,10 +27,15 @@ const ListHeader = (props: Props) => {
   const descRef = useRef<HTMLInputElement>(null);
 
   async function saveTitle() {
-    if (isLoaded<string>(props.currListName)) {
+    if (isLoaded<string>(props.currListTitle)) {
       setEditingTitle(false);
 
-      await updateList(user?._id, props.listId, "listName", props.currListName);
+      await updateList(
+        user?._id,
+        props.listId,
+        "listTitle",
+        props.currListTitle
+      );
     }
   }
 
@@ -70,15 +75,15 @@ const ListHeader = (props: Props) => {
           </button>
         )}
 
-        {isLoaded<string>(props.currListName) ? (
+        {isLoaded<string>(props.currListTitle) ? (
           <CustomTextField
             className="text-3xl"
             ref={titleRef}
             placeholder="Type List Name Here"
             onFocus={editTitle}
             onBlur={saveTitle}
-            value={props.currListName}
-            onChange={(e) => props.setCurrListName(e.target.value)}
+            value={props.currListTitle}
+            onChange={(e) => props.setCurrListTitle(e.target.value)}
           />
         ) : (
           <Skeleton />

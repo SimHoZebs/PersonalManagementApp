@@ -12,8 +12,8 @@ import { UserContext } from "../../pages/user/[userId]";
 
 interface Props {
   listId: string;
-  currListName: string | undefined;
-  setCurrListName: React.Dispatch<React.SetStateAction<string | undefined>>;
+  currListTitle: string | undefined;
+  setCurrListTitle: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const List = (props: Props) => {
@@ -29,7 +29,7 @@ const List = (props: Props) => {
    */
   function createItemBtn() {
     const newItem = {
-      itemName: "",
+      title: "",
       userId: user?._id,
       listId: props.listId,
     } as ItemSchema;
@@ -44,7 +44,7 @@ const List = (props: Props) => {
       if (!(readListRes instanceof Error)) {
         setItemArray((prev) => readListRes.itemArray);
         setDescription(readListRes.description);
-        props.setCurrListName(readListRes.listName);
+        props.setCurrListTitle(readListRes.title);
       }
     }
 
@@ -58,8 +58,8 @@ const List = (props: Props) => {
         listId={props.listId}
         description={description}
         setDescription={setDescription}
-        setCurrListName={props.setCurrListName}
-        currListName={props.currListName}
+        setCurrListTitle={props.setCurrListTitle}
+        currListTitle={props.currListTitle}
       />
 
       <hr className="border-dark-300" />

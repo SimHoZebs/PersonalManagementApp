@@ -22,7 +22,7 @@ export default function Dashboard(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const [user, setUser] = useState<UserSchema | undefined>();
-  const [currListName, setCurrListName] = useState<string | undefined>();
+  const [currListTitle, setCurrListTitle] = useState<string | undefined>();
 
   useEffect(() => {
     setUser(props.user);
@@ -36,17 +36,17 @@ export default function Dashboard(
 
       <div className="flex flex-row">
         <div className="w-1/4 max-w-xs">
-          <SideMenu currListName={currListName} />
+          <SideMenu currListTitle={currListTitle} />
         </div>
 
         <div className="flex flex-col gap-y-1 p-2 w-3/4">
           {isLoaded<UserSchema>(user) ? (
             <UserContext.Provider value={user}>
-              <p className="text-xs">Hello, {user?.username}</p>
+              <p className="text-xs">Hello, {user?.title}</p>
               <List
                 listId={user.selectedListId}
-                currListName={currListName}
-                setCurrListName={setCurrListName}
+                currListTitle={currListTitle}
+                setCurrListTitle={setCurrListTitle}
               />
             </UserContext.Provider>
           ) : (

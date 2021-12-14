@@ -25,8 +25,8 @@ async function patch(body: Body, listId: string) {
 
   let response;
   switch (body.prop) {
-    case "listName":
-      list.listName = body.data;
+    case "listTitle":
+      list.title = body.data;
 
       response = list;
       break;
@@ -40,7 +40,7 @@ async function patch(body: Body, listId: string) {
       const index = parseInt(body.itemIndex as string);
       const targetItem = list.itemArray[index];
 
-      targetItem.itemName = body.newItemName as string;
+      targetItem.title = body.newItemTitle as string;
       list.itemArray[index] = targetItem;
 
       response = list.itemArray;
@@ -62,7 +62,7 @@ async function del(body: Body, listId: string) {
 interface Body {
   prop: string;
   data: string;
-  newItemName: string;
+  newItemTitle: string;
   itemIndex: string;
   newItem: ItemSchema;
 }

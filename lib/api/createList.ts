@@ -4,16 +4,16 @@ import apiFunctionHelper from '../apiFunctionHelper';
 /**
  * Creates a new list for user.
  * @param userId 
- * @param listName 
+ * @param title 
  * @returns 
  */
-export default async function createList(userId: string, listName: string) {
+export default async function createList(userId: string, title: string) {
 
   return await apiFunctionHelper<Post>(
     {
       method: "POST",
       url: `api/user/${userId}`,
-      data: { listName }
+      data: { title }
     }
   );
 }

@@ -10,12 +10,12 @@ async function get(userId: string) {
 }
 
 async function post(body: Body) {
-  return await userCollection.create(new userCollection({ username: body.username, _id: body.userId })) as UserSchema;
+  return await userCollection.create(new userCollection({ title: body.title, _id: body.userId })) as UserSchema;
 }
 
 interface Body {
   userId: string;
-  username: string;
+  title: string;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

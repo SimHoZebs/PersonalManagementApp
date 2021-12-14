@@ -2,13 +2,15 @@ import mongoose, { Document } from 'mongoose';
 import { ItemModel, ItemSchema } from './ItemSchema';
 
 export interface ListSchema extends Document {
-  listName: string;
+  title: string;
   description: string;
   itemArray: ItemSchema[];
+  statusArray: ["planned", "ongoing", "completed"];
+  statusColorArray: ["#2563eb", "#9333ea", "#65a30d"];
 }
 
 const listModel = new mongoose.Schema<ListSchema>({
-  listName: {
+  title: {
     type: String,
     required: true,
   },

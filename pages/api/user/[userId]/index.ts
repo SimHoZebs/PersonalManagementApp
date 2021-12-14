@@ -12,8 +12,7 @@ async function get() {
 }
 
 async function post(body: Body, userId: string | string[]) {
-  console.log("woops");
-  return await listCollection.create(new listCollection({ listName: body.listName, userId })) as ListSchema;
+  return await listCollection.create(new listCollection({ title: body.title, userId })) as ListSchema;
 }
 
 async function patch(body: Body, userId: string | string[],) {
@@ -31,7 +30,7 @@ async function patch(body: Body, userId: string | string[],) {
 
 
 interface Body {
-  listName: string; //createList
+  title: string; //createList
   listId: string; //addListId
   target: string; //updateSelectedListId
 }

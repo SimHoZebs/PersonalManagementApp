@@ -28,14 +28,14 @@ export interface Props {
  */
 const Item = (props: Props) => {
   const item = props.item;
-  const [itemName, setItemName] = useState(item.itemName);
+  const [itemTitle, setItemTitle] = useState(item.title);
   const textFieldRef = useRef<HTMLInputElement | null>(null);
 
   async function onBlur() {
     props.setCreatingItem((prev) => false);
 
-    if (itemName === "") {
-      //If item name is empty, do not save the item
+    if (itemTitle === "") {
+      //If item title is empty, do not save the item
       if (props.isNewItem) {
         props.setItemArray((prev) =>
           prev.filter((item, index) => index !== props.itemIndex)
@@ -50,15 +50,15 @@ const Item = (props: Props) => {
           props.setItemArray(updatedItemArray);
         }
       }
-    } else if (itemName !== item.itemName) {
-      //if item name isn't empty and diff from the old one, save the item
+    } else if (itemTitle !== item.title) {
+      //if item title isn't empty and diff from the old one, save the item
       const updatedItemArray = props.isNewItem
-        ? await createItem(item.userId, props.listId, itemName)
+        ? await createItem(item.userId, props.listId, itemTitle)
         : ((await updateItem(
             item.userId,
             props.listId,
             props.itemIndex,
-            itemName
+            itemTitle
           )) as ItemSchema[] | Error);
       if (!(updatedItemArray instanceof Error)) {
         props.setItemArray(updatedItemArray);
@@ -98,8 +98,8 @@ const Item = (props: Props) => {
         <div className="flex items-center">
           <CustomTextField
             ref={textFieldRef}
-            value={itemName}
-            onChange={(e) => setItemName(e.target.value)}
+            value={itemTitle}
+            onChange={(e) => setItemTitle(e.target.value)}
             onBlur={onBlur}
           />
           <PriorityButton />
