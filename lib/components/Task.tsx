@@ -27,14 +27,13 @@ export interface Props {
  * This is needed as existing tasks can behave like new tasks if user clicks away while creating new task.
  */
 const Task = (props: Props) => {
-  const task = props.task;
-  const [taskTitle, setTaskTitle] = useState(task.title);
+  const [task, setTask] = useState(props.task);
   const textFieldRef = useRef<HTMLInputElement | null>(null);
 
   async function onBlur() {
     props.setCreatingTask((prev) => false);
 
-    if (taskTitle === "") {
+    if (task.title === "") {
       //If task title is empty, do not save the task
       if (props.isNewTask) {
         props.setTaskArray((prev) =>
@@ -50,15 +49,15 @@ const Task = (props: Props) => {
           props.setTaskArray(updatedTaskArray);
         }
       }
-    } else if (taskTitle !== task.title) {
+    } else if (task.title !== props.task.title) {
       //if task title isn't empty and diff from the old one, save the task
       const updatedTaskArray = props.isNewTask
-        ? await createTask(task.userId, props.goalId, taskTitle)
+        ? await createTask(task.userId, props.goalId, task.title)
         : ((await updateTask(
             task.userId,
             props.goalId,
             props.taskIndex,
-            taskTitle
+            task.title
           )) as TaskSchema[] | Error);
       if (!(updatedTaskArray instanceof Error)) {
         props.setTaskArray(updatedTaskArray);
@@ -98,8 +97,12 @@ const Task = (props: Props) => {
         <div className="flex items-center">
           <CustomTextField
             ref={textFieldRef}
-            value={taskTitle}
-            onChange={(e) => setTaskTitle(e.target.value)}
+            value={task.title}
+            onChange={(e) =>
+              setTask(
+                (prev) => ({ ...prev, title: e.target.value } as TaskSchema)
+              )
+            }
             onBlur={onBlur}
           />
           <PriorityButton />
