@@ -31,7 +31,7 @@ export default function Dashboard(
   return (
     <>
       <Head>
-        <title>Dashboard - AnotherToDoApp</title>
+        <title>Dashboard</title>
       </Head>
 
       <div className="flex flex-row">

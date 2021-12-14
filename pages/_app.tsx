@@ -8,7 +8,7 @@ export default function MyApp(props: AppProps) {
   return (
     <>
       <Head>
-        <title key="title">AnotherToDoApp</title>
+        <title key="title">LifeOrb</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <Component {...pageProps} />

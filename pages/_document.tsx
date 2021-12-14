@@ -11,6 +11,7 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
           />
+          <link rel="shortcut icon" type="image/png" href="/favicon.png" />
         </Head>
         <body className="font-roboto text-light-50 bg-dark-800">
           <Main />

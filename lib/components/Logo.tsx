@@ -1,11 +1,9 @@
-import CrystalBall from "../icons/CrystalBall";
+import Image from "next/image";
 
 const Logo = () => {
   return (
     <div className="flex flex-row gap-x-1 items-center">
-      <div className="text-blue-400 h-9 w-9">
-        <CrystalBall />
-      </div>
+      <Image src="/favicon.png" width={36} height={36} alt="" />
       <p className="font-medium text-xl">LifeOrb</p>
     </div>
   );
