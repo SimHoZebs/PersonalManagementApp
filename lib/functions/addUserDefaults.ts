@@ -1,6 +1,6 @@
 import addGoalId from "../api/addGoalId";
 import createGoal from "../api/createGoal";
-import updateSelectedGoalId from "../api/updateSelectedGoalId";
+import updateLastViewedGoalId from "../api/updateLastViewedGoalId";
 import { GoalSchema } from "../schema/GoalSchema";
 
 /**
@@ -22,9 +22,9 @@ export default async function addUserDefaults(userId: string) {
     return addGoalIdRes;
   }
 
-  const updateSelectedGoalIdRes = await updateSelectedGoalId(
+  const updateLastViewedGoalIdRes = await updateLastViewedGoalId(
     userId,
     createGoalRes._id
   );
-  return updateSelectedGoalIdRes;
+  return updateLastViewedGoalIdRes;
 }

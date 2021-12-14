@@ -1,12 +1,12 @@
 import apiFunctionHelper from "../apiFunctionHelper";
 import { Patch } from "../../pages/api/user/[userId]";
 
-export default async function updateSelectedGoalId(userId: string, goalId: string) {
+export default async function updateLastViewedGoalId(userId: string, goalId: string) {
 
   return await apiFunctionHelper<Patch>({
     method: "PATCH",
     url: `api/user/${userId}`,
-    data: { target: "selectedGoalId", goalId },
+    data: { target: "lastViewedGoalId", goalId },
     params: {}
   });
 }

@@ -3,7 +3,7 @@ import mongoose, { Document } from 'mongoose';
 export interface UserSchema extends Document {
   title: string;
   goalIdArray: string[];
-  selectedGoalId: string;
+  lastViewedGoalId: string;
 }
 
 const userModel = new mongoose.Schema<UserSchema>({
@@ -13,7 +13,7 @@ const userModel = new mongoose.Schema<UserSchema>({
   },
   _id: { type: String, required: true },
   goalIdArray: [String],
-  selectedGoalId: { type: String }
+  lastViewedGoalId: { type: String }
 });
 
 export default mongoose.models.User || mongoose.model<UserSchema>('User', userModel);

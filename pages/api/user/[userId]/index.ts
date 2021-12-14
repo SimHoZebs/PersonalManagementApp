@@ -18,8 +18,8 @@ async function post(body: Body, userId: string | string[]) {
 async function patch(body: Body, userId: string | string[],) {
   const user: UserSchema = await userCollection.findOne({ _id: userId });
 
-  if (body.target === "selectedGoalId") {
-    user.selectedGoalId = body.goalId;
+  if (body.target === "lastViewedGoalId") {
+    user.lastViewedGoalId = body.goalId;
   } else {
     user.goalIdArray.push(body.goalId);
   }
@@ -32,7 +32,7 @@ async function patch(body: Body, userId: string | string[],) {
 interface Body {
   title: string; //createGoal
   goalId: string; //addGoalId
-  target: string; //updateSelectedGoalId
+  target: string; //updateLastViewedGoalId
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

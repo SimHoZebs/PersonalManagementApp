@@ -44,7 +44,7 @@ export default function Dashboard(
             <UserContext.Provider value={user}>
               <p className="text-xs">Hello, {user?.title}</p>
               <Goal
-                goalId={user.selectedGoalId}
+                goalId={user.lastViewedGoalId}
                 currGoalTitle={currGoalTitle}
                 setCurrGoalTitle={setCurrGoalTitle}
               />
