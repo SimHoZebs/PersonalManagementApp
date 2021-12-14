@@ -1,10 +1,9 @@
 import { useRef, useState, useContext } from "react";
+import { Icon } from "@iconify/react";
 
 //components
 import CustomTextField from "./CustomTextField";
 import Skeleton from "./Skeleton";
-import SaveIcon from "../icons/SaveIcon";
-import EditIcon from "../icons/EditIcon";
 
 //etc
 import updateList from "../api/updateList";
@@ -63,11 +62,11 @@ const ListHeader = (props: Props) => {
       <div className="flex text-left items-center gap-x-2">
         {editingTitle ? (
           <button onClick={saveTitle}>
-            <SaveIcon className="h-7 w-7" />
+            <Icon icon="mdi:content-save-outline" className="h-7 w-7" />
           </button>
         ) : (
           <button onClick={editTitle}>
-            <EditIcon className="h-7 w-7" />
+            <Icon icon="mdi:pencil-outline" className="w-7 h-7" />
           </button>
         )}
 
@@ -89,11 +88,11 @@ const ListHeader = (props: Props) => {
       <div className="flex text-left items-center gap-x-2">
         {editingDesc ? (
           <button onClick={saveDesc}>
-            <SaveIcon className="w-7 h-7" />
+            <Icon icon="mdi:content-save-outline" className="h-7 w-7" />
           </button>
         ) : (
           <button onClick={editDesc}>
-            <EditIcon className="w-7 h-7" />
+            <Icon icon="mdi:pencil-outline" className="w-7 h-7" />
           </button>
         )}
 

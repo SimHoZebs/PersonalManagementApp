@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
+import { Icon } from "@iconify/react";
 
 //components
-import ListIcon from "../icons/ListIcon";
-import Login from "../icons/Login";
 import Logo from "./Logo";
 
 import isLoaded from "../isLoaded";
@@ -34,9 +33,10 @@ const SideMenu = (props: Props) => {
             {isLoaded(props.currListName) ? (
               <li>
                 <button className="w-full flex flex-row gap-x-1 items-center hover:bg-dark-300 py-2 px-1">
-                  <div className="h-6 w-6">
-                    <ListIcon />
-                  </div>
+                  <Icon
+                    icon="mdi:format-list-bulleted-type"
+                    className="w-6 h-6"
+                  />
                   <p>{props.currListName}</p>
                 </button>
               </li>
@@ -50,9 +50,7 @@ const SideMenu = (props: Props) => {
           className="flex flex-row border-1 px-2 py-1 gap-x-2 border-blue-400 items-center"
           onClick={login}
         >
-          <div className="h-6 w-6 ">
-            <Login />
-          </div>
+          <Icon icon="mdi:login" className="w-6 h-6" />
           <p className="font-medium text-sm">LOGIN</p>
         </Button>
       </div>
