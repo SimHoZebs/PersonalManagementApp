@@ -14,7 +14,7 @@ async function get(body: Body, goalId: string) {
 
 async function post(body: Body, goalId: string) {
   const goal: GoalSchema = await goalCollection.findOne({ _id: goalId });
-  goal.taskArray.push(body.newTask);
+  goal.taskArray.push(body.task);
   goal.save();
 
   return goal.taskArray;
@@ -41,11 +41,11 @@ async function patch(body: Body, goalId: string) {
 
     //modifying taskArray
     default:
-      const index = goal.taskArray.findIndex(task => task._id === body.taskId);
+      const index = goal.taskArray.findIndex(task => task.id === body.taskId);
       let targetTask = goal.taskArray[index];
 
       if (index !== -1) {
-        targetTask = { ...targetTask, ...body.modifiedTask, } as TaskSchema;
+        targetTask = { ...targetTask.toObject(), ...body.modifiedTask } as TaskSchema;
         goal.taskArray[index] = targetTask;
         response = goal.taskArray;
         break;
@@ -57,9 +57,9 @@ async function patch(body: Body, goalId: string) {
 }
 
 async function del(body: Body, goalId: string) {
-  const goal: GoalSchema = await goalCollection.findOne({ _id: goalId });
+  const goal: GoalSchema = await goalCollection.findOne({ id: goalId });
 
-  const taskIndex = goal.taskArray.findIndex(task => task._id === body.taskId);
+  const taskIndex = goal.taskArray.findIndex(task => task.id === body.taskId);
   goal.taskArray.splice(taskIndex, 1);
   goal.save();
 
@@ -71,7 +71,7 @@ interface Body {
   data: string;
   modifiedTask: TaskSchema;
   taskId: string;
-  newTask: TaskSchema;
+  task: TaskSchema;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
