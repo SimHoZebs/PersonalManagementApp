@@ -12,7 +12,7 @@ function correctRes(res: AxiosResponse): res is ApiRes {
   return res.data !== undefined;
 }
 
-export default async function apiFunctionHelper<T>(req: AxiosRequestConfig) {
+export default async function apiFunctionHelper<T, D = unknown>(req: AxiosRequestConfig<D>) {
 
   try {
     const res = await request(req);

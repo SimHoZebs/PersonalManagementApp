@@ -1,5 +1,5 @@
 import apiFunctionHelper from "../apiFunctionHelper";
-import { Post } from "../../pages/api/user/[userId]/[goalId]";
+import { Post, Body } from "../../pages/api/user/[userId]/[goalId]";
 import { TaskSchema } from "../schema/TaskSchema";
 
 /**
@@ -7,12 +7,10 @@ import { TaskSchema } from "../schema/TaskSchema";
  */
 export default async function createTask(userId: string, goalId: string, task: TaskSchema) {
 
-  return await apiFunctionHelper<Post>({
+  return await apiFunctionHelper<Post, Body>({
     method: "post",
     url: `api/user/${userId}/${goalId}`,
-    data: {
-      task
-    }
+    data: { task }
   });
 
 }

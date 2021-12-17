@@ -1,5 +1,5 @@
 import apiFunctionHelper from '../apiFunctionHelper';
-import { Patch } from '../../pages/api/user/[userId]/[goalId]';
+import { Patch, Body } from '../../pages/api/user/[userId]/[goalId]';
 
 /**
  * 
@@ -16,7 +16,7 @@ export default async function updateGoal(
   data: string
 ) {
 
-  return await apiFunctionHelper<Patch>({
+  return await apiFunctionHelper<Patch, Body>({
     method: 'PATCH',
     url: `api/user/${userId}/${goalId}`,
     data: { prop, data },

@@ -13,9 +13,9 @@ async function post(body: Body) {
   return await userCollection.create(new userCollection({ title: body.title, _id: body.userId })) as UserSchema;
 }
 
-interface Body {
-  userId: string;
-  title: string;
+export interface Body {
+  userId?: string;
+  title?: string;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

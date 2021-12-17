@@ -8,11 +8,13 @@ export type Post = Awaited<ReturnType<typeof post>>;
 export type Patch = Awaited<ReturnType<typeof patch>>;
 export type Del = Awaited<ReturnType<typeof del>>;
 
-async function get(body: Body, goalId: string) {
+async function get(goalId: string) {
   return await goalCollection.findOne({ _id: goalId }) as GoalSchema;
 }
 
 async function post(body: Body, goalId: string) {
+  if (!body.task) return new Error("Task is undefined");
+
   const goal: GoalSchema = await goalCollection.findOne({ _id: goalId });
   goal.taskArray.push(body.task);
   goal.save();
@@ -21,6 +23,8 @@ async function post(body: Body, goalId: string) {
 }
 
 async function patch(body: Body, goalId: string) {
+  if (!(body.data)) return new Error("Data is undefined");
+
   const goal: GoalSchema = await goalCollection.findOne({ _id: goalId });
 
   let response: GoalSchema | TaskSchema[] | undefined;
@@ -66,12 +70,12 @@ async function del(body: Body, goalId: string) {
   return goal.taskArray;
 }
 
-interface Body {
-  prop: string;
-  data: string;
-  modifiedTask: TaskSchema;
-  taskId: string;
-  task: TaskSchema;
+export interface Body {
+  prop?: string;
+  data?: string;
+  modifiedTask?: { title?: string, statusColor?: string; };
+  taskId?: string;
+  task?: TaskSchema;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -80,7 +84,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const { status, response } = await apiEndpointHelper(req,
     async function getWrapper() {
-      return get(body, goalId as string);
+      return get(goalId as string);
     },
     async function postWrapper() {
       return post(body, goalId as string);

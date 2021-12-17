@@ -12,10 +12,14 @@ async function get() {
 }
 
 async function post(body: Body, userId: string | string[]) {
+  if (!body.title) return new Error('Title is undefined');
+
   return await goalCollection.create(new goalCollection({ title: body.title, userId })) as GoalSchema;
 }
 
-async function patch(body: Body, userId: string | string[],) {
+async function patch(body: Body, userId: string) {
+  if (!(body.goalId && body.target)) return new Error('GoalId or Target is undefined');
+
   const user: UserSchema = await userCollection.findOne({ _id: userId });
 
   if (body.target === "lastViewedGoalId") {
@@ -28,11 +32,10 @@ async function patch(body: Body, userId: string | string[],) {
   return user;
 }
 
-
-interface Body {
-  title: string; //createGoal
-  goalId: string; //addGoalId
-  target: string; //updateLastViewedGoalId
+export interface Body {
+  title?: string; //createGoal
+  goalId?: string; //addGoalId
+  target?: string; //updateLastViewedGoalId
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -49,11 +52,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     },
 
     async function postWrapper() {
-      return post(body, userId);
+      return post(body, userId as string);
     },
 
     async function patchWrapper() {
-      return patch(body, userId);
+      return patch(body, userId as string);
     }
   );
 
