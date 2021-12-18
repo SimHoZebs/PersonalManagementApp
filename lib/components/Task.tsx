@@ -94,7 +94,7 @@ const Task = (props: Props) => {
 
   return (
     <div className="p-2 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200">
-      <StatusButton />
+      <StatusButton statusColor={task.statusColor} />
       <div className="flex flex-col gap-y-2">
         <div className="flex items-center">
           <TextField
