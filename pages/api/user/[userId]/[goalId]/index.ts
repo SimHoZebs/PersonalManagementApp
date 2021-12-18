@@ -23,7 +23,6 @@ async function post(body: Body, goalId: string) {
 }
 
 async function patch(body: Body, goalId: string) {
-  if (!(body.data)) return new Error("Data is undefined");
 
   const goal: GoalSchema = await goalCollection.findOne({ _id: goalId });
 
@@ -31,6 +30,7 @@ async function patch(body: Body, goalId: string) {
   switch (body.prop) {
     //modifying goal title
     case "title":
+      if (!(body.data)) return new Error("Data is undefined");
       goal.title = body.data;
 
       response = goal;
@@ -38,6 +38,7 @@ async function patch(body: Body, goalId: string) {
 
     //modifying goal description
     case "description":
+      if (!(body.data)) return new Error("Data is undefined");
       goal.description = body.data;
 
       response = goal;
@@ -45,6 +46,8 @@ async function patch(body: Body, goalId: string) {
 
     //modifying taskArray
     default:
+      if (!body.modifiedTask && !body.taskId) return new Error("TaskId or ModifiedTask is undefined");
+
       const index = goal.taskArray.findIndex(task => task.id === body.taskId);
       let targetTask = goal.taskArray[index];
 
@@ -54,6 +57,7 @@ async function patch(body: Body, goalId: string) {
         response = goal.taskArray;
         break;
       }
+      if (!response) return new Error("Task not found");
   }
 
   goal.save();
@@ -61,6 +65,8 @@ async function patch(body: Body, goalId: string) {
 }
 
 async function del(body: Body, goalId: string) {
+  if (!body.taskId) return new Error("TaskId is undefined");
+
   const goal: GoalSchema = await goalCollection.findOne({ id: goalId });
 
   const taskIndex = goal.taskArray.findIndex(task => task.id === body.taskId);

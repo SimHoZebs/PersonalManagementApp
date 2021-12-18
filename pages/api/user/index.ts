@@ -10,6 +10,8 @@ async function get(userId: string) {
 }
 
 async function post(body: Body) {
+  if (!body.title) return new Error("Title is undefined");
+
   return await userCollection.create(new userCollection({ title: body.title, _id: body.userId })) as UserSchema;
 }
 
