@@ -38,7 +38,7 @@ const Goal = (props: Props) => {
       title: "",
       userId: user?._id,
       goalId: props.goalId,
-      statusColor: goal?.statusColorArray[0],
+      statusIndex: 0,
     } as TaskSchema;
 
     setTaskArray((prev) => [...prev, newTask]);

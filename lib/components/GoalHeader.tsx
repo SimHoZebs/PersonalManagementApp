@@ -60,16 +60,6 @@ const GoalHeader = (props: Props) => {
   return (
     <header className="flex flex-col gap-y-2">
       <div className="flex text-left items-center gap-x-2">
-        {editingTitle ? (
-          <button onClick={saveTitle}>
-            <Icon icon="mdi:content-save-outline" className="h-7 w-7" />
-          </button>
-        ) : (
-          <button onClick={editTitle}>
-            <Icon icon="mdi:pencil-outline" className="w-7 h-7" />
-          </button>
-        )}
-
         {isLoaded<string>(props.title) ? (
           <TextField
             className="text-3xl"
@@ -90,16 +80,6 @@ const GoalHeader = (props: Props) => {
       </div>
 
       <div className="flex text-left items-center gap-x-2">
-        {editingDesc ? (
-          <button onClick={saveDesc}>
-            <Icon icon="mdi:content-save-outline" className="h-7 w-7" />
-          </button>
-        ) : (
-          <button onClick={editDesc}>
-            <Icon icon="mdi:pencil-outline" className="w-7 h-7" />
-          </button>
-        )}
-
         {isLoaded<string>(props.description) ? (
           <TextField
             placeholder="Add a description"

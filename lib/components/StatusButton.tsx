@@ -1,18 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@iconify/react";
+import IconButton from "./IconButton";
 
 interface Props {
-  statusColor: string;
+  statusIndex: number;
+  statusColorArray: string[];
 }
 
 const StatusButton = (props: Props) => {
-  useEffect(() => {}, [props.statusColor]);
+  const [statusColor, setStatusColor] = useState(props.statusColorArray[0]);
 
   return (
     <div className="flex flex-col gap-1 items-center">
-      <Icon icon="entypo:chevron-up" className="h-6 w-6" />
-      <div className={`h-4 w-4 rounded-sm ${props.statusColor}`}></div>
-      <Icon icon="entypo:chevron-down" className="h-6 w-6" />
+      <IconButton className="p-1">
+        <Icon icon="entypo:chevron-up" className="h-6 w-6" />
+      </IconButton>
+      <button className={`h-4 w-4 rounded-sm ${statusColor}`}></button>
+      <IconButton className="p-1">
+        <Icon icon="entypo:chevron-down" className="h-6 w-6" />
+      </IconButton>
     </div>
   );
 };

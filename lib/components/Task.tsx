@@ -61,7 +61,7 @@ const Task = (props: Props) => {
             title: task.title,
             userId: task.userId,
             goalId: task.goalId,
-            statusColor: props.statusColorArray[0],
+            statusIndex: 0,
           } as TaskSchema)
         : ((await updateTask(task.userId, task.goalId, props.task._id, {
             title: task.title,
@@ -94,7 +94,10 @@ const Task = (props: Props) => {
 
   return (
     <div className="p-2 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200">
-      <StatusButton statusColor={task.statusColor} />
+      <StatusButton
+        statusColorArray={props.statusColorArray}
+        statusIndex={task.statusIndex}
+      />
       <div className="flex flex-col gap-y-2">
         <div className="flex items-center">
           <TextField

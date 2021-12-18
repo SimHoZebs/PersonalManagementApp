@@ -1,12 +1,13 @@
 import { Icon } from "@iconify/react";
+import IconButton from "./IconButton";
 
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {}
 
 const MoreOptionsButton = (props: Props) => {
   return (
-    <button className="hover:bg-dark-300 rounded-full p-2" {...props}>
+    <IconButton>
       <Icon icon="mdi:dots-vertical" className="h-4 w-4 text-gray-600" />
-    </button>
+    </IconButton>
   );
 };
 

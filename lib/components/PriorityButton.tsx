@@ -1,10 +1,11 @@
 import { Icon } from "@iconify/react";
+import IconButton from "./IconButton";
 
 const PriorityButton = () => {
   return (
-    <div>
+    <IconButton>
       <Icon icon="ci:flag-fill" className="w-6 h-6" />
-    </div>
+    </IconButton>
   );
 };
 
