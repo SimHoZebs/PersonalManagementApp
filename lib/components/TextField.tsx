@@ -4,6 +4,7 @@ import {
   forwardRef,
   ForwardedRef,
 } from "react";
+
 interface Props
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
@@ -20,7 +21,7 @@ const TextField = (
     <input
       ref={ref}
       type="text"
-      className={`bg-transparent p-1 text-xl hover:bg-dark-200 focus-visible:(outline-transparent bg-dark-200) ${className}`}
+      className={`bg-transparent px-2 py-1 rounded-sm text-xl hover:bg-dark-300 focus-visible:(outline-transparent bg-dark-200) ${className}`}
       {...rest}
     />
   );

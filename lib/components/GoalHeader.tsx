@@ -1,5 +1,4 @@
-import { useRef, useState, useContext, Dispatch, SetStateAction } from "react";
-import { Icon } from "@iconify/react";
+import { useRef, useState, useContext } from "react";
 
 //components
 import TextField from "./TextField";
@@ -15,7 +14,7 @@ interface Props {
   goalId: string;
   title: string | undefined;
   description: string | undefined;
-  setGoal: Dispatch<SetStateAction<GoalSchema | undefined>>;
+  setGoal: React.Dispatch<React.SetStateAction<GoalSchema | undefined>>;
 }
 
 const GoalHeader = (props: Props) => {
@@ -62,7 +61,7 @@ const GoalHeader = (props: Props) => {
       <div className="flex text-left items-center gap-x-2">
         {isLoaded<string>(props.title) ? (
           <TextField
-            className="text-3xl"
+            className="text-4xl hover:bg-dark-400"
             ref={titleRef}
             placeholder="Type Goal Name Here"
             onFocus={editTitle}
@@ -70,7 +69,7 @@ const GoalHeader = (props: Props) => {
             value={props.title}
             onChange={(e) =>
               props.setGoal(
-                (prev) => ({ title: e.target.value, ...prev } as GoalSchema)
+                (prev) => ({ ...prev, title: e.target.value } as GoalSchema)
               )
             }
           />
@@ -82,6 +81,7 @@ const GoalHeader = (props: Props) => {
       <div className="flex text-left items-center gap-x-2">
         {isLoaded<string>(props.description) ? (
           <TextField
+            className="hover:bg-dark-400"
             placeholder="Add a description"
             ref={descRef}
             onFocus={editDesc}
@@ -90,7 +90,7 @@ const GoalHeader = (props: Props) => {
             onChange={(e) =>
               props.setGoal(
                 (prev) =>
-                  ({ description: e.target.value, ...prev } as GoalSchema)
+                  ({ ...prev, description: e.target.value } as GoalSchema)
               )
             }
           />

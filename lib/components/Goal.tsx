@@ -1,10 +1,4 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { useContext, useEffect, useState } from "react";
 
 // components
 import Task from "./Task";
@@ -20,7 +14,7 @@ import isLoaded from "../isLoaded";
 
 interface Props {
   goalId: string;
-  setCurrGoalTitle: Dispatch<SetStateAction<string | undefined>>;
+  setCurrGoalTitle: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const Goal = (props: Props) => {
