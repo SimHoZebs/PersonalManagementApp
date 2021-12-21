@@ -18,7 +18,7 @@ async function post(body: Body, userId: string | string[]) {
 }
 
 async function patch(body: Body, userId: string) {
-  if (!(body.goalId && body.target)) return new Error('GoalId or Target is undefined');
+  if (!(body.goalId)) return new Error('GoalId is undefined');
 
   const user: UserSchema = await userCollection.findOne({ _id: userId });
 
