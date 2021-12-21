@@ -7,7 +7,10 @@ const IconButton = (props: Props) => {
 
   return (
     <button
-      className={"flex hover:bg-dark-300 rounded-full p-2 " + className}
+      className={
+        "flex hover:bg-dark-300 rounded-full p-2 focus:outline-none " +
+        className
+      }
       {...rest}
     >
       {children}
