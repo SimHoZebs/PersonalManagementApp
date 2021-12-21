@@ -93,10 +93,11 @@ const Task = (props: Props) => {
   }, [props.isNewTask]);
 
   return (
-    <div className="p-2 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200">
+    <div className="p-1 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200">
       <StatusButton
         statusColorArray={props.statusColorArray}
         statusIndex={task.statusIndex}
+        setTask={setTask}
       />
       <div className="flex flex-col gap-y-2">
         <div className="flex items-center">
