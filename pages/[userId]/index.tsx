@@ -3,17 +3,15 @@ import Head from "next/head";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 
 //components
-import Goal from "../../../lib/components/Goal";
-import Skeleton from "../../../lib/components/Skeleton";
+import Goal from "../../lib/components/Goal";
+import Skeleton from "../../lib/components/Skeleton";
 
 //etc
-import readUser from "../../../lib/api/readUser";
-import { UserSchema } from "../../../lib/schema/UserSchema";
-import SideMenu from "../../../lib/components/SideMenu";
-import addUserDefaults from "../../../lib/functions/addUserDefaults";
-import isLoaded from "../../../lib/isLoaded";
-
-export const UserContext = createContext<UserSchema | undefined>(undefined);
+import readUser from "../../lib/api/readUser";
+import { UserSchema } from "../../lib/schema/UserSchema";
+import SideMenu from "../../lib/components/SideMenu";
+import addUserDefaults from "../../lib/functions/addUserDefaults";
+import isLoaded from "../../lib/isLoaded";
 
 /**
  * displays user dashboard.
@@ -41,13 +39,14 @@ export default function Dashboard(
 
         <div className="flex flex-col gap-y-1 p-2 w-3/4">
           {isLoaded<UserSchema>(user) ? (
-            <UserContext.Provider value={user}>
+            <>
               <p className="text-xs">Hello, {user?.title}</p>
               <Goal
+                user={user}
                 goalId={user.lastViewedGoalId}
                 setCurrGoalTitle={setCurrGoalTitle}
               />
-            </UserContext.Provider>
+            </>
           ) : (
             <Skeleton className="h-3 w-36" />
           )}
@@ -60,6 +59,7 @@ export default function Dashboard(
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
+  console.log(context);
   try {
     const userId = context.query.userId;
     if (typeof userId !== "string") {

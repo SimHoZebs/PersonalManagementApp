@@ -8,53 +8,46 @@ import { UserSchema } from "../lib/schema/UserSchema";
 import connectToDB from "../lib/api/connectToDB";
 import { InferGetServerSidePropsType } from "next";
 
-const PREVIEW_USERID = "preview";
-const PREVIEW_USERNAME = "preview";
-
 export default function Index(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
   const router = useRouter();
 
   useEffect(() => {
-    /**
-     * Makes connection with DB. Uses userId from localStorage to get user data. Creates a new one if it doesn't exist.
-     */
     router.push({
-      pathname: `/user/${props.user?._id}`,
+      pathname: `/${props.userId}`,
     });
-  }, [props.user?._id, router]);
+  }, [props.userId, router]);
 
   return <div>Loading app...</div>;
 }
 
+//Creates preview user or loads existing preview user and redirects to its userId.
+//In the future, this should read browser cookies/localStorage and load the userId from there.
 export async function getServerSideProps() {
+  const PREVIEW_USERID = "preview";
+  const PREVIEW_USERNAME = "preview";
+
   try {
     const connectToDBRes = await connectToDB();
-    if (connectToDBRes instanceof Error) {
-      throw connectToDBRes;
-    }
+    if (connectToDBRes instanceof Error) throw connectToDBRes;
 
     let user: UserSchema;
 
     const readUserRes = await readUser(PREVIEW_USERID);
-    if (readUserRes instanceof Error) {
-      throw readUserRes;
-    }
+    if (readUserRes instanceof Error) throw readUserRes;
 
     if (readUserRes === null) {
       const createUserRes = await createUser(PREVIEW_USERID, PREVIEW_USERNAME);
-      if (createUserRes instanceof Error) {
-        throw createUserRes;
-      }
+      if (createUserRes instanceof Error) throw createUserRes;
 
       user = createUserRes;
     } else {
       user = readUserRes;
     }
-    return { props: { user } };
+    return { props: { userId: user._id } };
   } catch (error) {
     console.log(error instanceof Error ? error.message : error);
-    return { props: { user: undefined } };
+    return { props: { userId: undefined } };
   }
 }
