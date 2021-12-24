@@ -15,7 +15,7 @@ export default function Index(
 
   useEffect(() => {
     router.push({
-      pathname: `/${props.userId}`,
+      pathname: `/app/${props.userId}`,
     });
   }, [props.userId, router]);
 

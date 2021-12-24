@@ -3,15 +3,15 @@ import Head from "next/head";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 
 //components
-import Goal from "../../lib/components/Goal";
-import Skeleton from "../../lib/components/Skeleton";
+import Goal from "../../../lib/components/Goal";
+import Skeleton from "../../../lib/components/Skeleton";
 
 //etc
-import readUser from "../../lib/api/readUser";
-import { UserSchema } from "../../lib/schema/UserSchema";
-import SideMenu from "../../lib/components/SideMenu";
-import addUserDefaults from "../../lib/functions/addUserDefaults";
-import isLoaded from "../../lib/isLoaded";
+import readUser from "../../../lib/api/readUser";
+import { UserSchema } from "../../../lib/schema/UserSchema";
+import SideMenu from "../../../lib/components/SideMenu";
+import addUserDefaults from "../../../lib/functions/addUserDefaults";
+import isLoaded from "../../../lib/isLoaded";
 
 /**
  * displays user dashboard.
