@@ -59,7 +59,6 @@ export default function Dashboard(
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
-  console.log(context);
   try {
     const userId = context.query.userId;
     if (typeof userId !== "string") {

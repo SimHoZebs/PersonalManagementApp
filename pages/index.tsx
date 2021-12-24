@@ -24,7 +24,7 @@ export default function Index(
 
 //Creates preview user or loads existing preview user and redirects to its userId.
 //In the future, this should read browser cookies/localStorage and load the userId from there.
-export async function getServerSideProps() {
+export const getServerSideProps = async () => {
   const PREVIEW_USERID = "preview";
   const PREVIEW_USERNAME = "preview";
 
@@ -50,4 +50,4 @@ export async function getServerSideProps() {
     console.log(error instanceof Error ? error.message : error);
     return { props: { userId: undefined } };
   }
-}
+};
