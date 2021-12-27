@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // components
 import Task from "./Task";
@@ -8,17 +8,17 @@ import Button from "./Button";
 //etc
 import { TaskSchema } from "../schema/TaskSchema";
 import readGoal from "../api/readGoal";
-import { UserContext } from "../../pages/user/[userId]";
 import { GoalSchema } from "../schema/GoalSchema";
 import isLoaded from "../isLoaded";
+import { UserSchema } from "../schema/UserSchema";
 
 interface Props {
+  user: UserSchema;
   goalId: string;
   setCurrGoalTitle: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const Goal = (props: Props) => {
-  const user = useContext(UserContext);
   const [goal, setGoal] = useState<GoalSchema | undefined>();
   const [taskArray, setTaskArray] = useState<TaskSchema[]>([]);
   const [creatingTask, setCreatingTask] = useState(false);
@@ -30,7 +30,7 @@ const Goal = (props: Props) => {
   function createTaskBtn() {
     const newTask = {
       title: "",
-      userId: user?._id,
+      userId: props.user._id,
       goalId: props.goalId,
       statusIndex: 0,
     } as TaskSchema;
@@ -41,7 +41,7 @@ const Goal = (props: Props) => {
 
   useEffect(() => {
     async function initGoal() {
-      const readGoalRes = await readGoal(user?._id, props.goalId);
+      const readGoalRes = await readGoal(props.user._id, props.goalId);
       if (!(readGoalRes instanceof Error)) {
         setGoal(readGoalRes);
         setTaskArray((prev) => readGoalRes.taskArray);
@@ -50,7 +50,7 @@ const Goal = (props: Props) => {
     }
 
     initGoal();
-  }, [props, user?._id]);
+  }, [props]);
 
   return (
     <>
@@ -59,6 +59,7 @@ const Goal = (props: Props) => {
         description={goal?.description}
         title={goal?.title}
         setGoal={setGoal}
+        userId={props.user._id}
       />
 
       <hr className="border-dark-300" />

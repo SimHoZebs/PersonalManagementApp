@@ -1,4 +1,4 @@
-import { useRef, useState, useContext } from "react";
+import { useRef } from "react";
 
 //components
 import TextField from "./TextField";
@@ -7,7 +7,6 @@ import Skeleton from "./Skeleton";
 //etc
 import updateGoal from "../api/updateGoal";
 import isLoaded from "../isLoaded";
-import { UserContext } from "../../pages/user/[userId]";
 import { GoalSchema } from "../schema/GoalSchema";
 
 interface Props {
@@ -15,35 +14,27 @@ interface Props {
   title: string | undefined;
   description: string | undefined;
   setGoal: React.Dispatch<React.SetStateAction<GoalSchema | undefined>>;
+  userId: string;
 }
 
 const GoalHeader = (props: Props) => {
-  const user = useContext(UserContext);
-
-  const [editingTitle, setEditingTitle] = useState(false);
-  const [editingDesc, setEditingDesc] = useState(false);
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLInputElement>(null);
 
   async function saveTitle() {
     if (isLoaded<string>(props.title)) {
-      setEditingTitle(false);
-
-      await updateGoal(user?._id, props.goalId, "title", props.title);
+      await updateGoal(props.userId, props.goalId, "title", props.title);
     }
   }
 
   function editTitle() {
-    setEditingTitle(() => true);
     titleRef.current?.focus();
   }
 
   async function saveDesc() {
     if (isLoaded<string>(props.description)) {
-      setEditingDesc(false);
-
       await updateGoal(
-        user?._id,
+        props.userId,
         props.goalId,
         "description",
         props.description
@@ -52,7 +43,6 @@ const GoalHeader = (props: Props) => {
   }
 
   async function editDesc() {
-    setEditingDesc(() => true);
     descRef.current?.focus();
   }
 

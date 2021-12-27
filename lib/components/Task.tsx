@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 //components
 import TextField from "./TextField";
@@ -10,8 +10,8 @@ import MoreOptionsButton from "./MoreOptionsButton";
 //etc
 import createTask from "../api/createTask";
 import deleteTask from "../api/deleteTask";
-import updateTask from "../api/updateTask";
 import { TaskSchema } from "../schema/TaskSchema";
+import updateTask from "../api/updateTask";
 
 export interface Props {
   task: TaskSchema;
@@ -27,51 +27,10 @@ export interface Props {
  * This is needed as existing tasks can behave like new tasks if user clicks away while creating new task.
  */
 const Task = (props: Props) => {
+  const { isNewTask, setCreatingTask } = props;
   const [task, setTask] = useState(props.task);
+  const [taskLoaded, setTaskLoaded] = useState(false);
   const textFieldRef = useRef<HTMLInputElement | null>(null);
-
-  /**
-   * When user clicks away from task textField.
-   * Creates new task if it's new, or updates existing task.
-   * Add or update task to goal.
-   */
-  async function onBlur() {
-    props.setCreatingTask((prev) => false);
-
-    if (task.title === "") {
-      //If task title is empty, do not save the task
-      if (props.isNewTask) {
-        props.setTaskArray((prev) =>
-          prev.filter((task, index) => index !== props.taskIndex)
-        );
-      } else {
-        const updatedTaskArray = await deleteTask(
-          task.userId,
-          task.goalId,
-          props.task._id
-        );
-        if (!(updatedTaskArray instanceof Error)) {
-          props.setTaskArray(updatedTaskArray);
-        }
-      }
-    } else if (task.title !== props.task.title) {
-      //if task title isn't empty and diff from the old one, save the task
-      const updatedTaskArray = props.isNewTask
-        ? await createTask(task.userId, task.goalId, {
-            title: task.title,
-            userId: task.userId,
-            goalId: task.goalId,
-            statusIndex: 0,
-          } as TaskSchema)
-        : ((await updateTask(task.userId, task.goalId, props.task._id, {
-            title: task.title,
-            statusColor: props.statusColorArray[0],
-          })) as TaskSchema[] | Error);
-      if (!(updatedTaskArray instanceof Error)) {
-        props.setTaskArray(updatedTaskArray);
-      }
-    }
-  }
 
   async function deleteTaskBtn() {
     const deleteTaskRes = await deleteTask(
@@ -84,13 +43,21 @@ const Task = (props: Props) => {
     }
   }
 
-  //automatic taskName textField focus on creation.
-  //isNewTask boolean prevents existing tasks from being focused
   useEffect(() => {
-    if (props.isNewTask) {
+    //automatic taskName textField focus on creation.
+    //isNewTask boolean prevents existing tasks from being focused
+    if (isNewTask) {
       textFieldRef.current?.focus();
+      createTask(task.userId, task.goalId, task);
+      setCreatingTask(false);
     }
-  }, [props.isNewTask]);
+
+    if (task && !taskLoaded) {
+      setTaskLoaded(true);
+    } else {
+      updateTask(task.userId, task.goalId, task._id, task);
+    }
+  }, [isNewTask, setCreatingTask, task, taskLoaded]);
 
   return (
     <div className="p-1 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200">
@@ -109,10 +76,10 @@ const Task = (props: Props) => {
                 prev ? ({ ...prev, title: e.target.value } as TaskSchema) : prev
               )
             }
-            onBlur={onBlur}
           />
           <PriorityButton />
-          <MoreOptionsButton />
+          {/**Temp solution for deleting */}
+          <MoreOptionsButton onClick={deleteTaskBtn} />
         </div>
         <SelectDateButton />
       </div>

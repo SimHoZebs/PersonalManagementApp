@@ -10,7 +10,6 @@ export interface TaskSchema extends Document {
 export const taskModel = new mongoose.Schema<TaskSchema>({
   title: {
     type: String,
-    required: [true, 'Title is empty'],
     maxLength: [64, 'Title cannot be more than 64 characters']
   },
   userId: String,
