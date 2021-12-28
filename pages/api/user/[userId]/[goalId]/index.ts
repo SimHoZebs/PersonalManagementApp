@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import apiEndpointHelper from '../../../../../lib/apiEndpointHelper';
 import { TaskSchema } from '../../../../../lib/schema/TaskSchema';
-import goalCollection, { GoalSchema } from '../../../../../lib/schema/GoalSchema';
+import goalCollection, { GoalProps, GoalSchema } from '../../../../../lib/schema/GoalSchema';
 
 export type Get = Awaited<ReturnType<typeof get>>;
 export type Post = Awaited<ReturnType<typeof post>>;
@@ -27,37 +27,24 @@ async function patch(body: Body, goalId: string) {
   const goal: GoalSchema = await goalCollection.findOne({ _id: goalId });
 
   let response: GoalSchema | TaskSchema[] | undefined;
-  switch (body.prop) {
-    //modifying goal title
-    case "title":
-      if (!(body.data)) return new Error("Data is undefined");
-      goal.title = body.data;
-
-      response = goal;
-      break;
-
-    //modifying goal description
-    case "description":
-      if (!(body.data)) return new Error("Data is undefined");
-      goal.description = body.data;
-
-      response = goal;
-      break;
-
+  if (body.modifiedGoal) {
+    //modifying goal
+    response = { ...goal.toObject, ...body.modifiedGoal } as GoalSchema;
+  } else if (body.modifiedTask && body.taskId) {
     //modifying taskArray
-    default:
-      if (!body.modifiedTask && !body.taskId) return new Error("TaskId or ModifiedTask is undefined");
 
-      const index = goal.taskArray.findIndex(task => task.id === body.taskId);
-      let targetTask = goal.taskArray[index];
+    const index = goal.taskArray.findIndex(task => task.id === body.taskId);
+    let targetTask = goal.taskArray[index];
 
-      if (index !== -1) {
-        targetTask = { ...targetTask.toObject(), ...body.modifiedTask } as TaskSchema;
-        goal.taskArray[index] = targetTask;
-        response = goal.taskArray;
-        break;
-      }
-      if (!response) return new Error("Task not found");
+    if (index !== -1) {
+      targetTask = { ...targetTask.toObject(), ...body.modifiedTask } as TaskSchema;
+      goal.taskArray[index] = targetTask;
+      response = goal.taskArray;
+    } else {
+      return new Error("Task not found");
+    }
+  } else {
+    return new Error("ModifiedGoal, TaskId or ModifiedTask is undefined");
   }
 
   goal.save();
@@ -77,8 +64,7 @@ async function del(body: Body, goalId: string) {
 }
 
 export interface Body {
-  prop?: string;
-  data?: string;
+  modifiedGoal?: GoalProps;
   modifiedTask?: { title?: string, statusColor?: string; };
   taskId?: string;
   task?: TaskSchema;

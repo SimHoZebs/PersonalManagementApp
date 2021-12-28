@@ -8,9 +8,10 @@ import Button from "./Button";
 //etc
 import { TaskSchema } from "../schema/TaskSchema";
 import readGoal from "../api/readGoal";
-import { GoalSchema } from "../schema/GoalSchema";
+import { GoalProps } from "../schema/GoalSchema";
 import isLoaded from "../isLoaded";
 import { UserSchema } from "../schema/UserSchema";
+import updateGoal from "../api/updateGoal";
 
 interface Props {
   user: UserSchema;
@@ -19,7 +20,7 @@ interface Props {
 }
 
 const Goal = (props: Props) => {
-  const [goal, setGoal] = useState<GoalSchema | undefined>();
+  const [goalProps, setGoalProps] = useState<GoalProps | undefined>();
   const [taskArray, setTaskArray] = useState<TaskSchema[]>([]);
   const [creatingTask, setCreatingTask] = useState(false);
 
@@ -43,32 +44,37 @@ const Goal = (props: Props) => {
     async function initGoal() {
       const readGoalRes = await readGoal(props.user._id, props.goalId);
       if (!(readGoalRes instanceof Error)) {
-        setGoal(readGoalRes);
+        const { taskArray, ...rest } = readGoalRes;
+        setGoalProps(rest as GoalProps);
         setTaskArray((prev) => readGoalRes.taskArray);
         props.setCurrGoalTitle(readGoalRes.title);
       }
     }
 
-    initGoal();
-  }, [props]);
+    if (goalProps) {
+      updateGoal(props.user._id, props.goalId, goalProps);
+    } else {
+      initGoal();
+    }
+  }, [props, goalProps]);
 
   return (
     <>
       <GoalHeader
-        goalId={goal?._id}
-        description={goal?.description}
-        title={goal?.title}
-        setGoal={setGoal}
+        goalId={goalProps?._id}
+        description={goalProps?.description}
+        title={goalProps?.title}
+        setGoalProps={setGoalProps}
         userId={props.user._id}
       />
 
       <hr className="border-dark-300" />
 
       <div className="flex flex-col gap-y-2 items-start">
-        {taskArray.length !== 0 && isLoaded<GoalSchema>(goal) ? (
+        {taskArray.length !== 0 && isLoaded<GoalProps>(goalProps) ? (
           taskArray.map((task, index) => (
             <Task
-              statusColorArray={goal.statusColorArray}
+              statusColorArray={goalProps.statusColorArray}
               key={index}
               task={task}
               taskIndex={index}

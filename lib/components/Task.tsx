@@ -55,6 +55,7 @@ const Task = (props: Props) => {
     if (task && !taskLoaded) {
       setTaskLoaded(true);
     } else {
+      console.log("updating Task");
       updateTask(task.userId, task.goalId, task._id, task);
     }
   }, [isNewTask, setCreatingTask, task, taskLoaded]);

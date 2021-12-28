@@ -1,15 +1,18 @@
-import mongoose, { Document } from 'mongoose';
+import { Document, models, Schema, model } from 'mongoose';
 import { taskModel, TaskSchema } from './TaskSchema';
 
-export interface GoalSchema extends Document {
+export interface GoalProps extends Document {
   title: string;
   description: string;
-  taskArray: TaskSchema[];
   statusArray: string[];
   statusColorArray: string[];
 }
 
-export const goalModel = new mongoose.Schema<GoalSchema>({
+export interface GoalSchema extends GoalProps {
+  taskArray: TaskSchema[];
+}
+
+export const goalModel = new Schema<GoalSchema>({
   title: {
     type: String,
     required: true,
@@ -32,4 +35,4 @@ export const goalModel = new mongoose.Schema<GoalSchema>({
   },
 });
 
-export default mongoose.models.Goal || mongoose.model<GoalSchema>('Goal', goalModel);
+export default models.Goal || model<GoalSchema>('Goal', goalModel);

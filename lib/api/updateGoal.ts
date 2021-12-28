@@ -1,25 +1,25 @@
 import apiFunctionHelper from '../apiFunctionHelper';
 import { Patch, Body } from '../../pages/api/user/[userId]/[goalId]';
+import { GoalProps } from '../schema/GoalSchema';
 
 /**
  * 
  * @param userId; target user id.
  * @param goalId; target goal id. 
  * @param prop; target prop in goal. 
- * @param data 
+ * @param modifiedGoalProps 
  * @returns 
  */
 export default async function updateGoal(
   userId: string,
   goalId: string,
-  prop: "title" | "description",
-  data: string
+  modifiedGoalProps: GoalProps
 ) {
 
   return await apiFunctionHelper<Patch, Body>({
     method: 'PATCH',
     url: `api/user/${userId}/${goalId}`,
-    data: { prop, data },
+    data: { modifiedGoal: modifiedGoalProps },
     params: {}
   });
 }

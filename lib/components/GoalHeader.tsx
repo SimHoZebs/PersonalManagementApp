@@ -5,41 +5,23 @@ import TextField from "./TextField";
 import Skeleton from "./Skeleton";
 
 //etc
-import updateGoal from "../api/updateGoal";
 import isLoaded from "../isLoaded";
-import { GoalSchema } from "../schema/GoalSchema";
+import { GoalProps, GoalSchema } from "../schema/GoalSchema";
 
 interface Props {
   goalId: string;
   title: string | undefined;
   description: string | undefined;
-  setGoal: React.Dispatch<React.SetStateAction<GoalSchema | undefined>>;
   userId: string;
+  setGoalProps: React.Dispatch<React.SetStateAction<GoalProps | undefined>>;
 }
 
 const GoalHeader = (props: Props) => {
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLInputElement>(null);
 
-  async function saveTitle() {
-    if (isLoaded<string>(props.title)) {
-      await updateGoal(props.userId, props.goalId, "title", props.title);
-    }
-  }
-
   function editTitle() {
     titleRef.current?.focus();
-  }
-
-  async function saveDesc() {
-    if (isLoaded<string>(props.description)) {
-      await updateGoal(
-        props.userId,
-        props.goalId,
-        "description",
-        props.description
-      );
-    }
   }
 
   async function editDesc() {
@@ -55,10 +37,9 @@ const GoalHeader = (props: Props) => {
             ref={titleRef}
             placeholder="Type Goal Name Here"
             onFocus={editTitle}
-            onBlur={saveTitle}
             value={props.title}
             onChange={(e) =>
-              props.setGoal(
+              props.setGoalProps(
                 (prev) => ({ ...prev, title: e.target.value } as GoalSchema)
               )
             }
@@ -75,10 +56,9 @@ const GoalHeader = (props: Props) => {
             placeholder="Add a description"
             ref={descRef}
             onFocus={editDesc}
-            onBlur={saveDesc}
             value={props.description}
             onChange={(e) =>
-              props.setGoal(
+              props.setGoalProps(
                 (prev) =>
                   ({ ...prev, description: e.target.value } as GoalSchema)
               )
