@@ -1,18 +1,23 @@
 import { Document, models, Schema, model } from 'mongoose';
-import { taskModel, TaskSchema } from './TaskSchema';
+import { taskSchema, TaskDoc, TaskProps } from './TaskSchema';
 
-export interface GoalProps extends Document {
+export interface GoalBasicProps {
+  _id: string;
   title: string;
   description: string;
   statusArray: string[];
   statusColorArray: string[];
 }
-
-export interface GoalSchema extends GoalProps {
-  taskArray: TaskSchema[];
+export interface GoalProps extends GoalBasicProps {
+  taskArray: TaskProps[];
 }
 
-export const goalModel = new Schema<GoalSchema>({
+export interface GoalDoc extends GoalProps, Document {
+  _id: string;
+  taskArray: TaskDoc[];
+}
+
+export const goalSchema = new Schema<GoalProps>({
   title: {
     type: String,
     required: true,
@@ -22,7 +27,7 @@ export const goalModel = new Schema<GoalSchema>({
     default: "",
   },
   taskArray: {
-    type: [taskModel],
+    type: [taskSchema],
     default: []
   },
   statusArray: {
@@ -35,4 +40,4 @@ export const goalModel = new Schema<GoalSchema>({
   },
 });
 
-export default models.Goal || model<GoalSchema>('Goal', goalModel);
+export default models.Goal || model<GoalProps>('Goal', goalSchema);

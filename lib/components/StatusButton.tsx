@@ -1,11 +1,11 @@
 import { Icon } from "@iconify/react";
 import IconButton from "./IconButton";
-import { TaskSchema } from "../schema/TaskSchema";
+import { TaskProps } from "../schema/TaskSchema";
 
 interface Props {
   statusIndex: number;
   statusColorArray: string[];
-  setTask: React.Dispatch<React.SetStateAction<TaskSchema>>;
+  setTask: React.Dispatch<React.SetStateAction<TaskProps>>;
 }
 
 const StatusButton = (props: Props) => {
@@ -16,7 +16,7 @@ const StatusButton = (props: Props) => {
       const index = props.statusIndex + directionArray[dir];
       return index === -1 || index === props.statusColorArray.length
         ? prev
-        : ({ ...prev, statusIndex: index } as TaskSchema);
+        : { ...prev, statusIndex: index };
     });
   }
 

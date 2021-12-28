@@ -6,35 +6,32 @@ import GoalHeader from "./GoalHeader";
 import Button from "./Button";
 
 //etc
-import { TaskSchema } from "../schema/TaskSchema";
+import { TaskProps } from "../schema/TaskSchema";
 import readGoal from "../api/readGoal";
-import { GoalProps } from "../schema/GoalSchema";
+import { GoalBasicProps } from "../schema/GoalSchema";
 import isLoaded from "../isLoaded";
-import { UserSchema } from "../schema/UserSchema";
+import { UserProps } from "../schema/UserSchema";
 import updateGoal from "../api/updateGoal";
 
 interface Props {
-  user: UserSchema;
+  user: UserProps;
   goalId: string;
   setCurrGoalTitle: React.Dispatch<React.SetStateAction<string | undefined>>;
 }
 
 const Goal = (props: Props) => {
-  const [goalProps, setGoalProps] = useState<GoalProps | undefined>();
-  const [taskArray, setTaskArray] = useState<TaskSchema[]>([]);
+  const [goalProps, setGoalProps] = useState<GoalBasicProps | undefined>();
+  const [taskArray, setTaskArray] = useState<TaskProps[]>([]);
   const [creatingTask, setCreatingTask] = useState(false);
 
-  /**
-   * Readies goal to respond accoridngly to new task interaction.
-   * @note For more info, check Task.tsx
-   */
   function createTaskBtn() {
+    //Type assertion as TaskProps requires _id
     const newTask = {
       title: "",
       userId: props.user._id,
       goalId: props.goalId,
       statusIndex: 0,
-    } as TaskSchema;
+    } as TaskProps;
 
     setTaskArray((prev) => [...prev, newTask]);
     setCreatingTask(true);
@@ -45,7 +42,7 @@ const Goal = (props: Props) => {
       const readGoalRes = await readGoal(props.user._id, props.goalId);
       if (!(readGoalRes instanceof Error)) {
         const { taskArray, ...rest } = readGoalRes;
-        setGoalProps(rest as GoalProps);
+        setGoalProps(rest);
         setTaskArray((prev) => readGoalRes.taskArray);
         props.setCurrGoalTitle(readGoalRes.title);
       }
@@ -71,7 +68,7 @@ const Goal = (props: Props) => {
       <hr className="border-dark-300" />
 
       <div className="flex flex-col gap-y-2 items-start">
-        {taskArray.length !== 0 && isLoaded<GoalProps>(goalProps) ? (
+        {taskArray.length !== 0 && isLoaded<GoalBasicProps>(goalProps) ? (
           taskArray.map((task, index) => (
             <Task
               statusColorArray={goalProps.statusColorArray}

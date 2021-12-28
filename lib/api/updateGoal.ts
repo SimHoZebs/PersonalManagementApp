@@ -1,6 +1,6 @@
 import apiFunctionHelper from '../apiFunctionHelper';
 import { Patch, Body } from '../../pages/api/user/[userId]/[goalId]';
-import { GoalProps } from '../schema/GoalSchema';
+import { GoalBasicProps } from '../schema/GoalSchema';
 
 /**
  * 
@@ -13,7 +13,7 @@ import { GoalProps } from '../schema/GoalSchema';
 export default async function updateGoal(
   userId: string,
   goalId: string,
-  modifiedGoalProps: GoalProps
+  modifiedGoalProps: GoalBasicProps
 ) {
 
   return await apiFunctionHelper<Patch, Body>({

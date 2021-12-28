@@ -1,11 +1,11 @@
 import apiFunctionHelper from "../apiFunctionHelper";
 import { Post, Body } from "../../pages/api/user/[userId]/[goalId]";
-import { TaskSchema } from "../schema/TaskSchema";
+import { TaskProps } from "../schema/TaskSchema";
 
 /**
  * Updates Goal's TaskArray by appending a new task to it.
  */
-export default async function createTask(userId: string, goalId: string, task: TaskSchema) {
+export default async function createTask(userId: string, goalId: string, task: TaskProps) {
 
   return await apiFunctionHelper<Post, Body>({
     method: "post",

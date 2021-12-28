@@ -10,14 +10,14 @@ import MoreOptionsButton from "./MoreOptionsButton";
 //etc
 import createTask from "../api/createTask";
 import deleteTask from "../api/deleteTask";
-import { TaskSchema } from "../schema/TaskSchema";
+import { TaskProps } from "../schema/TaskSchema";
 import updateTask from "../api/updateTask";
 
 export interface Props {
-  task: TaskSchema;
+  task: TaskProps;
   taskIndex: number;
   statusColorArray: string[];
-  setTaskArray: React.Dispatch<React.SetStateAction<TaskSchema[]>>;
+  setTaskArray: React.Dispatch<React.SetStateAction<TaskProps[]>>;
   setCreatingTask: React.Dispatch<React.SetStateAction<boolean>>;
   isNewTask: boolean;
 }
@@ -74,7 +74,7 @@ const Task = (props: Props) => {
             value={task.title}
             onChange={(e) =>
               setTask((prev) =>
-                prev ? ({ ...prev, title: e.target.value } as TaskSchema) : prev
+                prev ? { ...prev, title: e.target.value } : prev
               )
             }
           />

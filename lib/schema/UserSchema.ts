@@ -1,12 +1,16 @@
-import mongoose, { Document } from 'mongoose';
+import { Schema, models, model, Document } from 'mongoose';
 
-export interface UserSchema extends Document {
+export interface UserProps {
+  _id: string;
   title: string;
   goalIdArray: string[];
   lastViewedGoalId: string;
 }
+export interface UserDocs extends UserProps, Document {
+  _id: string;
+}
 
-const userModel = new mongoose.Schema<UserSchema>({
+const userSchema = new Schema<UserProps>({
   title: {
     type: String,
     required: true
@@ -16,4 +20,4 @@ const userModel = new mongoose.Schema<UserSchema>({
   lastViewedGoalId: { type: String }
 });
 
-export default mongoose.models.User || mongoose.model<UserSchema>('User', userModel);
+export default models.User || model<UserProps>('User', userSchema);

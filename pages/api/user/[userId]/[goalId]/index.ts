@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import apiEndpointHelper from '../../../../../lib/apiEndpointHelper';
-import { TaskSchema } from '../../../../../lib/schema/TaskSchema';
-import goalCollection, { GoalProps, GoalSchema } from '../../../../../lib/schema/GoalSchema';
+import { TaskDoc, TaskProps } from '../../../../../lib/schema/TaskSchema';
+import goalCollection, { GoalDoc, GoalBasicProps, GoalProps } from '../../../../../lib/schema/GoalSchema';
 
 export type Get = Awaited<ReturnType<typeof get>>;
 export type Post = Awaited<ReturnType<typeof post>>;
@@ -9,14 +9,15 @@ export type Patch = Awaited<ReturnType<typeof patch>>;
 export type Del = Awaited<ReturnType<typeof del>>;
 
 async function get(goalId: string) {
-  return await goalCollection.findOne({ _id: goalId }) as GoalSchema;
+  return await goalCollection.findOne({ _id: goalId }) as GoalProps;
 }
 
 async function post(body: Body, goalId: string) {
   if (!body.task) return new Error("Task is undefined");
 
-  const goal: GoalSchema = await goalCollection.findOne({ _id: goalId });
-  goal.taskArray.push(body.task);
+  const goal: GoalDoc = await goalCollection.findOne({ _id: goalId });
+  //type assertion as GoalDoc only takes TaskDoc
+  goal.taskArray.push(body.task as TaskDoc);
   goal.save();
 
   return goal.taskArray;
@@ -24,12 +25,12 @@ async function post(body: Body, goalId: string) {
 
 async function patch(body: Body, goalId: string) {
 
-  const goal: GoalSchema = await goalCollection.findOne({ _id: goalId });
+  const goal: GoalDoc = await goalCollection.findOne({ _id: goalId });
 
-  let response: GoalSchema | TaskSchema[] | undefined;
+  let response: GoalProps | TaskProps[] | undefined;
   if (body.modifiedGoal) {
     //modifying goal
-    response = { ...goal.toObject, ...body.modifiedGoal } as GoalSchema;
+    response = { ...goal.toObject, ...body.modifiedGoal } as GoalProps;
   } else if (body.modifiedTask && body.taskId) {
     //modifying taskArray
 
@@ -37,7 +38,8 @@ async function patch(body: Body, goalId: string) {
     let targetTask = goal.taskArray[index];
 
     if (index !== -1) {
-      targetTask = { ...targetTask.toObject(), ...body.modifiedTask } as TaskSchema;
+      //type asserted; modifiedTask is TaskProps, but targetTask is TaskDoc
+      targetTask = { ...targetTask.toObject(), ...body.modifiedTask } as TaskDoc;
       goal.taskArray[index] = targetTask;
       response = goal.taskArray;
     } else {
@@ -54,20 +56,20 @@ async function patch(body: Body, goalId: string) {
 async function del(body: Body, goalId: string) {
   if (!body.taskId) return new Error("TaskId is undefined");
 
-  const goal: GoalSchema = await goalCollection.findOne({ id: goalId });
+  const goal: GoalDoc = await goalCollection.findOne({ id: goalId });
 
   const taskIndex = goal.taskArray.findIndex(task => task.id === body.taskId);
   goal.taskArray.splice(taskIndex, 1);
   goal.save();
 
-  return goal.taskArray;
+  return goal.taskArray as TaskProps[];
 }
 
 export interface Body {
-  modifiedGoal?: GoalProps;
+  modifiedGoal?: GoalBasicProps;
   modifiedTask?: { title?: string, statusColor?: string; };
   taskId?: string;
-  task?: TaskSchema;
+  task?: TaskProps;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

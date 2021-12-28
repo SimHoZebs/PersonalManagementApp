@@ -6,14 +6,16 @@ import Skeleton from "./Skeleton";
 
 //etc
 import isLoaded from "../isLoaded";
-import { GoalProps, GoalSchema } from "../schema/GoalSchema";
+import { GoalBasicProps } from "../schema/GoalSchema";
 
 interface Props {
-  goalId: string;
+  goalId: string | undefined;
   title: string | undefined;
   description: string | undefined;
   userId: string;
-  setGoalProps: React.Dispatch<React.SetStateAction<GoalProps | undefined>>;
+  setGoalProps: React.Dispatch<
+    React.SetStateAction<GoalBasicProps | undefined>
+  >;
 }
 
 const GoalHeader = (props: Props) => {
@@ -39,8 +41,8 @@ const GoalHeader = (props: Props) => {
             onFocus={editTitle}
             value={props.title}
             onChange={(e) =>
-              props.setGoalProps(
-                (prev) => ({ ...prev, title: e.target.value } as GoalSchema)
+              props.setGoalProps((prev) =>
+                prev ? { ...prev, title: e.target.value } : prev
               )
             }
           />
@@ -58,9 +60,8 @@ const GoalHeader = (props: Props) => {
             onFocus={editDesc}
             value={props.description}
             onChange={(e) =>
-              props.setGoalProps(
-                (prev) =>
-                  ({ ...prev, description: e.target.value } as GoalSchema)
+              props.setGoalProps((prev) =>
+                prev ? { ...prev, description: e.target.value } : prev
               )
             }
           />

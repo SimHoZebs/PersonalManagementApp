@@ -8,7 +8,7 @@ import Skeleton from "../../../lib/components/Skeleton";
 
 //etc
 import readUser from "../../../lib/api/readUser";
-import { UserSchema } from "../../../lib/schema/UserSchema";
+import { UserProps } from "../../../lib/schema/UserSchema";
 import SideMenu from "../../../lib/components/SideMenu";
 import addUserDefaults from "../../../lib/functions/addUserDefaults";
 import isLoaded from "../../../lib/isLoaded";
@@ -19,7 +19,7 @@ import isLoaded from "../../../lib/isLoaded";
 export default function Dashboard(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
-  const [user, setUser] = useState<UserSchema | undefined>();
+  const [user, setUser] = useState<UserProps | undefined>();
   const [currGoalTitle, setCurrGoalTitle] = useState<string | undefined>();
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export default function Dashboard(
         </div>
 
         <div className="flex flex-col gap-y-1 p-2 w-3/4">
-          {isLoaded<UserSchema>(user) ? (
+          {isLoaded<UserProps>(user) ? (
             <>
               <p className="text-xs">Hello, {user?.title}</p>
               <Goal

@@ -4,7 +4,7 @@ import { useEffect } from "react";
 //apis & schemas
 import readUser from "../lib/api/readUser";
 import createUser from "../lib/api/createUser";
-import { UserSchema } from "../lib/schema/UserSchema";
+import { UserProps } from "../lib/schema/UserSchema";
 import connectToDB from "../lib/api/connectToDB";
 import { InferGetServerSidePropsType } from "next";
 
@@ -32,7 +32,7 @@ export const getServerSideProps = async () => {
     const connectToDBRes = await connectToDB();
     if (connectToDBRes instanceof Error) throw connectToDBRes;
 
-    let user: UserSchema;
+    let user: UserProps;
 
     const readUserRes = await readUser(PREVIEW_USERID);
     if (readUserRes instanceof Error) throw readUserRes;

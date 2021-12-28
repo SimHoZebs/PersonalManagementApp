@@ -1,19 +1,14 @@
-import {
-  DetailedHTMLProps,
-  InputHTMLAttributes,
-  forwardRef,
-  ForwardedRef,
-} from "react";
+import { forwardRef } from "react";
 
 interface Props
-  extends DetailedHTMLProps<
-    InputHTMLAttributes<HTMLInputElement>,
+  extends React.DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {}
 
 const TextField = (
   props: Props,
-  ref: ForwardedRef<HTMLInputElement> | undefined
+  ref: React.ForwardedRef<HTMLInputElement> | undefined
 ) => {
   const { className, ...rest } = props;
 

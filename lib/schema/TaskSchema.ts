@@ -1,13 +1,17 @@
-import mongoose, { Document } from "mongoose";
+import { Schema, model, models, Document } from "mongoose";
 
-export interface TaskSchema extends Document {
+export interface TaskProps {
+  _id: string;
   title: string;
   userId: string;
   goalId: string;
   statusIndex: number;
 }
+export interface TaskDoc extends TaskProps, Document {
+  _id: string;
+}
 
-export const taskModel = new mongoose.Schema<TaskSchema>({
+export const taskSchema = new Schema<TaskProps>({
   title: {
     type: String,
     maxLength: [64, 'Title cannot be more than 64 characters']
@@ -18,4 +22,4 @@ export const taskModel = new mongoose.Schema<TaskSchema>({
 });
 
 
-export default mongoose.models.Task || mongoose.model<TaskSchema>('Task', taskModel);
+export default models.Task || model<TaskProps>('Task', taskSchema);
