@@ -17,7 +17,7 @@ const SideMenu = (props: Props) => {
   async function login() {
     const user = await (await import("../functions/authentication")).default();
     if (!(user instanceof Error)) {
-      router.push(`/user/${user._id}`);
+      router.push(`/app/${user._id}`);
     }
   }
 
