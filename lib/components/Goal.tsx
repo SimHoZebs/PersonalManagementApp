@@ -38,6 +38,13 @@ const Goal = (props: Props) => {
   }
 
   useEffect(() => {
+    if (goalProps) {
+      updateGoal(props.user._id, props.goalId, goalProps);
+    }
+  }, [props, goalProps]);
+
+  //When user id changes, update goal
+  useEffect(() => {
     async function initGoal() {
       const readGoalRes = await readGoal(props.user._id, props.goalId);
       if (!(readGoalRes instanceof Error)) {
@@ -48,12 +55,8 @@ const Goal = (props: Props) => {
       }
     }
 
-    if (goalProps) {
-      updateGoal(props.user._id, props.goalId, goalProps);
-    } else {
-      initGoal();
-    }
-  }, [props, goalProps]);
+    initGoal();
+  }, [props.user._id]);
 
   return (
     <>
