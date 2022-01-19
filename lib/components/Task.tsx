@@ -12,12 +12,11 @@ import createTask from "../api/createTask";
 import deleteTask from "../api/deleteTask";
 import { TaskProps } from "../schema/TaskSchema";
 import updateTask from "../api/updateTask";
+import { useStoreActions, useStoreState } from "../../pages/_app";
 
 export interface Props {
   task: TaskProps;
   taskIndex: number;
-  statusColorArray: string[];
-  setTaskArray: React.Dispatch<React.SetStateAction<TaskProps[]>>;
   setCreatingTask: React.Dispatch<React.SetStateAction<boolean>>;
   isNewTask: boolean;
 }
@@ -27,6 +26,7 @@ export interface Props {
  * This is needed as existing tasks can behave like new tasks if user clicks away while creating new task.
  */
 const Task = (props: Props) => {
+  const setTaskArray = useStoreActions((actions) => actions.setTaskArray);
   const { isNewTask, setCreatingTask } = props;
   const [task, setTask] = useState(props.task);
   const [taskLoaded, setTaskLoaded] = useState(false);
@@ -39,7 +39,7 @@ const Task = (props: Props) => {
       props.task._id
     );
     if (!(deleteTaskRes instanceof Error)) {
-      props.setTaskArray(deleteTaskRes);
+      setTaskArray(deleteTaskRes);
     }
   }
 
@@ -62,11 +62,7 @@ const Task = (props: Props) => {
 
   return (
     <div className="p-1 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200">
-      <StatusButton
-        statusColorArray={props.statusColorArray}
-        statusIndex={task.statusIndex}
-        setTask={setTask}
-      />
+      <StatusButton statusIndex={task.statusIndex} setTask={setTask} />
       <div className="flex flex-col gap-y-2">
         <div className="flex items-center">
           <TextField

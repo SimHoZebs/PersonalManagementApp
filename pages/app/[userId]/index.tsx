@@ -1,17 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useStoreActions, useStoreState } from "../../_app";
 import Head from "next/head";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 
 //components
 import Goal from "../../../lib/components/Goal";
-import Skeleton from "../../../lib/components/Skeleton";
 
 //etc
 import readUser from "../../../lib/api/readUser";
-import { UserProps } from "../../../lib/schema/UserSchema";
 import SideMenu from "../../../lib/components/SideMenu";
 import addUserDefaults from "../../../lib/functions/addUserDefaults";
-import isLoaded from "../../../lib/isLoaded";
 
 /**
  * displays user dashboard.
@@ -19,12 +17,14 @@ import isLoaded from "../../../lib/isLoaded";
 export default function Dashboard(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
-  const [user, setUser] = useState<UserProps | undefined>();
-  const [currGoalTitle, setCurrGoalTitle] = useState<string | undefined>();
+  const userTitle = useStoreState((state) => state.user?.title);
+  const setUser = useStoreActions((actions) => actions.setUser);
 
   useEffect(() => {
-    setUser(props.user);
-  }, [props.user]);
+    if (props.user) {
+      setUser(props.user);
+    }
+  }, [props.user, setUser]);
 
   return (
     <>
@@ -34,22 +34,12 @@ export default function Dashboard(
 
       <div className="flex flex-row">
         <div className="w-1/4 max-w-xs">
-          <SideMenu currGoalTitle={currGoalTitle} />
+          <SideMenu />
         </div>
 
         <div className="flex flex-col gap-y-1 p-2 w-3/4">
-          {isLoaded<UserProps>(user) ? (
-            <>
-              <p className="text-xs">Hello, {user?.title}</p>
-              <Goal
-                user={user}
-                goalId={user.lastViewedGoalId}
-                setCurrGoalTitle={setCurrGoalTitle}
-              />
-            </>
-          ) : (
-            <Skeleton className="h-3 w-36" />
-          )}
+          <p className="text-xs">Hello, {userTitle}</p>
+          <Goal />
         </div>
       </div>
     </>

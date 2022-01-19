@@ -10,63 +10,66 @@ import { TaskProps } from "../schema/TaskSchema";
 import readGoal from "../api/readGoal";
 import { GoalBasicProps } from "../schema/GoalSchema";
 import isLoaded from "../isLoaded";
-import { UserProps } from "../schema/UserSchema";
 import updateGoal from "../api/updateGoal";
+import { useStoreActions, useStoreState } from "../../pages/_app";
 
-interface Props {
-  user: UserProps;
-  goalId: string;
-  setCurrGoalTitle: React.Dispatch<React.SetStateAction<string | undefined>>;
-}
+const Goal = () => {
+  const goalProps = useStoreState((state) => state.goalProps);
+  const setGoalProps = useStoreActions((actions) => actions.setGoalProps);
 
-const Goal = (props: Props) => {
-  const [goalProps, setGoalProps] = useState<GoalBasicProps | undefined>();
-  const [taskArray, setTaskArray] = useState<TaskProps[]>([]);
+  const taskArray = useStoreState((state) => state.taskArray);
+  const setTaskArray = useStoreActions((actions) => actions.setTaskArray);
+
+  const userId = useStoreState((state) => state.user?._id);
+  const lastViewedGoalId = useStoreState(
+    (state) => state.user?.lastViewedGoalId
+  );
+
   const [creatingTask, setCreatingTask] = useState(false);
 
   function createTaskBtn() {
     //Type assertion as TaskProps requires _id
     const newTask = {
       title: "",
-      userId: props.user._id,
-      goalId: props.goalId,
+      userId,
+      goalId: goalProps?._id,
       statusIndex: 0,
     } as TaskProps;
 
-    setTaskArray((prev) => [...prev, newTask]);
+    setTaskArray([...taskArray, newTask]);
     setCreatingTask(true);
   }
 
   useEffect(() => {
-    if (goalProps) {
-      updateGoal(props.user._id, props.goalId, goalProps);
+    if (goalProps && userId) {
+      updateGoal(userId, goalProps._id, goalProps);
     }
-  }, [props, goalProps]);
+  }, [userId, goalProps]);
 
   //When user id changes, update goal
   useEffect(() => {
     async function initGoal() {
-      const readGoalRes = await readGoal(props.user._id, props.goalId);
+      if (!userId || !lastViewedGoalId) {
+        console.log("No user id");
+        return;
+      }
+
+      const readGoalRes = await readGoal(userId, lastViewedGoalId);
       if (!(readGoalRes instanceof Error)) {
+        console.log("readGoalRes", readGoalRes);
+
         const { taskArray, ...rest } = readGoalRes;
         setGoalProps(rest);
-        setTaskArray((prev) => readGoalRes.taskArray);
-        props.setCurrGoalTitle(readGoalRes.title);
+        setTaskArray(readGoalRes.taskArray);
       }
     }
 
     initGoal();
-  }, [props.user._id]);
+  }, [userId, goalProps?._id, lastViewedGoalId, setGoalProps, setTaskArray]);
 
   return (
     <>
-      <GoalHeader
-        goalId={goalProps?._id}
-        description={goalProps?.description}
-        title={goalProps?.title}
-        setGoalProps={setGoalProps}
-        userId={props.user._id}
-      />
+      <GoalHeader />
 
       <hr className="border-dark-300" />
 
@@ -74,11 +77,9 @@ const Goal = (props: Props) => {
         {taskArray.length !== 0 && isLoaded<GoalBasicProps>(goalProps) ? (
           taskArray.map((task, index) => (
             <Task
-              statusColorArray={goalProps.statusColorArray}
               key={index}
               task={task}
               taskIndex={index}
-              setTaskArray={setTaskArray}
               setCreatingTask={setCreatingTask}
               isNewTask={
                 creatingTask && index === taskArray.length - 1 ? true : false

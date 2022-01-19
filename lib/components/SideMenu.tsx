@@ -6,12 +6,10 @@ import Logo from "./Logo";
 
 import isLoaded from "../isLoaded";
 import Button from "./Button";
+import { useStoreState } from "../../pages/_app";
 
-interface Props {
-  currGoalTitle: string | undefined;
-}
-
-const SideMenu = (props: Props) => {
+const SideMenu = () => {
+  const currGoalTitle = useStoreState((state) => state.goalProps?.title);
   const router = useRouter();
 
   async function login() {
@@ -30,14 +28,14 @@ const SideMenu = (props: Props) => {
           </div>
 
           <ol>
-            {isLoaded(props.currGoalTitle) ? (
+            {isLoaded(currGoalTitle) ? (
               <li>
                 <button className="w-full flex flex-row gap-x-1 items-center hover:bg-dark-300 py-2 px-1">
                   <Icon
                     icon="mdi:format-goal-bulleted-type"
                     className="w-6 h-6"
                   />
-                  <p>{props.currGoalTitle}</p>
+                  <p>{currGoalTitle}</p>
                 </button>
               </li>
             ) : (

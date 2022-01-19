@@ -6,19 +6,11 @@ import Skeleton from "./Skeleton";
 
 //etc
 import isLoaded from "../isLoaded";
-import { GoalBasicProps } from "../schema/GoalSchema";
+import { useStoreActions, useStoreState } from "../../pages/_app";
 
-interface Props {
-  goalId: string | undefined;
-  title: string | undefined;
-  description: string | undefined;
-  userId: string;
-  setGoalProps: React.Dispatch<
-    React.SetStateAction<GoalBasicProps | undefined>
-  >;
-}
-
-const GoalHeader = (props: Props) => {
+const GoalHeader = () => {
+  const goalProps = useStoreState((state) => state.goalProps);
+  const setGoalProps = useStoreActions((actions) => actions.setGoalProps);
   const titleRef = useRef<HTMLInputElement>(null);
   const descRef = useRef<HTMLInputElement>(null);
 
@@ -33,16 +25,16 @@ const GoalHeader = (props: Props) => {
   return (
     <header className="flex flex-col gap-y-2">
       <div className="flex text-left items-center gap-x-2">
-        {isLoaded<string>(props.title) ? (
+        {isLoaded<string>(goalProps?.title) ? (
           <TextField
             className="text-4xl hover:bg-dark-400"
             ref={titleRef}
             placeholder="Type Goal Name Here"
             onFocus={editTitle}
-            value={props.title}
+            value={goalProps?.title}
             onChange={(e) =>
-              props.setGoalProps((prev) =>
-                prev ? { ...prev, title: e.target.value } : prev
+              setGoalProps(
+                goalProps ? { ...goalProps, title: e.target.value } : goalProps
               )
             }
           />
@@ -52,16 +44,18 @@ const GoalHeader = (props: Props) => {
       </div>
 
       <div className="flex text-left items-center gap-x-2">
-        {isLoaded<string>(props.description) ? (
+        {isLoaded<string>(goalProps?.description) ? (
           <TextField
             className="hover:bg-dark-400"
             placeholder="Add a description"
             ref={descRef}
             onFocus={editDesc}
-            value={props.description}
+            value={goalProps?.description}
             onChange={(e) =>
-              props.setGoalProps((prev) =>
-                prev ? { ...prev, description: e.target.value } : prev
+              setGoalProps(
+                goalProps
+                  ? { ...goalProps, description: e.target.value }
+                  : goalProps
               )
             }
           />
