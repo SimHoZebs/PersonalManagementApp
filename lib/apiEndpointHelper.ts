@@ -11,11 +11,11 @@ export default async function apiEndpointHelper(
 ) {
 
   console.log(`
-  url: ${req.url} 
-  body: ${JSON.stringify(req.body, null, 2)}
-  query: ${JSON.stringify(req.query, null, 2)}
   methods: ${req.method}
-  `);
+  url: ${req.url}
+  query: ${JSON.stringify(req.query, null, 2)}
+  body: ${JSON.stringify(req.body, null, 2)}
+  --------------------------------------------------`);
   const { method } = req;
   let res;
 
