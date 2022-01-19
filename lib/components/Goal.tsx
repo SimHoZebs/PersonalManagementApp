@@ -49,10 +49,8 @@ const Goal = () => {
   //When user id changes, update goal
   useEffect(() => {
     async function initGoal() {
-      if (!userId || !lastViewedGoalId) {
-        console.log("No user id");
-        return;
-      }
+      //This check is a must as user is undefined on initial load.
+      if (!userId || !lastViewedGoalId) return;
 
       const readGoalRes = await readGoal(userId, lastViewedGoalId);
       if (!(readGoalRes instanceof Error)) {
@@ -65,7 +63,7 @@ const Goal = () => {
     }
 
     initGoal();
-  }, [userId, goalProps?._id, lastViewedGoalId, setGoalProps, setTaskArray]);
+  }, [userId, lastViewedGoalId, setGoalProps, setTaskArray]);
 
   return (
     <>
