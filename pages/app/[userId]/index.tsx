@@ -10,6 +10,7 @@ import Goal from "../../../lib/components/Goal";
 import readUser from "../../../lib/api/readUser";
 import SideMenu from "../../../lib/components/SideMenu";
 import addUserDefaults from "../../../lib/functions/addUserDefaults";
+import Skeleton from "../../../lib/components/Skeleton";
 
 /**
  * displays user dashboard.
@@ -19,6 +20,10 @@ export default function Dashboard(
 ) {
   const userTitle = useStoreState((state) => state.user?.title);
   const setUser = useStoreActions((actions) => actions.setUser);
+  const userId = useStoreState((state) => state.user?._id);
+  const lastViewedGoalId = useStoreState(
+    (state) => state.user?.lastViewedGoalId
+  );
 
   useEffect(() => {
     if (props.user) {
@@ -39,7 +44,11 @@ export default function Dashboard(
 
         <div className="flex flex-col gap-y-1 p-2 w-3/4">
           <p className="text-xs">Hello, {userTitle}</p>
-          <Goal />
+          {lastViewedGoalId && userId ? (
+            <Goal userId={userId} lastViewedGoalId={lastViewedGoalId} />
+          ) : (
+            <Skeleton />
+          )}
         </div>
       </div>
     </>

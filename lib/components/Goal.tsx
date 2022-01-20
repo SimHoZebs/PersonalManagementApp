@@ -14,25 +14,26 @@ import updateGoal from "../api/updateGoal";
 import { useStoreActions, useStoreState } from "../../pages/_app";
 import updateTaskArray from "../api/updateTaskArray";
 
-const Goal = () => {
+interface Props {
+  userId: string;
+  lastViewedGoalId: string;
+}
+
+const Goal = (props: Props) => {
   const goalProps = useStoreState((state) => state.goalProps);
   const setGoalProps = useStoreActions((actions) => actions.setGoalProps);
 
   const taskArray = useStoreState((state) => state.taskArray);
   const setTaskArray = useStoreActions((actions) => actions.setTaskArray);
 
-  const userId = useStoreState((state) => state.user?._id);
-  const lastViewedGoalId = useStoreState(
-    (state) => state.user?.lastViewedGoalId
-  );
-
   const [creatingTask, setCreatingTask] = useState(false);
+  const [goalInitialized, setGoalinitialized] = useState(false);
 
   function createTaskBtn() {
     //Type assertion as TaskProps requires _id
     const newTask = {
       title: "",
-      userId,
+      userId: props.userId,
       goalId: goalProps?._id,
       statusIndex: 0,
     } as TaskProps;
@@ -42,37 +43,37 @@ const Goal = () => {
   }
 
   //Sync goalProps with DB
+  //Problem: exhaustive-deps warning wants goalIntialized to be a dependency, but I don't want it to care about goalInitialized changes.
   useEffect(() => {
-    if (goalProps && userId) {
-      updateGoal(userId, goalProps._id, goalProps);
+    if (goalProps && goalInitialized) {
+      updateGoal(props.userId, goalProps._id, goalProps);
     }
-  }, [userId, goalProps]);
+  }, [goalProps, props.userId]);
 
   //Sync taskArray with DB
-  //For some reason, Goal.tsx can't detect taskArray change so this doesn't work
-  //Shit, it doesn't work because useEffect doesn't compare the contents of taskArray, it only cares that it's an array
+  //Problem: exhaustive-deps warning wants goalIntialized to be a dependency, but I don't want it to care about goalInitialized changes.
   useEffect(() => {
-    if (!userId || !goalProps?._id) return;
+    if (!goalProps?._id || !goalInitialized) return;
 
-    updateTaskArray(userId, goalProps?._id, taskArray);
-  }, [userId, taskArray, goalProps?._id]);
+    updateTaskArray(props.userId, goalProps?._id, taskArray);
+  }, [goalProps?._id, props.userId, taskArray]);
 
   //Update goalProps and TaskArray when userId changes
   useEffect(() => {
     async function initGoal() {
       //This check is a must as user is undefined on initial load.
-      if (!userId || !lastViewedGoalId) return;
 
-      const readGoalRes = await readGoal(userId, lastViewedGoalId);
+      const readGoalRes = await readGoal(props.userId, props.lastViewedGoalId);
       if (!(readGoalRes instanceof Error)) {
         const { taskArray, ...rest } = readGoalRes;
         setGoalProps(rest);
         setTaskArray(readGoalRes.taskArray);
+        setGoalinitialized((prev) => true);
       }
     }
 
     initGoal();
-  }, [userId, lastViewedGoalId, setGoalProps, setTaskArray]);
+  }, [props, setGoalProps, setTaskArray]);
 
   return (
     <>

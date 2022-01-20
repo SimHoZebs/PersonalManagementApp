@@ -21,6 +21,7 @@ interface Store {
   setGoalProps: Action<Store, GoalBasicProps | undefined>;
   taskArray: TaskProps[];
   setTaskArray: Action<Store, TaskProps[]>;
+  updateTask: Action<Store, { task: TaskProps; taskIndex: number }>;
 }
 
 const store = createStore<Store>({
@@ -37,6 +38,11 @@ const store = createStore<Store>({
   taskArray: [],
   setTaskArray: action((state, payload) => {
     state.taskArray = payload;
+  }),
+  updateTask: action((state, payload) => {
+    const newTaskArray = [...state.taskArray];
+    newTaskArray[payload.taskIndex] = payload.task;
+    state.taskArray = newTaskArray;
   }),
 });
 

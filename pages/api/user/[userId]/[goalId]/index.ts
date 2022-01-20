@@ -24,7 +24,6 @@ async function post(body: Body, goalId: string) {
 }
 
 async function patch(body: Body, goalId: string) {
-
   const goal: GoalDoc = await goalCollection.findOne({ _id: goalId });
 
   let response: GoalProps | TaskProps[] | undefined;

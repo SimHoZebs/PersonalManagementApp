@@ -23,6 +23,7 @@ export interface Props {
  * This is needed as existing tasks can behave like new tasks if user clicks away while creating new task.
  */
 const Task = (props: Props) => {
+  const updateTask = useStoreActions((actions) => actions.updateTask);
   const setTaskArray = useStoreActions((actions) => actions.setTaskArray);
   const taskArray = useStoreState((state) => state.taskArray);
 
@@ -47,10 +48,8 @@ const Task = (props: Props) => {
   }, [props, task]);
 
   useEffect(() => {
-    taskArray[props.taskIndex] = task;
-    const newTaskArray = [...taskArray];
-    setTaskArray(newTaskArray);
-  }, [task]);
+    updateTask({ task, taskIndex: props.taskIndex });
+  }, [task, props.taskIndex, updateTask]);
 
   return (
     <div className="p-1 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200">
