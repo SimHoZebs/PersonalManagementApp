@@ -10,12 +10,9 @@ import MoreOptionsButton from "./MoreOptionsButton";
 //etc
 import createTask from "../api/createTask";
 import deleteTask from "../api/deleteTask";
-import { TaskProps } from "../schema/TaskSchema";
-import updateTask from "../api/updateTask";
 import { useStoreActions, useStoreState } from "../../pages/_app";
 
 export interface Props {
-  task: TaskProps;
   taskIndex: number;
   setCreatingTask: React.Dispatch<React.SetStateAction<boolean>>;
   isNewTask: boolean;
@@ -27,17 +24,13 @@ export interface Props {
  */
 const Task = (props: Props) => {
   const setTaskArray = useStoreActions((actions) => actions.setTaskArray);
-  const { isNewTask, setCreatingTask } = props;
-  const [task, setTask] = useState(props.task);
-  const [taskLoaded, setTaskLoaded] = useState(false);
+  const taskArray = useStoreState((state) => state.taskArray);
+
+  const [task, setTask] = useState(taskArray[props.taskIndex]);
   const textFieldRef = useRef<HTMLInputElement | null>(null);
 
   async function deleteTaskBtn() {
-    const deleteTaskRes = await deleteTask(
-      task.userId,
-      task.goalId,
-      props.task._id
-    );
+    const deleteTaskRes = await deleteTask(task.userId, task.goalId, task._id);
     if (!(deleteTaskRes instanceof Error)) {
       setTaskArray(deleteTaskRes);
     }
@@ -46,19 +39,18 @@ const Task = (props: Props) => {
   useEffect(() => {
     //automatic taskName textField focus on creation.
     //isNewTask boolean prevents existing tasks from being focused
-    if (isNewTask) {
+    if (props.isNewTask) {
       textFieldRef.current?.focus();
       createTask(task.userId, task.goalId, task);
-      setCreatingTask(false);
+      props.setCreatingTask(false);
     }
+  }, [props, task]);
 
-    if (task && !taskLoaded) {
-      setTaskLoaded(true);
-    } else {
-      console.log("updating Task");
-      updateTask(task.userId, task.goalId, task._id, task);
-    }
-  }, [isNewTask, setCreatingTask, task, taskLoaded]);
+  useEffect(() => {
+    taskArray[props.taskIndex] = task;
+    const newTaskArray = [...taskArray];
+    setTaskArray(newTaskArray);
+  }, [task]);
 
   return (
     <div className="p-1 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200">

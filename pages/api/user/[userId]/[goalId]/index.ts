@@ -31,22 +31,17 @@ async function patch(body: Body, goalId: string) {
   if (body.modifiedGoal) {
     //modifying goal
     response = { ...goal.toObject, ...body.modifiedGoal } as GoalProps;
-  } else if (body.modifiedTask && body.taskId) {
+  } else if (body.taskArray) {
     //modifying taskArray
 
-    const index = goal.taskArray.findIndex(task => task.id === body.taskId);
-    let targetTask = goal.taskArray[index];
+    //type asserted; Client & server side types conflict resolution
+    goal.taskArray = body.taskArray as TaskDoc[];
 
-    if (index !== -1) {
-      //type asserted; modifiedTask is TaskProps, but targetTask is TaskDoc
-      targetTask = { ...targetTask.toObject(), ...body.modifiedTask } as TaskDoc;
-      goal.taskArray[index] = targetTask;
-      response = goal.taskArray;
-    } else {
-      return new Error("Task not found");
-    }
+    response = goal.taskArray;
   } else {
-    return new Error("ModifiedGoal, TaskId or ModifiedTask is undefined");
+    //Error is not giving proper error
+    goal.save();
+    return new Error("ModifiedGoal or taskArray is undefined");
   }
 
   goal.save();
@@ -70,6 +65,7 @@ export interface Body {
   modifiedTask?: { title?: string, statusColor?: string; };
   taskId?: string;
   task?: TaskProps;
+  taskArray?: TaskProps[];
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

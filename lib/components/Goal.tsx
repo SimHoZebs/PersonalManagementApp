@@ -12,6 +12,7 @@ import { GoalBasicProps } from "../schema/GoalSchema";
 import isLoaded from "../isLoaded";
 import updateGoal from "../api/updateGoal";
 import { useStoreActions, useStoreState } from "../../pages/_app";
+import updateTaskArray from "../api/updateTaskArray";
 
 const Goal = () => {
   const goalProps = useStoreState((state) => state.goalProps);
@@ -40,13 +41,23 @@ const Goal = () => {
     setCreatingTask(true);
   }
 
+  //Sync goalProps with DB
   useEffect(() => {
     if (goalProps && userId) {
       updateGoal(userId, goalProps._id, goalProps);
     }
   }, [userId, goalProps]);
 
-  //When user id changes, update goal
+  //Sync taskArray with DB
+  //For some reason, Goal.tsx can't detect taskArray change so this doesn't work
+  //Shit, it doesn't work because useEffect doesn't compare the contents of taskArray, it only cares that it's an array
+  useEffect(() => {
+    if (!userId || !goalProps?._id) return;
+
+    updateTaskArray(userId, goalProps?._id, taskArray);
+  }, [userId, taskArray, goalProps?._id]);
+
+  //Update goalProps and TaskArray when userId changes
   useEffect(() => {
     async function initGoal() {
       //This check is a must as user is undefined on initial load.
@@ -54,8 +65,6 @@ const Goal = () => {
 
       const readGoalRes = await readGoal(userId, lastViewedGoalId);
       if (!(readGoalRes instanceof Error)) {
-        console.log("readGoalRes", readGoalRes);
-
         const { taskArray, ...rest } = readGoalRes;
         setGoalProps(rest);
         setTaskArray(readGoalRes.taskArray);
@@ -75,8 +84,7 @@ const Goal = () => {
         {taskArray.length !== 0 && isLoaded<GoalBasicProps>(goalProps) ? (
           taskArray.map((task, index) => (
             <Task
-              key={index}
-              task={task}
+              key={task._id}
               taskIndex={index}
               setCreatingTask={setCreatingTask}
               isNewTask={
