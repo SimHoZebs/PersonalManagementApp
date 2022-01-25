@@ -1,10 +1,6 @@
-import { ButtonHTMLAttributes, DetailedHTMLProps } from "react";
+import { HTMLAttributes } from "react";
 
-interface Props
-  extends DetailedHTMLProps<
-    ButtonHTMLAttributes<HTMLButtonElement>,
-    HTMLButtonElement
-  > {}
+interface Props extends HTMLAttributes<HTMLButtonElement> {}
 
 export default function Button({ children, className, ...rest }: Props) {
   return (
