@@ -13,6 +13,7 @@ import "windi.css";
 import { UserProps } from "../lib/schema/UserSchema";
 import { GoalBasicProps } from "../lib/schema/GoalSchema";
 import { TaskProps } from "../lib/schema/TaskSchema";
+import ContextMenu from "../lib/components/ContextMenu";
 
 interface Store {
   user: UserProps | undefined;
@@ -58,6 +59,7 @@ export default function MyApp(props: AppProps) {
         <title key="title">LifeOrb</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
+      <ContextMenu />
       <StoreProvider store={store}>
         <Component {...pageProps} />
       </StoreProvider>
