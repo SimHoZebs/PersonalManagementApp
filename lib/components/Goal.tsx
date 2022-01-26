@@ -85,7 +85,7 @@ const Goal = (props: Props) => {
         {taskArray.length !== 0 && isLoaded<GoalBasicProps>(goalProps) ? (
           taskArray.map((task, index) => (
             <Task
-              key={task._id}
+              key={task._id ? task._id : index}
               taskIndex={index}
               setCreatingTask={setCreatingTask}
               isNewTask={

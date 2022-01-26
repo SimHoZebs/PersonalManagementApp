@@ -17,6 +17,7 @@ interface Store {
   taskArray: TaskProps[];
   setTaskArray: Action<Store, TaskProps[]>;
   updateTask: Action<Store, { task: TaskProps; taskIndex: number; }>;
+  deleteTask: Action<Store, number>;
 }
 
 export const globalState = createStore<Store>({
@@ -39,6 +40,11 @@ export const globalState = createStore<Store>({
     newTaskArray[payload.taskIndex] = payload.task;
     state.taskArray = newTaskArray;
   }),
+  deleteTask: action((state, payload) => {
+    const newTaskArray = [...state.taskArray];
+    newTaskArray.splice(payload, 1);
+    state.taskArray = newTaskArray;
+  })
 });
 
 const typedHooks = createTypedHooks<Store>();

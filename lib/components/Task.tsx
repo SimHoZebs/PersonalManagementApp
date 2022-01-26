@@ -24,18 +24,11 @@ export interface Props {
  */
 const Task = (props: Props) => {
   const updateTask = useStoreActions((actions) => actions.updateTask);
-  const setTaskArray = useStoreActions((actions) => actions.setTaskArray);
+  const deleteTask = useStoreActions((actions) => actions.deleteTask);
   const taskArray = useStoreState((state) => state.taskArray);
 
   const [task, setTask] = useState(taskArray[props.taskIndex]);
   const textFieldRef = useRef<HTMLInputElement | null>(null);
-
-  async function deleteTaskBtn() {
-    const deleteTaskRes = await deleteTask(task.userId, task.goalId, task._id);
-    if (!(deleteTaskRes instanceof Error)) {
-      setTaskArray(deleteTaskRes);
-    }
-  }
 
   useEffect(() => {
     //automatic taskName textField focus on creation.
@@ -67,7 +60,7 @@ const Task = (props: Props) => {
           />
           <PriorityButton />
           {/**Temp solution for deleting */}
-          <MoreOptionsButton onClick={deleteTaskBtn} />
+          <MoreOptionsButton onClick={() => deleteTask(props.taskIndex)} />
         </div>
         <SelectDateButton />
       </div>
