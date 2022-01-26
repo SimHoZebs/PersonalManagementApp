@@ -9,7 +9,6 @@ import MoreOptionsButton from "./MoreOptionsButton";
 
 //etc
 import createTask from "../api/createTask";
-import deleteTask from "../api/deleteTask";
 import { useStoreActions, useStoreState } from "../globalState";
 
 export interface Props {
@@ -26,6 +25,9 @@ const Task = (props: Props) => {
   const updateTask = useStoreActions((actions) => actions.updateTask);
   const deleteTask = useStoreActions((actions) => actions.deleteTask);
   const taskArray = useStoreState((state) => state.taskArray);
+  const setContextMenuOptions = useStoreActions(
+    (actions) => actions.setContextMenuOptions
+  );
 
   const [task, setTask] = useState(taskArray[props.taskIndex]);
   const textFieldRef = useRef<HTMLInputElement | null>(null);
@@ -45,7 +47,19 @@ const Task = (props: Props) => {
   }, [task, props.taskIndex, updateTask]);
 
   return (
-    <div className="p-1 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200">
+    <div
+      className="p-1 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200"
+      onContextMenu={() => {
+        setContextMenuOptions([
+          {
+            option: "Delete",
+            function: () => {
+              deleteTask(props.taskIndex);
+            },
+          },
+        ]);
+      }}
+    >
       <StatusButton statusIndex={task.statusIndex} setTask={setTask} />
       <div className="flex flex-col gap-y-2">
         <div className="flex items-center">

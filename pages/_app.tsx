@@ -15,8 +15,8 @@ export default function MyApp(props: AppProps) {
         <title key="title">LifeOrb</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
-      <ContextMenu />
       <StoreProvider store={globalState}>
+        <ContextMenu />
         <Component {...pageProps} />
       </StoreProvider>
     </>

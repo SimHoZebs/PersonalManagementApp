@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
+import { useStoreActions, useStoreState } from "../globalState";
 
 const ContextMenu = () => {
+  const contextMenuOptions = useStoreState((state) => state.contextMenuOptions);
+  const setContextMenuOptions = useStoreActions(
+    (actions) => actions.setContextMenuOptions
+  );
   const [contextMenuHidden, setContextMenuHidden] = useState(true);
   const [contextMenuCoords, setContextMenuCoords] = useState([0, 0]);
 
@@ -13,6 +18,7 @@ const ContextMenu = () => {
 
   function hideContextMenu(e: MouseEvent) {
     setContextMenuHidden((prev) => true);
+    setContextMenuOptions([]);
   }
 
   useEffect(() => {
@@ -28,7 +34,7 @@ const ContextMenu = () => {
   return (
     <ul
       className={
-        "absolute bg-dark-500 px-2 py-1 text-xs" +
+        "absolute bg-dark-500 px-2 py-1 text-xs flex flex-col gap-y-1" +
         `${contextMenuHidden ? " hidden" : ""}`
       }
       //inline styles because windi can't make styles on demand after build
@@ -36,8 +42,11 @@ const ContextMenu = () => {
         transform: `translateX(${contextMenuCoords[0]}px) translateY(${contextMenuCoords[1]}px)`,
       }}
     >
-      <li>Duplicate</li>
-      <li>Delete</li>
+      {contextMenuOptions.map((option, index) => (
+        <li key={index}>
+          <button onClick={option.function}>{option.option}</button>
+        </li>
+      ))}
     </ul>
   );
 };
