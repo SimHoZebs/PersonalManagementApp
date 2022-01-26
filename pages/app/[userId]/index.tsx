@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useStoreActions, useStoreState } from "../../_app";
+import { useStoreActions, useStoreState } from "../../../lib/globalState";
 import Head from "next/head";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 

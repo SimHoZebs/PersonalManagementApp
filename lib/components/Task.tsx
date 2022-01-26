@@ -10,7 +10,7 @@ import MoreOptionsButton from "./MoreOptionsButton";
 //etc
 import createTask from "../api/createTask";
 import deleteTask from "../api/deleteTask";
-import { useStoreActions, useStoreState } from "../../pages/_app";
+import { useStoreActions, useStoreState } from "../globalState";
 
 export interface Props {
   taskIndex: number;

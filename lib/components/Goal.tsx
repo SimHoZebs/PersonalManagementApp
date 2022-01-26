@@ -11,7 +11,7 @@ import readGoal from "../api/readGoal";
 import { GoalBasicProps } from "../schema/GoalSchema";
 import isLoaded from "../isLoaded";
 import updateGoal from "../api/updateGoal";
-import { useStoreActions, useStoreState } from "../../pages/_app";
+import { useStoreActions, useStoreState } from "../globalState";
 import updateTaskArray from "../api/updateTaskArray";
 
 interface Props {

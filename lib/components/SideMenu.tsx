@@ -6,7 +6,7 @@ import Logo from "./Logo";
 
 import isLoaded from "../isLoaded";
 import Button from "./Button";
-import { useStoreState } from "../../pages/_app";
+import { useStoreState } from "../globalState";
 
 const SideMenu = () => {
   const currGoalTitle = useStoreState((state) => state.goalProps?.title);

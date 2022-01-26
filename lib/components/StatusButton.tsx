@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import IconButton from "./IconButton";
 import { TaskProps } from "../schema/TaskSchema";
-import { useStoreState } from "../../pages/_app";
+import { useStoreState } from "../globalState";
 
 interface Props {
   statusIndex: number;
