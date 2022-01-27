@@ -11,20 +11,18 @@ const ContextMenu = () => {
   const [contextMenuHidden, setContextMenuHidden] = useState(true);
   const [contextMenuCoords, setContextMenuCoords] = useState([0, 0]);
 
-  function showContextMenu(e: MouseEvent) {
-    if (moreContextMenuOptions.length === 0) return;
-    e.preventDefault();
-
-    setContextMenuCoords((prev) => [e.clientX, e.clientY]);
-    setContextMenuHidden(false);
-  }
-
-  function hideContextMenu(e: MouseEvent) {
-    setContextMenuHidden((prev) => true);
-    setMoreContextMenuOptions([]);
-  }
-
   useEffect(() => {
+    function showContextMenu(e: MouseEvent) {
+      e.preventDefault();
+
+      setContextMenuCoords((prev) => [e.clientX, e.clientY]);
+      setContextMenuHidden(false);
+    }
+
+    function hideContextMenu(e: MouseEvent) {
+      setContextMenuHidden((prev) => true);
+      setMoreContextMenuOptions([]);
+    }
     window.addEventListener("contextmenu", showContextMenu);
     window.addEventListener("click", hideContextMenu);
 
@@ -32,7 +30,7 @@ const ContextMenu = () => {
       window.removeEventListener("contextmenu", showContextMenu);
       window.removeEventListener("click", hideContextMenu);
     };
-  }, []);
+  }, [moreContextMenuOptions, setMoreContextMenuOptions]);
 
   return (
     <ul
