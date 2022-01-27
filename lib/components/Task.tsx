@@ -25,8 +25,8 @@ const Task = (props: Props) => {
   const updateTask = useStoreActions((actions) => actions.updateTask);
   const deleteTask = useStoreActions((actions) => actions.deleteTask);
   const taskArray = useStoreState((state) => state.taskArray);
-  const setContextMenuOptions = useStoreActions(
-    (actions) => actions.setMoreOptions
+  const setMoreContextMenuOptions = useStoreActions(
+    (actions) => actions.setMoreContextMenuOptions
   );
   const [task, setTask] = useState(taskArray[props.taskIndex]);
   const textFieldRef = useRef<HTMLInputElement | null>(null);
@@ -56,9 +56,9 @@ const Task = (props: Props) => {
 
   return (
     <div
-      className="p-1 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200"
+      className="p-1 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200 shadow shadow-dark-900"
       onContextMenu={() => {
-        setContextMenuOptions(menuOptions);
+        setMoreContextMenuOptions(menuOptions);
       }}
     >
       <StatusButton statusIndex={task.statusIndex} setTask={setTask} />

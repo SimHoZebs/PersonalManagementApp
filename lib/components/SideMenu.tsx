@@ -20,7 +20,7 @@ const SideMenu = () => {
   }
 
   return (
-    <div className="h-screen p-3 bg-dark-700">
+    <div className="h-screen p-3 bg-dark-700 shadow shadow-dark-900">
       <div className="flex flex-col h-full items-center justify-between">
         <div className="flex flex-col gap-y-5 w-full">
           <div className="self-center">
