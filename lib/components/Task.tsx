@@ -26,11 +26,19 @@ const Task = (props: Props) => {
   const deleteTask = useStoreActions((actions) => actions.deleteTask);
   const taskArray = useStoreState((state) => state.taskArray);
   const setContextMenuOptions = useStoreActions(
-    (actions) => actions.setContextMenuOptions
+    (actions) => actions.setMoreOptions
   );
-
   const [task, setTask] = useState(taskArray[props.taskIndex]);
   const textFieldRef = useRef<HTMLInputElement | null>(null);
+
+  const menuOptions = [
+    {
+      option: "Delete",
+      function: () => {
+        deleteTask(props.taskIndex);
+      },
+    },
+  ];
 
   useEffect(() => {
     //automatic taskName textField focus on creation.
@@ -50,14 +58,7 @@ const Task = (props: Props) => {
     <div
       className="p-1 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200"
       onContextMenu={() => {
-        setContextMenuOptions([
-          {
-            option: "Delete",
-            function: () => {
-              deleteTask(props.taskIndex);
-            },
-          },
-        ]);
+        setContextMenuOptions(menuOptions);
       }}
     >
       <StatusButton statusIndex={task.statusIndex} setTask={setTask} />
@@ -74,7 +75,7 @@ const Task = (props: Props) => {
           />
           <PriorityButton />
           {/**Temp solution for deleting */}
-          <MoreOptionsButton onClick={() => deleteTask(props.taskIndex)} />
+          <MoreOptionsButton options={menuOptions} />
         </div>
         <SelectDateButton />
       </div>

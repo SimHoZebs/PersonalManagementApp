@@ -18,8 +18,8 @@ interface Store {
   setTaskArray: Action<Store, TaskProps[]>;
   updateTask: Action<Store, { task: TaskProps; taskIndex: number; }>;
   deleteTask: Action<Store, number>;
-  contextMenuOptions: { option: string, function: () => void; }[];
-  setContextMenuOptions: Action<Store, { option: string, function: () => void; }[]>;
+  moreOptions: { option: string, function: () => void; }[];
+  setMoreOptions: Action<Store, { option: string, function: () => void; }[]>;
 }
 
 export const globalState = createStore<Store>({
@@ -48,9 +48,9 @@ export const globalState = createStore<Store>({
     state.taskArray = newTaskArray;
   }),
 
-  contextMenuOptions: [],
-  setContextMenuOptions: action((state, payload) => {
-    state.contextMenuOptions = payload;
+  moreOptions: [],
+  setMoreOptions: action((state, payload) => {
+    state.moreOptions = payload;
   })
 });
 

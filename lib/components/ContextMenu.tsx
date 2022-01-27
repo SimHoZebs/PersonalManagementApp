@@ -2,10 +2,8 @@ import { useEffect, useState } from "react";
 import { useStoreActions, useStoreState } from "../globalState";
 
 const ContextMenu = () => {
-  const contextMenuOptions = useStoreState((state) => state.contextMenuOptions);
-  const setContextMenuOptions = useStoreActions(
-    (actions) => actions.setContextMenuOptions
-  );
+  const moreOptions = useStoreState((state) => state.moreOptions);
+  const setMoreOptions = useStoreActions((actions) => actions.setMoreOptions);
   const [contextMenuHidden, setContextMenuHidden] = useState(true);
   const [contextMenuCoords, setContextMenuCoords] = useState([0, 0]);
 
@@ -18,7 +16,7 @@ const ContextMenu = () => {
 
   function hideContextMenu(e: MouseEvent) {
     setContextMenuHidden((prev) => true);
-    setContextMenuOptions([]);
+    setMoreOptions([]);
   }
 
   useEffect(() => {
@@ -42,7 +40,7 @@ const ContextMenu = () => {
         transform: `translateX(${contextMenuCoords[0]}px) translateY(${contextMenuCoords[1]}px)`,
       }}
     >
-      {contextMenuOptions.map((option, index) => (
+      {moreOptions.map((option, index) => (
         <li key={index}>
           <button onClick={option.function}>{option.option}</button>
         </li>
