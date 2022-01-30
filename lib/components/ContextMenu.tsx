@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useStoreActions, useStoreState } from "../globalState";
+import ContextMenuBase from "./ContextMenuBase";
 
 const ContextMenu = () => {
   const moreContextMenuOptions = useStoreState(
@@ -33,11 +34,8 @@ const ContextMenu = () => {
   }, [moreContextMenuOptions, setMoreContextMenuOptions]);
 
   return (
-    <ul
-      className={
-        "absolute bg-dark-500 px-2 py-1 text-xs flex flex-col gap-y-1 shadow shadow-dark-900" +
-        `${contextMenuHidden ? " hidden" : ""}`
-      }
+    <ContextMenuBase
+      className={`${contextMenuHidden ? " hidden" : ""}`}
       //inline styles because windi can't make styles on demand after build
       style={{
         transform: `translateX(${contextMenuCoords[0]}px) translateY(${contextMenuCoords[1]}px)`,
@@ -45,10 +43,10 @@ const ContextMenu = () => {
     >
       {moreContextMenuOptions.map((option, index) => (
         <li key={index}>
-          <button onClick={option.function}>{option.option}</button>
+          <button onClick={option.function}>{option.name}</button>
         </li>
       ))}
-    </ul>
+    </ContextMenuBase>
   );
 };
 

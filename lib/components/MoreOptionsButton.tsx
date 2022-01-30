@@ -2,9 +2,10 @@ import { useState } from "react";
 
 import { Icon } from "@iconify/react";
 import IconButton from "./IconButton";
+import ContextMenuBase from "./ContextMenuBase";
 
 interface Props extends React.HTMLAttributes<HTMLButtonElement> {
-  options: { option: string; function: () => void }[];
+  options: { name: string; function: () => void }[];
 }
 
 const MoreOptionsButton = (props: Props) => {
@@ -16,18 +17,17 @@ const MoreOptionsButton = (props: Props) => {
         <Icon icon="mdi:dots-vertical" className="h-4 w-4 text-gray-600" />
       </IconButton>
 
-      <ul
+      <ContextMenuBase
         className={
-          "absolute bg-dark-500 px-2 py-1 text-xs flex flex-col gap-y-1" +
-          `${moreOptionsHidden ? " hidden" : ""}`
+          " transform translate-x-3" + `${moreOptionsHidden ? " hidden" : ""}`
         }
       >
         {props.options.map((option, index) => (
           <li key={index}>
-            <button onClick={option.function}>{option.option}</button>
+            <button onClick={option.function}>{option.name}</button>
           </li>
         ))}
-      </ul>
+      </ContextMenuBase>
     </div>
   );
 };
