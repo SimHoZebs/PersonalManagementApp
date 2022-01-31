@@ -30,7 +30,7 @@ const SideMenu = () => {
           <ol>
             {isLoaded(currGoalTitle) ? (
               <li>
-                <button className="w-full flex flex-row gap-x-1 items-center hover:bg-dark-300 py-2 px-1">
+                <button className="w-full rounded flex flex-row gap-x-1 items-center hover:bg-dark-300 py-2 px-1">
                   <Icon
                     icon="mdi:format-goal-bulleted-type"
                     className="w-6 h-6"

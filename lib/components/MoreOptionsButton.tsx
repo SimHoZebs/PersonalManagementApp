@@ -14,7 +14,7 @@ const MoreOptionsButton = (props: Props) => {
   return (
     <div className="relative">
       <IconButton onClick={() => setMoreOptions((prev) => !prev)} {...props}>
-        <Icon icon="mdi:dots-vertical" className="h-4 w-4 text-gray-600" />
+        <Icon icon="mdi:dots-vertical" className="h-4 w-4 text-true-gray-400" />
       </IconButton>
 
       <ContextMenuBase

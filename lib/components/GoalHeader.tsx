@@ -5,6 +5,7 @@ import Skeleton from "./Skeleton";
 //etc
 import isLoaded from "../isLoaded";
 import { useStoreActions, useStoreState } from "../globalState";
+import { GoalBasicProps } from "../schema/GoalSchema";
 
 const GoalHeader = () => {
   const goalProps = useStoreState((state) => state.goalProps);
@@ -13,11 +14,12 @@ const GoalHeader = () => {
   return (
     <header className="flex flex-col gap-y-2">
       <div className="flex text-left items-center gap-x-2">
-        {isLoaded<string>(goalProps?.title) ? (
+        {isLoaded<GoalBasicProps>(goalProps) ? (
           <TextField
-            className="text-4xl hover:bg-dark-400"
+            className="text-4xl hover:bg-dark-400 placeholder-true-gray-400"
             placeholder="Type Goal Name Here"
-            value={goalProps?.title}
+            size={goalProps.title.length <= 0 ? 1 : goalProps.title.length}
+            value={goalProps.title}
             onChange={(e) =>
               setGoalProps(
                 goalProps ? { ...goalProps, title: e.target.value } : goalProps
@@ -30,9 +32,14 @@ const GoalHeader = () => {
       </div>
 
       <div className="flex text-left items-center gap-x-2">
-        {isLoaded<string>(goalProps?.description) ? (
+        {isLoaded<GoalBasicProps>(goalProps) ? (
           <TextField
-            className="hover:bg-dark-400"
+            size={
+              goalProps.description.length <= 15
+                ? 15
+                : goalProps.description.length
+            }
+            className="hover:bg-dark-400 placeholder-true-gray-400"
             placeholder="Add a description"
             value={goalProps?.description}
             onChange={(e) =>

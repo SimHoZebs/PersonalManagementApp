@@ -33,16 +33,19 @@ const Task = (props: Props) => {
 
   const menuOptions = [
     {
-      option: "Delete",
+      name: "Delete",
+      shortcut: "",
       function: () => {
         deleteTask(props.taskIndex);
       },
     },
   ];
 
+  /**
+   * automatic taskName textField focus on creation.
+   * isNewTask boolean prevents existing tasks from being focused
+   */
   useEffect(() => {
-    //automatic taskName textField focus on creation.
-    //isNewTask boolean prevents existing tasks from being focused
     if (props.isNewTask) {
       textFieldRef.current?.focus();
       createTask(task.userId, task.goalId, task);
@@ -56,16 +59,17 @@ const Task = (props: Props) => {
 
   return (
     <div
-      className="p-1 flex items-center justify-between gap-x-3 bg-dark-400 rounded text-gray-200 shadow shadow-dark-900"
+      className="py-1 px-3 flex items-center justify-between gap-x-3 bg-dark-400 rounded shadow shadow-dark-900"
       onContextMenu={() => {
         setMoreContextMenuOptions(menuOptions);
       }}
     >
-      <StatusButton statusIndex={task.statusIndex} setTask={setTask} />
-      <div className="flex flex-col gap-y-2">
+      <div className="flex flex-col gap-y-1">
         <div className="flex items-center">
           <TextField
             ref={textFieldRef}
+            //Subtract 2 because there's a weird padding on the right of textfield.
+            size={task.title.length <= 5 ? 5 : task.title.length - 2}
             value={task.title}
             onChange={(e) =>
               setTask((prev) =>
@@ -77,7 +81,10 @@ const Task = (props: Props) => {
           {/**Temp solution for deleting */}
           <MoreOptionsButton options={menuOptions} />
         </div>
-        <SelectDateButton />
+        <div className="flex items-center gap-x-1">
+          <StatusButton statusIndex={task.statusIndex} setTask={setTask} />
+          <SelectDateButton />
+        </div>
       </div>
     </div>
   );

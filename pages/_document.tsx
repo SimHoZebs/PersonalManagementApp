@@ -13,7 +13,7 @@ export default class MyDocument extends Document {
           />
           <link rel="shortcut icon" type="image/png" href="/favicon.png" />
         </Head>
-        <body className="font-roboto text-light-50 bg-dark-800">
+        <body className="font-roboto text-true-gray-100 bg-dark-800">
           <Main />
           <NextScript />
         </body>
