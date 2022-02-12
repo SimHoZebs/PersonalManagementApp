@@ -42,7 +42,7 @@ export default function Dashboard(
           <SideMenu />
         </div>
 
-        <div className="flex flex-col gap-y-1 p-2 w-3/4">
+        <div className="flex w-3/4 flex-col gap-y-1 p-2">
           <p className="text-xs">Hello, {userTitle}</p>
           {lastViewedGoalId && userId ? (
             <Goal userId={userId} lastViewedGoalId={lastViewedGoalId} />

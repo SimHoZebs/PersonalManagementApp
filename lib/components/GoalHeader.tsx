@@ -13,10 +13,10 @@ const GoalHeader = () => {
 
   return (
     <header className="flex flex-col gap-y-2">
-      <div className="flex text-left items-center gap-x-2">
+      <div className="flex items-center gap-x-2 text-left">
         {isLoaded<GoalBasicProps>(goalProps) ? (
           <TextField
-            className="text-4xl hover:bg-dark-400 placeholder-true-gray-400"
+            className="hover:bg-dark-400 placeholder-true-gray-400 text-4xl"
             placeholder="Type Goal Name Here"
             size={goalProps.title.length <= 0 ? 1 : goalProps.title.length}
             value={goalProps.title}
@@ -31,7 +31,7 @@ const GoalHeader = () => {
         )}
       </div>
 
-      <div className="flex text-left items-center gap-x-2">
+      <div className="flex items-center gap-x-2 text-left">
         {isLoaded<GoalBasicProps>(goalProps) ? (
           <TextField
             size={

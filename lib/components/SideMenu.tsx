@@ -20,9 +20,9 @@ const SideMenu = () => {
   }
 
   return (
-    <div className="h-screen p-3 bg-dark-700 shadow shadow-dark-900">
-      <div className="flex flex-col h-full items-center justify-between">
-        <div className="flex flex-col gap-y-5 w-full">
+    <div className="bg-dark-700 shadow-dark-900 h-screen p-3 shadow">
+      <div className="flex h-full flex-col items-center justify-between">
+        <div className="flex w-full flex-col gap-y-5">
           <div className="self-center">
             <Logo />
           </div>
@@ -30,26 +30,26 @@ const SideMenu = () => {
           <ol>
             {isLoaded(currGoalTitle) ? (
               <li>
-                <button className="w-full rounded flex flex-row gap-x-1 items-center hover:bg-dark-300 py-2 px-1">
+                <button className="hover:bg-dark-300 flex w-full flex-row items-center gap-x-1 rounded py-2 px-1">
                   <Icon
                     icon="mdi:format-goal-bulleted-type"
-                    className="w-6 h-6"
+                    className="h-6 w-6"
                   />
                   <p>{currGoalTitle}</p>
                 </button>
               </li>
             ) : (
-              <div className="animate-pulse bg-dark-300 w-full h-8"></div>
+              <div className="bg-dark-300 h-8 w-full animate-pulse"></div>
             )}
           </ol>
         </div>
 
         <Button
-          className="flex flex-row border-1 px-2 py-1 gap-x-2 border-blue-400 items-center"
+          className="border-1 flex flex-row items-center gap-x-2 border-blue-400 px-2 py-1"
           onClick={login}
         >
-          <Icon icon="mdi:login" className="w-6 h-6" />
-          <p className="font-medium text-sm">LOGIN</p>
+          <Icon icon="mdi:login" className="h-6 w-6" />
+          <p className="text-sm font-medium">LOGIN</p>
         </Button>
       </div>
     </div>

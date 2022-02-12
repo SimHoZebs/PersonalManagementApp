@@ -16,7 +16,7 @@ const TextField = (
     <input
       ref={ref}
       type="text"
-      className={`bg-transparent px-2 py-1 rounded text-xl hover:bg-dark-300 focus-visible:(outline-transparent bg-dark-200) ${className}`}
+      className={`hover:bg-dark-300 focus-visible:(outline-transparent bg-dark-200) rounded bg-transparent px-2 py-1 text-xl ${className}`}
       {...rest}
     />
   );

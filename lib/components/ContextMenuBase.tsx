@@ -7,7 +7,7 @@ const ContextMenuBase = (props: React.HTMLAttributes<HTMLUListElement>) => {
   return (
     <ul
       className={
-        "absolute bg-dark-300 px-2 py-1 text-xs flex flex-col gap-y-1 shadow shadow-dark-900 rounded" +
+        "bg-dark-300 shadow-dark-900 absolute flex flex-col gap-y-1 rounded px-2 py-1 text-xs shadow" +
         props.className
       }
       //inline styles because windi can't make styles on demand after build

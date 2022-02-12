@@ -59,7 +59,7 @@ const Task = (props: Props) => {
 
   return (
     <div
-      className="py-1 px-3 flex items-center justify-between gap-x-3 bg-dark-400 rounded shadow shadow-dark-900"
+      className="bg-dark-400 shadow-dark-900 flex items-center justify-between gap-x-3 rounded py-1 px-3 shadow"
       onContextMenu={() => {
         setMoreContextMenuOptions(menuOptions);
       }}

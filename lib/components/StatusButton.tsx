@@ -1,5 +1,3 @@
-import { Icon } from "@iconify/react";
-import IconButton from "./IconButton";
 import { TaskProps } from "../schema/TaskSchema";
 import { useStoreState } from "../globalState";
 
@@ -11,6 +9,9 @@ interface Props {
 const StatusButton = (props: Props) => {
   const statusColorArray = useStoreState(
     (state) => state.goalProps?.statusColorArray
+  );
+  const statusNameArray = useStoreState(
+    (state) => state.goalProps?.statusArray
   );
 
   function toggleStatus(dir: "next" | "prev") {
@@ -25,19 +26,13 @@ const StatusButton = (props: Props) => {
   }
 
   return (
-    <div className="flex flex-col gap-1 items-center">
-      <IconButton className="p-1" onClick={() => toggleStatus("prev")}>
-        <Icon icon="entypo:chevron-up" className="h-6 w-6" />
-      </IconButton>
-      <button
-        className={`h-4 w-4 rounded-sm ${
-          statusColorArray ? statusColorArray[props.statusIndex] : ""
-        }`}
-      ></button>
-      <IconButton className="p-1" onClick={() => toggleStatus("next")}>
-        <Icon icon="entypo:chevron-down" className="h-6 w-6" />
-      </IconButton>
-    </div>
+    <button
+      className={`min-w-20 min-h-6 rounded py-1 px-3 text-center text-xs ${
+        statusColorArray ? statusColorArray[props.statusIndex] : ""
+      }`}
+    >
+      {statusNameArray ? statusNameArray[props.statusIndex] : "...loading"}
+    </button>
   );
 };
 

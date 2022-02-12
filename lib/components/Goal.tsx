@@ -81,7 +81,7 @@ const Goal = (props: Props) => {
 
       <hr className="border-dark-300" />
 
-      <div className="flex flex-col gap-y-2 items-start">
+      <div className="flex flex-col items-start gap-y-2">
         {taskArray.length !== 0 && isLoaded<GoalBasicProps>(goalProps) ? (
           taskArray.map((task, index) => (
             <Task

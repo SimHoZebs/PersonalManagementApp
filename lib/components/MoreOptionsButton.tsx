@@ -14,12 +14,12 @@ const MoreOptionsButton = (props: Props) => {
   return (
     <div className="relative">
       <IconButton onClick={() => setMoreOptions((prev) => !prev)} {...props}>
-        <Icon icon="mdi:dots-vertical" className="h-4 w-4 text-true-gray-400" />
+        <Icon icon="mdi:dots-vertical" className="text-true-gray-400 h-4 w-4" />
       </IconButton>
 
       <ContextMenuBase
         className={
-          " transform translate-x-3" + `${moreOptionsHidden ? " hidden" : ""}`
+          " translate-x-3 transform" + `${moreOptionsHidden ? " hidden" : ""}`
         }
       >
         {props.options.map((option, index) => (
