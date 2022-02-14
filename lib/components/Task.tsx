@@ -30,8 +30,8 @@ const Task = (props: Props) => {
     (a) => a.setMoreContextMenuOptions
   );
   const [task, setTask] = useState(taskArray[props.taskIndex]);
+  const [taskCardHidden, setTaskCardHidden] = useState(true);
   const textFieldRef = useRef<HTMLInputElement | null>(null);
-  const setTaskCardHidden = useStoreActions((a) => a.setTaskCardHidden);
 
   const menuOptions = [
     {
@@ -61,7 +61,12 @@ const Task = (props: Props) => {
 
   return (
     <>
-      <TaskCard task={task} setTask={setTask} />
+      <TaskCard
+        task={task}
+        setTask={setTask}
+        taskCardHidden={taskCardHidden}
+        setTaskCardHidden={setTaskCardHidden}
+      />
 
       <div
         className="bg-dark-400 shadow-dark-900 flex items-center justify-between gap-x-3 rounded py-1 px-3 shadow"
