@@ -18,6 +18,8 @@ interface Store {
   setTaskArray: Action<Store, TaskProps[]>;
   updateTask: Action<Store, { task: TaskProps; taskIndex: number; }>;
   deleteTask: Action<Store, number>;
+  taskCardHidden: boolean;
+  setTaskCardHidden: Action<Store, boolean>;
   moreContextMenuOptions: { name: string, function: () => void; }[];
   setMoreContextMenuOptions: Action<Store, { name: string, function: () => void; }[]>;
 }
@@ -47,6 +49,9 @@ export const globalState = createStore<Store>({
     newTaskArray.splice(payload, 1);
     state.taskArray = newTaskArray;
   }),
+
+  taskCardHidden: true,
+  setTaskCardHidden: action((state, payload) => { state.taskCardHidden = payload; }),
 
   moreContextMenuOptions: [],
   setMoreContextMenuOptions: action((state, payload) => {

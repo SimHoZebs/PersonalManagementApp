@@ -25,7 +25,7 @@ const MoreOptionsButton = (props: Props) => {
   }, [moreOptionsHidden]);
 
   return (
-    <div className="relative">
+    <div className="relative" onClick={(e) => e.stopPropagation()}>
       <IconButton
         onClick={() => setMoreOptionsHidden((prev) => !prev)}
         {...props}

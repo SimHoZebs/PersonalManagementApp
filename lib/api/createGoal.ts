@@ -7,13 +7,13 @@ import apiFunctionHelper from '../apiFunctionHelper';
  * @param title 
  * @returns 
  */
-export default async function createGoal(userId: string, title: string) {
+export default async function createGoal(userId: string, title?: string, description?: string) {
 
   return await apiFunctionHelper<Post, Body>(
     {
       method: "POST",
       url: `api/user/${userId}`,
-      data: { title }
+      data: { goalTitle: title, description }
     }
   );
 }

@@ -11,7 +11,7 @@ import { GoalProps } from "../schema/GoalSchema";
  */
 export default async function addUserDefaults(userId: string) {
   let createdGoal: GoalProps;
-  const createGoalRes = await createGoal(userId, "Welcome!");
+  const createGoalRes = await createGoal(userId, "Welcome!", "This is a preview account shared publicly. Feel free to look around!");
   if (createGoalRes instanceof Error) {
     return createGoalRes;
   }

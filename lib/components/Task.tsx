@@ -10,6 +10,7 @@ import MoreOptionsButton from "./MoreOptionsButton";
 //etc
 import createTask from "../api/createTask";
 import { useStoreActions, useStoreState } from "../globalState";
+import TaskCard from "./TaskCard";
 
 export interface Props {
   taskIndex: number;
@@ -22,14 +23,15 @@ export interface Props {
  * This is needed as existing tasks can behave like new tasks if user clicks away while creating new task.
  */
 const Task = (props: Props) => {
-  const updateTask = useStoreActions((actions) => actions.updateTask);
-  const deleteTask = useStoreActions((actions) => actions.deleteTask);
-  const taskArray = useStoreState((state) => state.taskArray);
+  const updateTask = useStoreActions((a) => a.updateTask);
+  const deleteTask = useStoreActions((a) => a.deleteTask);
+  const taskArray = useStoreState((s) => s.taskArray);
   const setMoreContextMenuOptions = useStoreActions(
-    (actions) => actions.setMoreContextMenuOptions
+    (a) => a.setMoreContextMenuOptions
   );
   const [task, setTask] = useState(taskArray[props.taskIndex]);
   const textFieldRef = useRef<HTMLInputElement | null>(null);
+  const setTaskCardHidden = useStoreActions((a) => a.setTaskCardHidden);
 
   const menuOptions = [
     {
@@ -54,40 +56,47 @@ const Task = (props: Props) => {
   }, [props, task]);
 
   useEffect(() => {
-    updateTask({ task, taskIndex: props.taskIndex });
+    updateTask({ task: task, taskIndex: props.taskIndex });
   }, [task, props.taskIndex, updateTask]);
 
   return (
-    <div
-      className="bg-dark-400 shadow-dark-900 flex items-center justify-between gap-x-3 rounded py-1 px-3 shadow"
-      onContextMenu={() => {
-        setMoreContextMenuOptions(menuOptions);
-      }}
-    >
-      <div className="flex flex-col gap-y-1">
-        <div className="flex justify-between">
-          <div className="flex">
-            <TextField
-              ref={textFieldRef}
-              //Subtract 2 because there's a weird padding on the right of textfield.
-              size={task.title.length <= 5 ? 5 : task.title.length - 2}
-              value={task.title}
-              onChange={(e) =>
-                setTask((prev) =>
-                  prev ? { ...prev, title: e.target.value } : prev
-                )
-              }
-            />
-            <PriorityButton />
+    <>
+      <TaskCard task={task} setTask={setTask} />
+
+      <div
+        className="bg-dark-400 shadow-dark-900 flex items-center justify-between gap-x-3 rounded py-1 px-3 shadow"
+        onContextMenu={() => {
+          setMoreContextMenuOptions(menuOptions);
+        }}
+        onClick={() => {
+          setTaskCardHidden(false);
+        }}
+      >
+        <div className="flex flex-col gap-y-1">
+          <div className="flex justify-between">
+            <div className="flex">
+              <TextField
+                ref={textFieldRef}
+                //Subtract 2 because there's a weird padding on the right of textfield.
+                size={task.title.length <= 5 ? 5 : task.title.length - 2}
+                value={task.title}
+                onChange={(e) =>
+                  setTask((prev) =>
+                    prev ? { ...prev, title: e.target.value } : prev
+                  )
+                }
+              />
+              <PriorityButton />
+            </div>
+            <MoreOptionsButton options={menuOptions} />
           </div>
-          <MoreOptionsButton options={menuOptions} />
-        </div>
-        <div className="flex items-center gap-x-1">
-          <StatusButton statusIndex={task.statusIndex} setTask={setTask} />
-          <SelectDateButton />
+          <div className="flex items-center gap-x-1">
+            <StatusButton statusIndex={task.statusIndex} setTask={setTask} />
+            <SelectDateButton />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

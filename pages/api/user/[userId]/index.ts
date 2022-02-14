@@ -11,9 +11,8 @@ async function get() {
 
 export type Post = Awaited<ReturnType<typeof post>>;
 async function post(body: Body, userId: string | string[]) {
-  if (!body.title) return new Error('Title is undefined');
 
-  return await goalCollection.create(new goalCollection({ title: body.title, userId })) as GoalProps;
+  return await goalCollection.create(new goalCollection({ title: body.goalTitle, description: body.description, userId })) as GoalProps;
 }
 
 export type Patch = Awaited<ReturnType<typeof patch>>;
@@ -36,9 +35,9 @@ async function patch(body: Body, userId: string) {
 }
 
 export interface Body {
-  title?: string; //createGoal
   goalId?: string; //addGoal
-  goalTitle?: string; //addGoal
+  goalTitle?: string; //addGoal && createGoal
+  description?: string; //createGoal
   target?: string; //updateLastViewedGoalId
 }
 

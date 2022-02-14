@@ -26,17 +26,18 @@ const StatusButton = (props: Props) => {
   }
 
   return (
-    <button
+    <div
       className={`min-w-20 min-h-6 flex gap-x-1 rounded py-1 px-3 text-center text-sm ${
         statusColorArray ? statusColorArray[props.statusIndex] : ""
       }`}
+      onClick={(e) => e.stopPropagation()}
     >
       <button onClick={() => toggleStatus("prev")}>{"<"}</button>
 
       {statusNameArray ? statusNameArray[props.statusIndex] : "...loading"}
 
       <button onClick={() => toggleStatus("next")}>{">"}</button>
-    </button>
+    </div>
   );
 };
 

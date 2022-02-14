@@ -24,8 +24,9 @@ export default function Index() {
           })
         }
       >
-        Click me to try a preview without logging in
+        Preview the app without log in
       </Button>
+      or
       <Button
         className="border border-blue-400"
         onClick={async () => {
@@ -37,7 +38,7 @@ export default function Index() {
           }
         }}
       >
-        Or, login/sign up
+        Log in/sign up with Google
       </Button>
     </div>
   );
