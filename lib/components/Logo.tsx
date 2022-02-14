@@ -1,10 +1,22 @@
 import Image from "next/image";
 
-const Logo = () => {
+interface Props {
+  imgSize?: number;
+  textSize?: string;
+}
+
+const Logo = (props: Props) => {
   return (
     <div className="flex flex-row items-center gap-x-1">
-      <Image src="/favicon.png" width={36} height={36} alt="" />
-      <p className="text-xl font-medium">LifeOrb</p>
+      <Image
+        src="/favicon.png"
+        width={props.imgSize || 36}
+        height={props.imgSize || 36}
+        alt="LifeOrb"
+      />
+      <p className={`${props.textSize || "text-xl"} ` + "font-medium"}>
+        LifeOrb
+      </p>
     </div>
   );
 };

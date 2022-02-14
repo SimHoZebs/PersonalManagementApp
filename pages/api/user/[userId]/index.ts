@@ -3,29 +3,32 @@ import userCollection, { UserDocs, UserProps } from '../../../../lib/schema/User
 import goalCollection, { GoalProps } from '../../../../lib/schema/GoalSchema';
 import apiEndpointHelper from '../../../../lib/apiEndpointHelper';
 
-export type Get = Awaited<ReturnType<typeof get>>;
-export type Post = Awaited<ReturnType<typeof post>>;
-export type Patch = Awaited<ReturnType<typeof patch>>;
 
+export type Get = Awaited<ReturnType<typeof get>>;
 async function get() {
   return await goalCollection.find({}) as GoalProps[];
 }
 
+export type Post = Awaited<ReturnType<typeof post>>;
 async function post(body: Body, userId: string | string[]) {
   if (!body.title) return new Error('Title is undefined');
 
   return await goalCollection.create(new goalCollection({ title: body.title, userId })) as GoalProps;
 }
 
+export type Patch = Awaited<ReturnType<typeof patch>>;
 async function patch(body: Body, userId: string) {
   if (!(body.goalId)) return new Error('GoalId is undefined');
 
-  const user: UserDocs = await userCollection.findOne({ _id: userId });
+  const user: UserDocs | null = await userCollection.findOne({ _id: userId });
+
+  if (user === null) return new Error('user is null');
 
   if (body.target === "lastViewedGoalId") {
     user.lastViewedGoalId = body.goalId;
   } else {
-    user.goalIdArray.push(body.goalId);
+    if (!body.goalTitle) return new Error("goalTitle is undefined");
+    user.goalArray.push({ title: body.goalTitle, id: body.goalId });
   }
 
   await user.save();
@@ -34,7 +37,8 @@ async function patch(body: Body, userId: string) {
 
 export interface Body {
   title?: string; //createGoal
-  goalId?: string; //addGoalId
+  goalId?: string; //addGoal
+  goalTitle?: string; //addGoal
   target?: string; //updateLastViewedGoalId
 }
 

@@ -1,4 +1,4 @@
-import addGoalId from "../api/addGoalId";
+import addGoal from "../api/addGoal";
 import createGoal from "../api/createGoal";
 import updateLastViewedGoalId from "../api/updateLastViewedGoalId";
 import { GoalProps } from "../schema/GoalSchema";
@@ -17,9 +17,9 @@ export default async function addUserDefaults(userId: string) {
   }
   createdGoal = createGoalRes;
 
-  const addGoalIdRes = await addGoalId(userId, createdGoal._id);
-  if (addGoalIdRes instanceof Error) {
-    return addGoalIdRes;
+  const addGoalRes = await addGoal(userId, createdGoal._id, createdGoal.title);
+  if (addGoalRes instanceof Error) {
+    return addGoalRes;
   }
 
   const updateLastViewedGoalIdRes = await updateLastViewedGoalId(

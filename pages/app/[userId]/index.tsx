@@ -11,6 +11,8 @@ import readUser from "../../../lib/api/readUser";
 import SideMenu from "../../../lib/components/SideMenu";
 import addUserDefaults from "../../../lib/functions/addUserDefaults";
 import Skeleton from "../../../lib/components/Skeleton";
+import createUser from "../../../lib/api/createUser";
+import { UserProps } from "../../../lib/schema/UserSchema";
 
 /**
  * displays user dashboard.
@@ -64,17 +66,25 @@ export const getServerSideProps = async (
       throw new Error("userId is not a string");
     }
 
+    let user: UserProps;
+
     const readUserRes = await readUser(userId);
     if (readUserRes instanceof Error) {
       throw readUserRes;
     } else if (readUserRes === null) {
-      //route back to login screen?
-      throw new Error(`User with id ${userId} does not exist.`);
+      if (userId === "preview") {
+        const createUserRes = await createUser(userId, "preview");
+        if (createUserRes instanceof Error) throw createUserRes;
+        user = createUserRes;
+      } else {
+        //route back to login screen?
+        throw new Error(`User with id ${userId} does not exist.`);
+      }
+    } else {
+      user = readUserRes;
     }
 
-    let user = readUserRes;
-
-    if (user.goalIdArray.length === 0) {
+    if (user.goalArray.length === 0) {
       const addUserDefaultsRes = await addUserDefaults(userId);
       if (addUserDefaultsRes instanceof Error) {
         throw addUserDefaultsRes;
@@ -85,6 +95,6 @@ export const getServerSideProps = async (
     return { props: { user } };
   } catch (error) {
     console.log(error instanceof Error ? error.message : error);
-    return { props: { user: undefined } };
+    return { props: { user: null } };
   }
 };

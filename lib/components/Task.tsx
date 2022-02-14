@@ -65,20 +65,21 @@ const Task = (props: Props) => {
       }}
     >
       <div className="flex flex-col gap-y-1">
-        <div className="flex items-center">
-          <TextField
-            ref={textFieldRef}
-            //Subtract 2 because there's a weird padding on the right of textfield.
-            size={task.title.length <= 5 ? 5 : task.title.length - 2}
-            value={task.title}
-            onChange={(e) =>
-              setTask((prev) =>
-                prev ? { ...prev, title: e.target.value } : prev
-              )
-            }
-          />
-          <PriorityButton />
-          {/**Temp solution for deleting */}
+        <div className="flex justify-between">
+          <div className="flex">
+            <TextField
+              ref={textFieldRef}
+              //Subtract 2 because there's a weird padding on the right of textfield.
+              size={task.title.length <= 5 ? 5 : task.title.length - 2}
+              value={task.title}
+              onChange={(e) =>
+                setTask((prev) =>
+                  prev ? { ...prev, title: e.target.value } : prev
+                )
+              }
+            />
+            <PriorityButton />
+          </div>
           <MoreOptionsButton options={menuOptions} />
         </div>
         <div className="flex items-center gap-x-1">

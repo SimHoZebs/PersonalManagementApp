@@ -3,7 +3,7 @@ import { Schema, models, model, Document } from 'mongoose';
 export interface UserProps {
   _id: string;
   title: string;
-  goalIdArray: string[];
+  goalArray: { title: string; id: string; }[];
   lastViewedGoalId: string;
 }
 export interface UserDocs extends UserProps, Document {
@@ -16,7 +16,7 @@ const userSchema = new Schema<UserProps>({
     required: true
   },
   _id: { type: String, required: true },
-  goalIdArray: [String],
+  goalArray: [{ title: String, id: String }],
   lastViewedGoalId: { type: String }
 });
 

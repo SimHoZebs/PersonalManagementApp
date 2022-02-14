@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Icon } from "@iconify/react";
 import IconButton from "./IconButton";
@@ -9,11 +9,27 @@ interface Props extends React.HTMLAttributes<HTMLButtonElement> {
 }
 
 const MoreOptionsButton = (props: Props) => {
-  const [moreOptionsHidden, setMoreOptions] = useState(true);
+  const [moreOptionsHidden, setMoreOptionsHidden] = useState(true);
+
+  useEffect(() => {
+    function hideMenu(e: MouseEvent) {
+      if (!moreOptionsHidden) {
+        setMoreOptionsHidden(true);
+      }
+    }
+
+    window.addEventListener("click", hideMenu);
+    return () => {
+      window.removeEventListener("click", hideMenu);
+    };
+  }, [moreOptionsHidden]);
 
   return (
     <div className="relative">
-      <IconButton onClick={() => setMoreOptions((prev) => !prev)} {...props}>
+      <IconButton
+        onClick={() => setMoreOptionsHidden((prev) => !prev)}
+        {...props}
+      >
         <Icon icon="mdi:dots-vertical" className="text-true-gray-400 h-4 w-4" />
       </IconButton>
 

@@ -1,53 +1,56 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 //apis & schemas
-import readUser from "../lib/api/readUser";
-import createUser from "../lib/api/createUser";
-import { UserProps } from "../lib/schema/UserSchema";
 import connectToDB from "../lib/api/connectToDB";
-import { InferGetServerSidePropsType } from "next";
+import Button from "../lib/components/Button";
+import Logo from "../lib/components/Logo";
 
-export default function Index(
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
-) {
+export default function Index() {
   const router = useRouter();
 
-  useEffect(() => {
-    router.push({
-      pathname: `/app/${props.userId}`,
-    });
-  }, [props.userId, router]);
-
-  return <div>Loading app...</div>;
+  return (
+    <div className="flex flex-col items-center gap-y-3 p-10">
+      <div className="flex flex-col items-center gap-y-3 p-10">
+        <h1 className="flex items-center gap-x-1">
+          <Logo imgSize={56} textSize={"text-4xl"} />
+        </h1>
+        <h2 className="text-xl">Your personal management system</h2>
+      </div>
+      <Button
+        className="border border-blue-400"
+        onClick={() =>
+          router.push({
+            pathname: `/app/preview`,
+          })
+        }
+      >
+        Click me to try a preview without logging in
+      </Button>
+      <Button
+        className="border border-blue-400"
+        onClick={async () => {
+          const user = await (
+            await import("../lib/functions/authentication")
+          ).default();
+          if (!(user instanceof Error)) {
+            router.push(`/app/${user._id}`);
+          }
+        }}
+      >
+        Or, login/sign up
+      </Button>
+    </div>
+  );
 }
 
 //Creates preview user or loads existing preview user and redirects to its userId.
 //In the future, this should read browser cookies/localStorage and load the userId from there.
 export const getServerSideProps = async () => {
-  const PREVIEW_USERID = "preview";
-  const PREVIEW_USERNAME = "preview";
-
   try {
     const connectToDBRes = await connectToDB();
     if (connectToDBRes instanceof Error) throw connectToDBRes;
-
-    let user: UserProps;
-
-    const readUserRes = await readUser(PREVIEW_USERID);
-    if (readUserRes instanceof Error) throw readUserRes;
-
-    if (readUserRes === null) {
-      const createUserRes = await createUser(PREVIEW_USERID, PREVIEW_USERNAME);
-      if (createUserRes instanceof Error) throw createUserRes;
-
-      user = createUserRes;
-    } else {
-      user = readUserRes;
-    }
-    return { props: { userId: user._id } };
   } catch (error) {
     console.log(error instanceof Error ? error.message : error);
-    return { props: { userId: undefined } };
   }
+  return { props: {} };
 };
