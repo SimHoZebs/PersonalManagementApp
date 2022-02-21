@@ -9,7 +9,7 @@ import Button from "./Button";
 import { TaskProps } from "../schema/TaskSchema";
 import readGoal from "../api/readGoal";
 import { GoalBasicProps } from "../schema/GoalSchema";
-import isLoaded from "../isLoaded";
+import narrowType from "../narrowType";
 import updateGoal from "../api/updateGoal";
 import { useStoreActions, useStoreState } from "../globalState";
 import updateTaskArray from "../api/updateTaskArray";
@@ -82,7 +82,7 @@ const Goal = (props: Props) => {
       <hr className="border-dark-300" />
 
       <div className="flex flex-col items-start gap-y-2">
-        {taskArray.length !== 0 && isLoaded<GoalBasicProps>(goalProps) ? (
+        {taskArray.length !== 0 && narrowType<GoalBasicProps>(goalProps) ? (
           taskArray.map((task, index) => (
             <Task
               key={task._id ? task._id : index}

@@ -31,7 +31,7 @@ const Task = (props: Props) => {
   );
   const [task, setTask] = useState(taskArray[props.taskIndex]);
   const [taskCardHidden, setTaskCardHidden] = useState(true);
-  const textFieldRef = useRef<HTMLInputElement | null>(null);
+  const textFieldRef = useRef<HTMLInputElement>(null);
 
   const menuOptions = [
     {

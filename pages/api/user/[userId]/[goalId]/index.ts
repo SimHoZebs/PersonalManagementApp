@@ -15,7 +15,9 @@ async function get(goalId: string) {
 async function post(body: Body, goalId: string) {
   if (!body.task) return new Error("Task is undefined");
 
-  const goal: GoalDoc = await goalCollection.findOne({ _id: goalId });
+  const goal: GoalDoc | null = await goalCollection.findOne({ _id: goalId });
+  if (!goal) return new Error("Goal not found");
+
   //type assertion as GoalDoc only takes TaskDoc
   goal.taskArray.push(body.task as TaskDoc);
   goal.save();
@@ -24,7 +26,8 @@ async function post(body: Body, goalId: string) {
 }
 
 async function patch(body: Body, goalId: string) {
-  const goal: GoalDoc = await goalCollection.findOne({ _id: goalId });
+  const goal: GoalDoc | null = await goalCollection.findOne({ _id: goalId });
+  if (!goal) return new Error("Goal not found");
 
   let response: GoalProps | TaskProps[] | undefined;
   if (body.modifiedGoal) {
@@ -50,7 +53,9 @@ async function patch(body: Body, goalId: string) {
 async function del(body: Body, goalId: string) {
   if (!body.taskId) return new Error("TaskId is undefined");
 
-  const goal: GoalDoc = await goalCollection.findOne({ id: goalId });
+  const goal: GoalDoc | null = await goalCollection.findOne({ id: goalId });
+
+  if (!goal) return new Error("Goal not found");
 
   const taskIndex = goal.taskArray.findIndex(task => task.id === body.taskId);
   goal.taskArray.splice(taskIndex, 1);
