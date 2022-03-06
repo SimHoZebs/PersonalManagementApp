@@ -44,6 +44,7 @@ const MultiLineTextField = (
             textAreaRef.current.scrollHeight + "px";
         }
       }}
+      {...rest}
     />
   ) : (
     <Skeleton />
