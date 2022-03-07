@@ -1,27 +1,45 @@
 # LifeOrb - Open source personal management tool
 
-### For roadmap, documentation, Q&As, and way more information, visit [the Notion page!](https://simhozebs.notion.site/AnotherToDoApp-3f69fe17bb1c4dacafa038cc3b32b6d9)
-
-For bug reports and feature requests, feel free to create an issue!
-
 ## Introduction
 
 This project is a tool designed to help you set goals, schedule tasks, track financials, manage relationships, etc., with minimal effort through intuitive design and automation.
 
 ## Features
 
-At the moment, the feature set is very lacking. Check out [the Roadmap page](https://www.notion.so/Roadmap-2039cd773d164b6fab10b21e056db86c) for future features!
+At the moment, the feature set is very lacking.
 
 - Google Login
-- Adding tasks
+- Adding tasks with status options
 
-## Motivation
+Below is the general outline of the features I plan to add.
 
-There are _soo_ many tools out there for management, especially for projects and companies. You probably already use one. I've tried so many as a _personal_ management app, only for Notion to be the last man standing.
+### Algorithmized, automated, and accessible.
 
-But Notion isn't a management app. It's a great blank canvas with great components that can _build_ a management system. But to build one, you must research and understand what they need in such a system, how they should build one, and so on. It's a lot of work.
+Learning a productivity framework, then figuring out a way to implement it to an app... It’s a lot of effort just to start becoming productive.
 
-This project's goal is to get rid of that work and effort, built with a single goal in mind: **Do less, get more done** - on a personal level.
+LifeOrb is designed with an inflexible but versatile productivity system inspired by many productivity frameworks, such as GTD. This app aims to enforce a structure and clarify intent in your actions to help you get a good overview.
+
+### Keep track of your relationships.
+
+Google Calendar can help you keep track of your co-worker’s birthdays, but a separate note-taking tool to remember what they’d prefer for gifts. It becomes a chore to build a database to keep track of what your friend has been up to the last time you talked to them, their location, relationship with your other relationships, etc.
+
+Enter personal relationship management - a CRM, but personal.
+
+### Remembering is difficult.
+
+Captured ideas are meaningless if they can’t be accessed in the right moments. On top of providing an extensive documentation tool, LifeOrb will smartly understand context of between tasks and ideas and recommend references. You can manually set custom tags to get more accurate references.
+
+### Finance management.
+
+For being a critical aspect of life, it’s been too long being left out of productivity apps. LifeOrb will provide smart finance management system by tracking recurring spending, trend estimation, spending analysis and recommendations, and more. In further future, it hopes to integrate with existing bank APIs to provide automatic tracking.
+
+### Privacy control.
+
+LifeOrb is made with the goal to give more control of people’s lives. That doesn’t mean anything without control of your data and privacy.
+
+As long as this paragraph exists, LifeOrb is to be open source, and planned to provide a locally deployable version to give you control over your data. You will have as much control as possible over what data is available to the app, while being aware what features will be enabled or disabled from such control.
+
+### And so on...
 
 ## What this app is NOT
 
@@ -34,3 +52,6 @@ This project may work as an alternative for some apps, like Google Calendar, its
 ### 2. Highly customizable
 
 The project does support some level of customization, but it will never claim to be 'highly' customizable. Some features will be opinionated and strict to reduce vagueness and improve onboarding.
+
+In some ways, this is a weakness of the app. Not everyone has the same idea about how they would use a productivity system. But the goal of this app isn’t to create a system that can fit anyone, but a system that is perfect for few.
+For bug reports and feature requests, feel free to create an issue!
