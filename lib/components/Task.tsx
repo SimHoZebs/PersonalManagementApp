@@ -2,15 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 
 //components
 import TextField from "./TextField";
-import StatusButton from "./StatusButton";
 import SelectDateButton from "./SelectDateButton";
-import PriorityButton from "./PriorityButton";
 import MoreOptionsButton from "./MoreOptionsButton";
 
 //etc
 import createTask from "../api/createTask";
 import { useStoreActions, useStoreState } from "../globalState";
 import TaskCard from "./TaskCard";
+import { Icon } from "@iconify/react";
 
 export interface Props {
   taskIndex: number;
@@ -29,6 +28,7 @@ const Task = (props: Props) => {
   const setMoreContextMenuOptions = useStoreActions(
     (a) => a.setMoreContextMenuOptions
   );
+  const user = useStoreState((s) => s.user);
   const [task, setTask] = useState(taskArray[props.taskIndex]);
   const [taskCardHidden, setTaskCardHidden] = useState(true);
   const textFieldRef = useRef<HTMLInputElement>(null);
@@ -50,10 +50,13 @@ const Task = (props: Props) => {
   useEffect(() => {
     if (props.isNewTask) {
       textFieldRef.current?.focus();
-      createTask(task.userId, task.goalId, task);
+      if (!user) return;
+
+      createTask(user._id.toString(), task);
+
       props.setCreatingTask(false);
     }
-  }, [props, task]);
+  }, [props, task, user]);
 
   useEffect(() => {
     updateTask({ task: task, taskIndex: props.taskIndex });
@@ -69,7 +72,7 @@ const Task = (props: Props) => {
       />
 
       <div
-        className="bg-dark-400 shadow-dark-900 flex items-center justify-between gap-x-3 rounded py-1 px-3 shadow"
+        className="bg-dark-400 shadow-dark-900 w-360px flex flex-col justify-between gap-x-3 rounded p-2  shadow"
         onContextMenu={() => {
           setMoreContextMenuOptions(menuOptions);
         }}
@@ -77,28 +80,29 @@ const Task = (props: Props) => {
           setTaskCardHidden(false);
         }}
       >
-        <div className="flex flex-col gap-y-1">
-          <div className="flex justify-between">
-            <div className="flex">
-              <TextField
-                ref={textFieldRef}
-                //Subtract 2 because there's a weird padding on the right of textfield.
-                size={task.title.length <= 5 ? 5 : task.title.length - 2}
-                value={task.title}
-                onChange={(e) =>
-                  setTask((prev) =>
-                    prev ? { ...prev, title: e.target.value } : prev
-                  )
-                }
-              />
-              <PriorityButton />
-            </div>
-            <MoreOptionsButton options={menuOptions} />
+        <div className="flex w-full justify-between">
+          <div className="flex items-center">
+            <Icon
+              icon="mdi:checkbox-blank-outline"
+              className="h-6 w-6 text-gray-500"
+            />
+            <TextField
+              ref={textFieldRef}
+              //Subtract 2 because there's a weird padding on the right of textfield.
+              size={task.title.length <= 5 ? 5 : task.title.length - 2}
+              value={task.title}
+              onChange={(e) =>
+                setTask((prev) =>
+                  prev ? { ...prev, title: e.target.value } : prev
+                )
+              }
+            />
           </div>
-          <div className="flex items-center gap-x-1">
-            <StatusButton statusIndex={task.statusIndex} setTask={setTask} />
-            <SelectDateButton />
-          </div>
+          <MoreOptionsButton options={menuOptions} />
+        </div>
+
+        <div className="flex items-center gap-x-1">
+          <SelectDateButton />
         </div>
       </div>
     </>

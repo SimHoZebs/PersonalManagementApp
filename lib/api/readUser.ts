@@ -1,20 +1,21 @@
 import apiFunctionHelper from '../apiFunctionHelper';
-import { Get } from '../../pages/api/user';
+import { Body, Get } from '../../pages/api/user';
+import { ObjectId } from 'mongodb';
 
 /**
  * Checks if user exists in DB.
- * @param userId user unique id
+ * @param userId 
  * @returns string; Client or server error
- * @returns null; Request successful but username does not exist
- * @returns User: UserSchema; Request successful and username exists
+ * @returns null; Request successful but userId is invalid
+ * @returns User: UserSchema; Request successful and userId is valid
  */
-export default async function readUser(userId: string) {
+export default async function readUser(userId: string | ObjectId) {
 
-  return await apiFunctionHelper<Get>(
+  return await apiFunctionHelper<Get, Body>(
     {
       method: "GET",
       url: `api/user/`,
       params: { userId }
-    },
+    }, "readUser"
   );
 }

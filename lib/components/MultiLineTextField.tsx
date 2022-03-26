@@ -1,14 +1,15 @@
 import React, { TextareaHTMLAttributes, useEffect, useRef } from "react";
 import { useStoreActions, useStoreState } from "../globalState";
 import narrowType from "../narrowType";
-import { GoalBasicProps } from "../schema/GoalSchema";
+import { TaskDoc } from "../types/task";
 import Skeleton from "./Skeleton";
 
-const MultiLineTextField = (
-  props: TextareaHTMLAttributes<HTMLTextAreaElement>
-) => {
-  const goalProps = useStoreState((state) => state.goalProps);
-  const setGoalProps = useStoreActions((actions) => actions.setGoalProps);
+interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  defaultText: string;
+}
+
+const MultiLineTextField = (props: Props) => {
+  const user = useStoreState((state) => state.user);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const { className, onChange, ...rest } = props;
 
@@ -27,12 +28,10 @@ const MultiLineTextField = (
     };
   }, [textAreaRef]);
 
-  return narrowType<GoalBasicProps>(goalProps) ? (
+  return narrowType<TaskDoc>(user) ? (
     <textarea
       ref={textAreaRef}
-      cols={
-        goalProps.description.length <= 15 ? 15 : goalProps.description.length
-      }
+      cols={props.defaultText.length <= 15 ? 15 : props.defaultText.length}
       wrap="soft"
       className="hover:bg-dark-300 focus-visible:(outline-transparent bg-dark-200) min-h-1 resize-none rounded bg-transparent px-2 py-1 text-xl"
       onChange={(e) => {

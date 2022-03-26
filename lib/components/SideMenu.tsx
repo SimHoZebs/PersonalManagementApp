@@ -3,18 +3,14 @@ import { Icon } from "@iconify/react";
 
 //components
 import Logo from "./Logo";
-
 import Button from "./Button";
-import { useStoreState } from "../globalState";
 
 const SideMenu = () => {
-  const goalArray = useStoreState((state) => state.user?.goalArray);
   const router = useRouter();
-  const user = useStoreState((state) => state.user);
 
   async function login() {
-    const user = await (await import("../functions/authentication")).default();
-    if (!(user instanceof Error)) {
+    const user = await (await import("../authentication")).default();
+    if (!(user instanceof Error) && user) {
       router.push(`/app/${user._id}`);
     }
   }
@@ -26,24 +22,6 @@ const SideMenu = () => {
           <div className="self-center">
             <Logo />
           </div>
-
-          <ol>
-            {goalArray?.map((goal) => (
-              <li key={goal.id}>
-                <button
-                  className="hover:bg-dark-300 flex w-full flex-row items-center gap-x-1 rounded py-2 px-1"
-                  /**Shallow routing */
-                  //onClick={() => router.push(`/app/${user?._id}/${goal.id}`)}
-                >
-                  <Icon
-                    icon="mdi:format-goal-bulleted-type"
-                    className="h-6 w-6"
-                  />
-                  <p>{goal.title}</p>
-                </button>
-              </li>
-            ))}
-          </ol>
         </div>
 
         <Button

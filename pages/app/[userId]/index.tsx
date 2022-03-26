@@ -2,17 +2,17 @@ import { useEffect } from "react";
 import { useStoreActions, useStoreState } from "../../../lib/globalState";
 import Head from "next/head";
 import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
+import { WithId } from "mongodb";
 
 //components
-import Goal from "../../../lib/components/Goal";
+import TaskPanel from "../../../lib/components/TaskPanel";
 
 //etc
 import readUser from "../../../lib/api/readUser";
 import SideMenu from "../../../lib/components/SideMenu";
-import addUserDefaults from "../../../lib/functions/addUserDefaults";
 import Skeleton from "../../../lib/components/Skeleton";
 import createUser from "../../../lib/api/createUser";
-import { UserProps } from "../../../lib/schema/UserSchema";
+import { UserDoc } from "../../../lib/types/user";
 
 /**
  * displays user dashboard.
@@ -20,18 +20,17 @@ import { UserProps } from "../../../lib/schema/UserSchema";
 export default function Dashboard(
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) {
-  const userTitle = useStoreState((state) => state.user?.title);
   const setUser = useStoreActions((actions) => actions.setUser);
-  const userId = useStoreState((state) => state.user?._id);
-  const lastViewedGoalId = useStoreState(
-    (state) => state.user?.lastViewedGoalId
-  );
+  const user = useStoreState((state) => state.user);
+  const setTaskArray = useStoreActions((actions) => actions.setTaskArray);
 
   useEffect(() => {
     if (props.user) {
-      setUser(props.user);
+      const { taskArray, ...rest } = props.user;
+      setUser(rest);
+      setTaskArray(taskArray);
     }
-  }, [props.user, setUser]);
+  }, [props.user, setTaskArray, setUser]);
 
   return (
     <>
@@ -45,9 +44,12 @@ export default function Dashboard(
         </div>
 
         <div className="flex w-3/4 flex-col gap-y-1 p-2">
-          <p className="text-xs">Hello, {userTitle}</p>
-          {lastViewedGoalId && userId ? (
-            <Goal userId={userId} lastViewedGoalId={lastViewedGoalId} />
+          <p className="text-xs">Hello, {user?.name}</p>
+          {user ? (
+            <main className="flex gap-x-8">
+              <TaskPanel status="On going" userId={user._id.toString()} />
+              <TaskPanel status="Planned" userId={user._id.toString()} />
+            </main>
           ) : (
             <Skeleton />
           )}
@@ -66,16 +68,24 @@ export const getServerSideProps = async (
       throw new Error("userId is not a string");
     }
 
-    let user: UserProps;
+    let user: WithId<UserDoc>;
 
     const readUserRes = await readUser(userId);
-    if (readUserRes instanceof Error) {
-      throw readUserRes;
-    } else if (readUserRes === null) {
-      if (userId === "preview") {
-        const createUserRes = await createUser(userId, "preview");
-        if (createUserRes instanceof Error) throw createUserRes;
-        user = createUserRes;
+    if (readUserRes instanceof Error) throw readUserRes;
+
+    if (readUserRes === null) {
+      if (userId === "0") {
+        const createUserRes = await createUser("preview", "000000000000");
+        if (createUserRes instanceof Error || createUserRes === undefined)
+          //Potentially returns just undefinded. fix it
+          throw createUserRes;
+
+        const readUserRes = await readUser(userId);
+        if (readUserRes instanceof Error || readUserRes === null)
+          //Potentially returns just null. fix it
+          throw readUserRes;
+
+        user = readUserRes;
       } else {
         //route back to login screen?
         throw new Error(`User with id ${userId} does not exist.`);
@@ -84,17 +94,9 @@ export const getServerSideProps = async (
       user = readUserRes;
     }
 
-    if (user.goalArray.length === 0) {
-      const addUserDefaultsRes = await addUserDefaults(userId);
-      if (addUserDefaultsRes instanceof Error) {
-        throw addUserDefaultsRes;
-      }
-      user = addUserDefaultsRes;
-    }
-
     return { props: { user } };
   } catch (error) {
-    console.log(error instanceof Error ? error.message : error);
+    console.log(error instanceof Error ? error.message : "error", error);
     return { props: { user: null } };
   }
 };

@@ -1,23 +1,40 @@
+import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import apiEndpointHelper from "../../../lib/apiEndpointHelper";
-import userCollection, { UserProps } from '../../../lib/schema/UserSchema';
+import db from "../../../lib/db";
+import { UserDoc } from "../../../lib/types/user";
 
 export type Get = Awaited<ReturnType<typeof get>>;
-export type Post = Awaited<ReturnType<typeof post>>;
-
 async function get(userId: string) {
-  return await userCollection.findOne({ _id: userId }) as UserProps | null;
+  if (!userId) return new Error("userId is undefined");
+
+  const userCollection = await db.then(res => res.collection<UserDoc>('users'));
+  return await userCollection.findOne({ _id: new ObjectId(userId === "0" ? 0 : userId) });
 }
 
+export type Post = Awaited<ReturnType<typeof post>>;
 async function post(body: Body) {
-  if (!body.title) return new Error("Title is undefined");
+  if (!body.name) return new Error("Title is undefined");
 
-  return await userCollection.create(new userCollection({ title: body.title, _id: body.userId })) as UserProps;
+  const newUser = {
+    _id: new ObjectId(),
+    name: body.name,
+    taskArray: []
+  };
+
+  if (typeof (body.userId) === "string") {
+    newUser._id = new ObjectId(body.userId);
+  }
+
+  const userCollection = await db.then(res => res.collection<UserDoc>('users'));
+  const res = await userCollection.insertOne(newUser);
+  console.log("new user insert", res.acknowledged);
+  return res;
 }
 
 export interface Body {
-  userId?: string;
-  title?: string;
+  userId?: ObjectId | string;
+  name?: string;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -28,6 +45,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     async function getWrapper() {
       return get(userId as string);
     },
+
     async function postWarpper() {
       return post(body);
     },

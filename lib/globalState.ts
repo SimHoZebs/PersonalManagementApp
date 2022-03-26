@@ -4,20 +4,20 @@ import {
   createStore,
   createTypedHooks,
 } from "easy-peasy";
-
-import { UserProps } from "../lib/schema/UserSchema";
-import { GoalBasicProps } from "../lib/schema/GoalSchema";
-import { TaskProps } from "../lib/schema/TaskSchema";
+import { WithId } from "mongodb";
+import { TaskDoc } from "./types/task";
+import { UserWithoutTaskArray } from "./types/user";
 
 interface Store {
-  user: UserProps | undefined;
-  setUser: Action<Store, UserProps | undefined>;
-  goalProps: GoalBasicProps | undefined;
-  setGoalProps: Action<Store, GoalBasicProps | undefined>;
-  taskArray: TaskProps[];
-  setTaskArray: Action<Store, TaskProps[]>;
-  updateTask: Action<Store, { task: TaskProps; taskIndex: number; }>;
+  user: WithId<UserWithoutTaskArray> | undefined;
+  setUser: Action<Store, WithId<UserWithoutTaskArray> | undefined>;
+
+  taskArray: TaskDoc[] | WithId<TaskDoc>[];
+  setTaskArray: Action<Store, TaskDoc[] | WithId<TaskDoc[]>>;
+
+  updateTask: Action<Store, { task: WithId<TaskDoc> | TaskDoc; taskIndex: number; }>;
   deleteTask: Action<Store, number>;
+
   moreContextMenuOptions: { name: string, function: () => void; }[];
   setMoreContextMenuOptions: Action<Store, { name: string, function: () => void; }[]>;
 }
@@ -26,11 +26,6 @@ export const globalState = createStore<Store>({
   user: undefined,
   setUser: action((state, payload) => {
     state.user = payload;
-  }),
-
-  goalProps: undefined,
-  setGoalProps: action((state, payload) => {
-    state.goalProps = payload;
   }),
 
   taskArray: [],

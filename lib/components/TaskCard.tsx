@@ -1,10 +1,9 @@
-import { TaskProps } from "../schema/TaskSchema";
-import StatusButton from "./StatusButton";
-import TextField from "./TextField";
+import TextField from "../components/TextField";
+import { TaskDoc } from "../types/task";
 
 interface Props {
-  task: TaskProps;
-  setTask: React.Dispatch<React.SetStateAction<TaskProps>>;
+  task: TaskDoc;
+  setTask: React.Dispatch<React.SetStateAction<TaskDoc>>;
   taskCardHidden: boolean;
   setTaskCardHidden: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -23,10 +22,6 @@ const TaskCard = (props: Props) => {
         <TextField
           className="hover:bg-dark-400 placeholder-true-gray-400 text-4xl"
           value={props.task.title}
-        />
-        <StatusButton
-          statusIndex={props.task.statusIndex}
-          setTask={props.setTask}
         />
       </div>
     </div>
