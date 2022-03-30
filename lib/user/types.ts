@@ -1,5 +1,5 @@
 import { WithId } from "mongodb";
-import { TaskDoc } from "./task";
+import { TaskDoc } from "../task/types";
 
 export interface UserWithoutTaskArray {
   name: string;

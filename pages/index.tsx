@@ -29,7 +29,9 @@ export default function Index() {
       <Button
         className="border border-blue-400"
         onClick={async () => {
-          const user = await (await import("../lib/authentication")).default();
+          const user = await (
+            await import("../lib/third-party/authentication")
+          ).default();
           if (!(user instanceof Error) && user) {
             router.push(`/app/${user._id}`);
           }

@@ -1,6 +1,6 @@
 import React, { HTMLAttributes, useState } from "react";
 import { useStoreActions, useStoreState } from "../globalState";
-import { Status, TaskDoc } from "../types/task";
+import { Status, TaskDoc } from "./types";
 import Button from "../components/Button";
 import Task from "./Task";
 import { WithId } from "mongodb";
@@ -14,7 +14,6 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 const TaskPanel = (props: Props) => {
   const taskArray = useStoreState((state) => state.taskArray);
   const setTaskArray = useStoreActions((actions) => actions.setTaskArray);
-  const user = useStoreState((state) => state.user);
 
   const [creatingTask, setCreatingTask] = useState(false);
 
@@ -32,7 +31,11 @@ const TaskPanel = (props: Props) => {
 
   return (
     <div className="flex flex-col gap-y-2">
-      <header>{props.status}</header>
+      <header className="flex">
+        <h1>{props.status}</h1>
+
+        <Button onClick={() => createTaskBtn(props.status)}>Add a task</Button>
+      </header>
       <div className="border-dark-100 min-w-360px rounded border p-4">
         {narrowType<WithId<TaskDoc>[]>(taskArray) && taskArray.length !== 0 ? (
           taskArray
@@ -50,8 +53,6 @@ const TaskPanel = (props: Props) => {
         ) : (
           <p>There is no task in the goal! Start by adding one!</p>
         )}
-
-        <Button onClick={() => createTaskBtn(props.status)}>Add a task</Button>
       </div>
     </div>
   );

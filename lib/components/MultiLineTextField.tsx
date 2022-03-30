@@ -1,7 +1,7 @@
 import React, { TextareaHTMLAttributes, useEffect, useRef } from "react";
 import { useStoreActions, useStoreState } from "../globalState";
 import narrowType from "../narrowType";
-import { TaskDoc } from "../types/task";
+import { TaskDoc } from "../task/types";
 import Skeleton from "./Skeleton";
 
 interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {

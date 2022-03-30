@@ -5,8 +5,8 @@ import {
   createTypedHooks,
 } from "easy-peasy";
 import { WithId } from "mongodb";
-import { TaskDoc } from "./types/task";
-import { UserWithoutTaskArray } from "./types/user";
+import { TaskDoc } from "./task/types";
+import { UserWithoutTaskArray } from "./user/types";
 
 interface Store {
   user: WithId<UserWithoutTaskArray> | undefined;

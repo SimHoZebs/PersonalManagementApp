@@ -9,7 +9,9 @@ const SideMenu = () => {
   const router = useRouter();
 
   async function login() {
-    const user = await (await import("../authentication")).default();
+    const user = await (
+      await import("../third-party/authentication")
+    ).default();
     if (!(user instanceof Error) && user) {
       router.push(`/app/${user._id}`);
     }

@@ -5,14 +5,14 @@ import { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { WithId } from "mongodb";
 
 //components
-import TaskPanel from "../../../lib/components/TaskPanel";
+import TaskPanel from "../../../lib/task/TaskPanel";
 
 //etc
-import readUser from "../../../lib/api/readUser";
+import readUser from "../../../lib/user/readUser";
 import SideMenu from "../../../lib/components/SideMenu";
 import Skeleton from "../../../lib/components/Skeleton";
-import createUser from "../../../lib/api/createUser";
-import { UserDoc } from "../../../lib/types/user";
+import createUser from "../../../lib/user/createUser";
+import { UserDoc } from "../../../lib/user/types";
 
 /**
  * displays user dashboard.

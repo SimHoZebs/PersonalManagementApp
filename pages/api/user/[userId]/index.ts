@@ -1,8 +1,8 @@
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
 import apiEndpointHelper from '../../../../lib/apiEndpointHelper';
-import { TaskDoc } from '../../../../lib/types/task';
-import { UserDoc } from '../../../../lib/types/user';
+import { TaskDoc } from '../../../../lib/task/types';
+import { UserDoc } from '../../../../lib/user/types';
 import db from '../../../../lib/db';
 
 export type Get = Awaited<ReturnType<typeof get>>;

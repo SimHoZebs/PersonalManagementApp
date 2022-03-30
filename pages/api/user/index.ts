@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import apiEndpointHelper from "../../../lib/apiEndpointHelper";
 import db from "../../../lib/db";
-import { UserDoc } from "../../../lib/types/user";
+import { UserDoc } from "../../../lib/user/types";
 
 export type Get = Awaited<ReturnType<typeof get>>;
 async function get(userId: string) {

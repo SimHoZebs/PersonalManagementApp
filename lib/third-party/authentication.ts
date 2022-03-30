@@ -2,9 +2,9 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { initializeApp } from "firebase/app";
 
-import readFirebaseConfig from "./api/connectToFirebase";
-import readUser from "./api/readUser";
-import createUser from "./api/createUser";
+import readFirebaseConfig from "./connectToFirebase";
+import readUser from "../user/readUser";
+import createUser from "../user/createUser";
 
 export default async function authentication() {
 
