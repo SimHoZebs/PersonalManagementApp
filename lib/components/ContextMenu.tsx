@@ -46,7 +46,7 @@ const ContextMenu = () => {
         setMoreContextMenuOptions([]);
       }}
       ref={contextMenuRef}
-      className={`${contextMenuVisible ? " hidden" : ""}`}
+      className={`${contextMenuVisible ? "" : " hidden"}`}
       //inline styles because windi can't make styles on demand after build
       style={{
         transform: `translateX(${contextMenuCoords[0]}px) translateY(${contextMenuCoords[1]}px)`,
