@@ -10,17 +10,14 @@ interface Props {
 
 const TaskCard = (props: Props) => {
   return !props.taskCardHidden ? (
-    <div
-      className="absolute left-0 top-0 flex h-screen w-screen items-center justify-center "
-      // onClick={(e) => e.stopPropagation}
-    >
+    <div className="flex h-screen w-screen top-0 left-0 absolute items-center justify-center">
       <div
-        className="bg-dark-300 absolute h-screen w-screen  opacity-25"
+        className="h-screen bg-dark-300 w-screen opacity-25 absolute"
         onClick={() => props.setTaskCardHidden(true)}
       ></div>
-      <div className="bg-dark-400 shadow-dark-900 z-10 flex h-3/4 w-2/5 flex-col items-start gap-y-1 px-3 py-4 shadow">
+      <div className="flex flex-col bg-dark-400 h-3/4 shadow py-4 px-3 shadow-dark-900 w-2/5 z-10 gap-y-1 items-start">
         <TextField
-          className="hover:bg-dark-400 placeholder-true-gray-400 text-4xl"
+          className="placeholder-true-gray-400 text-4xl hover:bg-dark-400"
           value={props.task.title}
         />
       </div>

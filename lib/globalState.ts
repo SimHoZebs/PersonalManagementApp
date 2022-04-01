@@ -21,6 +21,9 @@ interface Store {
   updateTask: Action<Store, { task: WithId<TaskDoc> | TaskDoc; taskIndex: number; }>;
   deleteTask: Action<Store, number>;
 
+  contextMenuVisible: boolean;
+  toggleContextMenuVisibility: Action<Store, void>;
+
   moreContextMenuOptions: { name: string, function: () => void; }[];
   setMoreContextMenuOptions: Action<Store, { name: string, function: () => void; }[]>;
 }
@@ -50,6 +53,9 @@ export const globalState = createStore<Store>({
     newTaskArray.splice(payload, 1);
     state.taskArray = newTaskArray;
   }),
+
+  contextMenuVisible: false,
+  toggleContextMenuVisibility: action((state, payload) => { state.contextMenuVisible = !state.contextMenuVisible; }),
 
   moreContextMenuOptions: [],
   setMoreContextMenuOptions: action((state, payload) => {

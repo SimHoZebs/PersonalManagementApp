@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStoreActions, useStoreState } from "../globalState";
 import ContextMenuBase from "./ContextMenuBase";
 
@@ -7,42 +7,53 @@ const ContextMenu = () => {
     (state) => state.moreContextMenuOptions
   );
   const setMoreContextMenuOptions = useStoreActions(
-    (actions) => actions.setMoreContextMenuOptions
+    (a) => a.setMoreContextMenuOptions
   );
-  const [contextMenuHidden, setContextMenuHidden] = useState(true);
-  const [contextMenuCoords, setContextMenuCoords] = useState([0, 0]);
+
+  const contextMenuVisible = useStoreState((s) => s.contextMenuVisible);
+  const toggleContextMenuVisibility = useStoreActions(
+    (a) => a.toggleContextMenuVisibility
+  );
+
+  const [contextMenuCoords, setContextMenuCoords] = useState<[number, number]>([
+    0, 0,
+  ]);
+
+  const contextMenuRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
     function showContextMenu(e: MouseEvent) {
       e.preventDefault();
 
       setContextMenuCoords((prev) => [e.clientX, e.clientY]);
-      setContextMenuHidden(false);
+      toggleContextMenuVisibility();
+
+      contextMenuRef.current?.focus();
     }
 
-    function hideContextMenu(e: MouseEvent) {
-      setContextMenuHidden((prev) => true);
-      setMoreContextMenuOptions([]);
-    }
     window.addEventListener("contextmenu", showContextMenu);
-    window.addEventListener("click", hideContextMenu);
 
     return () => {
       window.removeEventListener("contextmenu", showContextMenu);
-      window.removeEventListener("click", hideContextMenu);
     };
-  }, [moreContextMenuOptions, setMoreContextMenuOptions]);
+  }, [toggleContextMenuVisibility]);
 
   return (
     <ContextMenuBase
-      className={`${contextMenuHidden ? " hidden" : ""}`}
+      tabIndex={0}
+      onBlur={() => {
+        toggleContextMenuVisibility();
+        setMoreContextMenuOptions([]);
+      }}
+      ref={contextMenuRef}
+      className={`${contextMenuVisible ? " hidden" : ""}`}
       //inline styles because windi can't make styles on demand after build
       style={{
         transform: `translateX(${contextMenuCoords[0]}px) translateY(${contextMenuCoords[1]}px)`,
       }}
     >
       {moreContextMenuOptions.map((option, index) => (
-        <li key={index}>
+        <li key={index} tabIndex={0}>
           <button onClick={option.function}>{option.name}</button>
         </li>
       ))}
