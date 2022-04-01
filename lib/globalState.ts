@@ -15,8 +15,8 @@ interface Store {
   createTaskViewVisible: boolean;
   setCreateTaskViewVisible: Action<Store, boolean>;
 
-  taskArray: TaskDoc[] | WithId<TaskDoc>[];
-  setTaskArray: Action<Store, TaskDoc[] | WithId<TaskDoc[]>>;
+  taskArray: TaskDoc[];
+  setTaskArray: Action<Store, TaskDoc[]>;
 
   updateTask: Action<Store, { task: WithId<TaskDoc> | TaskDoc; taskIndex: number; }>;
   deleteTask: Action<Store, number>;

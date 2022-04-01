@@ -6,7 +6,6 @@ import SelectDateButton from "../components/SelectDateButton";
 import MoreOptionsButton from "../components/MoreOptionsButton";
 
 //etc
-import createTask from "./createTask";
 import { useStoreActions, useStoreState } from "../globalState";
 import TaskCard from "./TaskCard";
 import { Icon } from "@iconify/react";
@@ -15,8 +14,6 @@ import { TaskDoc } from "./types";
 export interface Props {
   taskIndex: number;
   task: TaskDoc;
-  setCreatingTask: React.Dispatch<React.SetStateAction<boolean>>;
-  isNewTask: boolean;
 }
 
 /**
@@ -30,7 +27,6 @@ const Task = (props: Props) => {
   const setMoreContextMenuOptions = useStoreActions(
     (a) => a.setMoreContextMenuOptions
   );
-  const user = useStoreState((s) => s.user);
   const [task, setTask] = useState(taskArray[props.taskIndex]);
   const [taskCardHidden, setTaskCardHidden] = useState(true);
   const textFieldRef = useRef<HTMLInputElement>(null);
@@ -45,29 +41,14 @@ const Task = (props: Props) => {
     },
   ];
 
-  /**
-   * automatic taskName textField focus on creation.
-   * isNewTask boolean prevents existing tasks from being focused
-   */
   useEffect(() => {
-    if (props.isNewTask) {
-      textFieldRef.current?.focus();
-      if (!user) return;
-
-      createTask(user._id, task);
-
-      props.setCreatingTask(false);
-    }
-  }, [props, task, user]);
-
-  useEffect(() => {
-    updateTask({ task: task, taskIndex: props.taskIndex });
-  }, [task, props.taskIndex, updateTask]);
+    updateTask({ task: props.task, taskIndex: props.taskIndex });
+  }, [props.task, props.taskIndex, updateTask]);
 
   return (
     <>
       <TaskCard
-        task={task}
+        task={props.task}
         setTask={setTask}
         taskCardHidden={taskCardHidden}
         setTaskCardHidden={setTaskCardHidden}
@@ -91,8 +72,10 @@ const Task = (props: Props) => {
             <TextField
               ref={textFieldRef}
               //Subtract 2 because there's a weird padding on the right of textfield.
-              size={task.title.length <= 5 ? 5 : task.title.length - 2}
-              value={task.title}
+              size={
+                props.task.title.length <= 5 ? 5 : props.task.title.length - 2
+              }
+              value={props.task.title}
               onChange={(e) =>
                 setTask((prev) =>
                   prev ? { ...prev, title: e.target.value } : prev

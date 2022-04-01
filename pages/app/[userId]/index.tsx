@@ -13,6 +13,7 @@ import Skeleton from "../../../lib/components/Skeleton";
 import createUser from "../../../lib/user/createUser";
 import { UserDoc } from "../../../lib/user/types";
 import CreateTaskView from "../../../lib/task/CreateTaskView";
+import { Status } from "../../../lib/task/types";
 
 /**
  * displays user dashboard.
@@ -22,7 +23,11 @@ export default function Dashboard(
 ) {
   const setUser = useStoreActions((actions) => actions.setUser);
   const user = useStoreState((state) => state.user);
+
+  const taskArray = useStoreState((s) => s.taskArray);
   const setTaskArray = useStoreActions((actions) => actions.setTaskArray);
+
+  const statusArray: Status[] = ["On going", "Planned"];
 
   useEffect(() => {
     if (props.user) {
@@ -45,8 +50,14 @@ export default function Dashboard(
           <p className="text-xs">Hello, {user?.name}</p>
           {user ? (
             <main className="flex gap-x-8">
-              <TaskPanel status="On going" userId={user._id.toString()} />
-              <TaskPanel status="Planned" userId={user._id.toString()} />
+              {statusArray.map((status, index) => (
+                <TaskPanel
+                  taskArray={taskArray.filter((task) => task.status === status)}
+                  key={index}
+                  status={status}
+                  userId={user._id.toString()}
+                />
+              ))}
             </main>
           ) : (
             <Skeleton />

@@ -1,23 +1,19 @@
 import React, { HTMLAttributes, useState } from "react";
-import { useStoreActions, useStoreState } from "../globalState";
+import { useStoreActions } from "../globalState";
 import { Status, TaskDoc } from "./types";
 import Button from "../components/Button";
 import Task from "./Task";
-import { WithId } from "mongodb";
-import narrowType from "../narrowType";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   userId: string;
   status: Status;
+  taskArray: TaskDoc[];
 }
 
 const TaskPanel = (props: Props) => {
-  const taskArray = useStoreState((state) => state.taskArray);
   const setCreatingTaskViewVisible = useStoreActions(
     (a) => a.setCreateTaskViewVisible
   );
-
-  const [creatingTask, setCreatingTask] = useState(false);
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -30,19 +26,11 @@ const TaskPanel = (props: Props) => {
       </header>
 
       <div className="border rounded flex flex-col border-dark-100 min-w-360px p-4 gap-y-2">
-        {narrowType<WithId<TaskDoc>[]>(taskArray) && taskArray.length !== 0 ? (
-          taskArray
+        {props.taskArray && props.taskArray.length !== 0 ? (
+          props.taskArray
             .filter((task) => task.status === props.status)
             .map((task, index) => (
-              <Task
-                task={task}
-                key={index}
-                taskIndex={index}
-                setCreatingTask={setCreatingTask}
-                isNewTask={
-                  creatingTask && index === taskArray.length - 1 ? true : false
-                }
-              />
+              <Task task={task} key={index} taskIndex={index} />
             ))
         ) : (
           <p className="text-center">Inbox zero, hooray!</p>
