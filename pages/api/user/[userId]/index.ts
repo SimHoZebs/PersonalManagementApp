@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import apiEndpointHelper from '../../../../lib/apiEndpointHelper';
 import { TaskDoc } from '../../../../lib/task/types';
 import db from '../../../../lib/db';
+import { UserDoc } from '../../../../lib/user/types';
 
 export type Get = Awaited<ReturnType<typeof get>>;
 async function get() {
@@ -11,12 +12,20 @@ async function get() {
 
 export type Post = Awaited<ReturnType<typeof post>>;
 async function post(body: Body, userId: string) {
-  if (!(userId)) return new Error("Missing required fields");
+  if (!(body.task && userId)) return new Error("Missing required fields");
 
-  const userCollection = await db.then(res => res.collection('users'));
+  const userCollection = await db.then(res => res.collection<UserDoc>('users'));
 
   //Figure out how to insert a new task into the task array
-  return await userCollection.findOneAndUpdate({ _id: new ObjectId(userId) }, {});
+  const user = await userCollection.findOne({ _id: new ObjectId(userId) });
+
+  if (!user) return new Error("User does not exist");
+
+  return await userCollection.findOneAndUpdate({ _id: new ObjectId(userId) }, {
+    $set: {
+      taskArray: [...user.taskArray, body.task]
+    }
+  });
 }
 
 export type Patch = Awaited<ReturnType<typeof patch>>;
@@ -29,7 +38,7 @@ async function patch(body: Body, userId: ObjectId) {
 
 export type Del = Awaited<ReturnType<typeof del>>;
 async function del(body: Body, userId: ObjectId) {
-  if (!(body.taskId || userId)) return new Error("Missing required fields");
+  if (!(body.taskId && userId)) return new Error("Missing required fields");
 
   //task deletion
 };

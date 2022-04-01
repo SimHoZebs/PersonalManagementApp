@@ -12,6 +12,9 @@ const CreateTaskView = () => {
   const setIsVisible = useStoreActions((a) => a.setCreateTaskViewVisible);
   const userId = useStoreState((s) => s.user?._id);
 
+  const taskArray = useStoreState((s) => s.taskArray);
+  const setTaskArray = useStoreActions((a) => a.setTaskArray);
+
   const [taskName, setTaskName] = React.useState("");
   const statusArray: Status[] = ["On going", "Planned"];
   const [currStatus, setCurrStatus] = useState(statusArray[0]);
@@ -39,7 +42,14 @@ const CreateTaskView = () => {
       duration: currDuration,
     };
 
-    const createTaskRes = await createTask(userId.toString(), newTask);
+    setTaskArray([...taskArray, newTask]);
+    setIsVisible(false);
+    const createTaskRes = await createTask(userId, newTask);
+    if (createTaskRes instanceof Error) {
+      console.log(createTaskRes);
+      return;
+    }
+    setTaskName("");
   }
 
   useEffect(() => {
@@ -130,7 +140,7 @@ const CreateTaskView = () => {
       </div>
     </div>
   ) : (
-    <div></div>
+    <></>
   );
 };
 

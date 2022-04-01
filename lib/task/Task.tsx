@@ -54,7 +54,7 @@ const Task = (props: Props) => {
       textFieldRef.current?.focus();
       if (!user) return;
 
-      createTask(user._id.toString(), task);
+      createTask(user._id, task);
 
       props.setCreatingTask(false);
     }

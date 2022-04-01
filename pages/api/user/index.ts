@@ -28,7 +28,6 @@ async function post(body: Body) {
 
   const userCollection = await db.then(res => res.collection<UserDoc>('users'));
   const res = await userCollection.insertOne(newUser);
-  console.log("new user insert", res.acknowledged);
   return res;
 }
 

@@ -29,14 +29,14 @@ const TaskPanel = (props: Props) => {
         </Button>
       </header>
 
-      <div className="border rounded border-dark-100 min-w-360px p-4">
+      <div className="border rounded flex flex-col border-dark-100 min-w-360px p-4 gap-y-2">
         {narrowType<WithId<TaskDoc>[]>(taskArray) && taskArray.length !== 0 ? (
           taskArray
             .filter((task) => task.status === props.status)
             .map((task, index) => (
               <Task
                 task={task}
-                key={task._id.toString()}
+                key={index}
                 taskIndex={index}
                 setCreatingTask={setCreatingTask}
                 isNewTask={
