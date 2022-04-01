@@ -10,9 +10,11 @@ import createTask from "./createTask";
 import { useStoreActions, useStoreState } from "../globalState";
 import TaskCard from "./TaskCard";
 import { Icon } from "@iconify/react";
+import { TaskDoc } from "./types";
 
 export interface Props {
   taskIndex: number;
+  task: TaskDoc;
   setCreatingTask: React.Dispatch<React.SetStateAction<boolean>>;
   isNewTask: boolean;
 }
@@ -72,7 +74,7 @@ const Task = (props: Props) => {
       />
 
       <div
-        className="bg-dark-400 shadow-dark-900 w-360px flex flex-col justify-between gap-x-3 rounded p-2  shadow"
+        className="rounded flex flex-col bg-dark-400 shadow p-2 shadow-dark-900 w-360px gap-x-3  justify-between"
         onContextMenu={() => {
           setMoreContextMenuOptions(menuOptions);
         }}
@@ -84,7 +86,7 @@ const Task = (props: Props) => {
           <div className="flex items-center">
             <Icon
               icon="mdi:checkbox-blank-outline"
-              className="h-6 w-6 text-gray-500"
+              className="h-6 text-gray-500 w-6"
             />
             <TextField
               ref={textFieldRef}
@@ -101,7 +103,7 @@ const Task = (props: Props) => {
           <MoreOptionsButton options={menuOptions} />
         </div>
 
-        <div className="flex items-center gap-x-1">
+        <div className="flex gap-x-1 items-center">
           <SelectDateButton />
         </div>
       </div>

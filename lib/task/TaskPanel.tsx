@@ -13,35 +13,29 @@ interface Props extends HTMLAttributes<HTMLDivElement> {
 
 const TaskPanel = (props: Props) => {
   const taskArray = useStoreState((state) => state.taskArray);
-  const setTaskArray = useStoreActions((actions) => actions.setTaskArray);
+  const setCreatingTaskViewVisible = useStoreActions(
+    (a) => a.setCreateTaskViewVisible
+  );
 
   const [creatingTask, setCreatingTask] = useState(false);
 
-  function createTaskBtn(status: Status) {
-    //Type assertion as TaskProps requires _id
-    const newTask = {
-      title: "",
-      userId: props.userId,
-      status,
-    };
-
-    setTaskArray([...taskArray, newTask]);
-    setCreatingTask(true);
-  }
-
   return (
     <div className="flex flex-col gap-y-2">
-      <header className="flex">
-        <h1>{props.status}</h1>
+      <header className="flex justify-between">
+        <h1 className="text-2xl">{props.status}</h1>
 
-        <Button onClick={() => createTaskBtn(props.status)}>Add a task</Button>
+        <Button onClick={() => setCreatingTaskViewVisible(true)}>
+          Add a task
+        </Button>
       </header>
-      <div className="border-dark-100 min-w-360px rounded border p-4">
+
+      <div className="border rounded border-dark-100 min-w-360px p-4">
         {narrowType<WithId<TaskDoc>[]>(taskArray) && taskArray.length !== 0 ? (
           taskArray
             .filter((task) => task.status === props.status)
             .map((task, index) => (
               <Task
+                task={task}
                 key={task._id.toString()}
                 taskIndex={index}
                 setCreatingTask={setCreatingTask}
@@ -51,7 +45,7 @@ const TaskPanel = (props: Props) => {
               />
             ))
         ) : (
-          <p>There is no task in the goal! Start by adding one!</p>
+          <p className="text-center">Inbox zero, hooray!</p>
         )}
       </div>
     </div>

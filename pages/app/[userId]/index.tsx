@@ -9,10 +9,10 @@ import TaskPanel from "../../../lib/task/TaskPanel";
 
 //etc
 import readUser from "../../../lib/user/readUser";
-import SideMenu from "../../../lib/components/SideMenu";
 import Skeleton from "../../../lib/components/Skeleton";
 import createUser from "../../../lib/user/createUser";
 import { UserDoc } from "../../../lib/user/types";
+import CreateTaskView from "../../../lib/task/CreateTaskView";
 
 /**
  * displays user dashboard.
@@ -39,11 +39,9 @@ export default function Dashboard(
       </Head>
 
       <div className="flex flex-row">
-        <div className="w-1/4 max-w-xs">
-          <SideMenu />
-        </div>
+        <CreateTaskView />
 
-        <div className="flex w-3/4 flex-col gap-y-1 p-2">
+        <div className="flex flex-col p-2 w-3/4 gap-y-1">
           <p className="text-xs">Hello, {user?.name}</p>
           {user ? (
             <main className="flex gap-x-8">

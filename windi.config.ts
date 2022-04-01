@@ -9,6 +9,9 @@ export default defineConfig({
     extend: {
       fontFamily: {
         "roboto": ['Roboto', 'system-ui']
+      },
+      colors: {
+        "primary": "#7690EA"
       }
     }
   }

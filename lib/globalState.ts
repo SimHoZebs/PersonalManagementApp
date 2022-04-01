@@ -12,6 +12,9 @@ interface Store {
   user: WithId<UserWithoutTaskArray> | undefined;
   setUser: Action<Store, WithId<UserWithoutTaskArray> | undefined>;
 
+  createTaskViewVisible: boolean;
+  setCreateTaskViewVisible: Action<Store, boolean>;
+
   taskArray: TaskDoc[] | WithId<TaskDoc>[];
   setTaskArray: Action<Store, TaskDoc[] | WithId<TaskDoc[]>>;
 
@@ -26,6 +29,11 @@ export const globalState = createStore<Store>({
   user: undefined,
   setUser: action((state, payload) => {
     state.user = payload;
+  }),
+
+  createTaskViewVisible: false,
+  setCreateTaskViewVisible: action((s, p) => {
+    s.createTaskViewVisible = p;
   }),
 
   taskArray: [],

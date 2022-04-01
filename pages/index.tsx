@@ -16,7 +16,7 @@ export default function Index() {
         <h2 className="text-xl">Your personal management system</h2>
       </div>
       <Button
-        className="border border-blue-400"
+        className="border border-primary"
         onClick={() =>
           router.push({
             pathname: `/app/000000000000`,
@@ -27,7 +27,7 @@ export default function Index() {
       </Button>
       or
       <Button
-        className="border border-blue-400"
+        className="border border-primary"
         onClick={async () => {
           const user = await (
             await import("../lib/third-party/authentication")
