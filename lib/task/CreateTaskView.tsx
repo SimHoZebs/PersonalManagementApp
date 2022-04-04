@@ -8,8 +8,8 @@ import newTaskDefault from "./newTaskDefault";
 import { Duration, Status, TaskDoc } from "./types";
 
 const CreateTaskView = () => {
-  const isVisible = useStoreState((s) => s.createTaskViewVisible);
-  const setIsVisible = useStoreActions((a) => a.setCreateTaskViewVisible);
+  const viewSetting = useStoreState((s) => s.createTaskViewSetting);
+  const setViewSetting = useStoreActions((a) => a.setCreateTaskViewSetting);
   const userId = useStoreState((s) => s.user?._id);
 
   const taskArray = useStoreState((s) => s.taskArray);
@@ -17,7 +17,6 @@ const CreateTaskView = () => {
 
   const [taskName, setTaskName] = React.useState("");
   const statusArray: Status[] = ["On going", "Planned"];
-  const [currStatus, setCurrStatus] = useState(statusArray[0]);
 
   const durationArray: Duration[] = [
     "< 30 mins",
@@ -38,12 +37,12 @@ const CreateTaskView = () => {
     const newTask: TaskDoc = {
       ...newTaskDefault,
       title: taskName,
-      status: currStatus,
+      status: viewSetting.status,
       duration: currDuration,
     };
 
     setTaskArray([...taskArray, newTask]);
-    setIsVisible(false);
+    setViewSetting({ ...viewSetting, visible: false });
     const createTaskRes = await createTask(userId, newTask);
     if (createTaskRes instanceof Error) {
       console.log(createTaskRes);
@@ -59,7 +58,7 @@ const CreateTaskView = () => {
     function handleClickOutside() {
       if (!backdrop.contains(document.activeElement)) {
         console.log("setVisible false");
-        setIsVisible(false);
+        setViewSetting({ ...viewSetting, visible: false });
       }
     }
 
@@ -72,9 +71,9 @@ const CreateTaskView = () => {
       console.log("unmounting");
       backdrop.removeEventListener("click", handleClickOutside);
     };
-  }, [isVisible, setIsVisible]);
+  }, [viewSetting, setViewSetting]);
 
-  return isVisible ? (
+  return viewSetting.visible ? (
     <div
       className="flex h-screen bg-opacity-80 bg-dark-800 w-screen top-0 left-0 justify-center items-center absolute"
       ref={backdropRef}
@@ -95,9 +94,14 @@ const CreateTaskView = () => {
 
           <div className="flex tracking-wide gap-x-4">
             <div className="w-auto relative">
-              <Listbox value={currStatus} onChange={setCurrStatus}>
+              <Listbox
+                value={viewSetting.status}
+                onChange={(status) =>
+                  setViewSetting({ ...viewSetting, status })
+                }
+              >
                 <Listbox.Button className="rounded bg-gray-500 w-full py-1 px-2">
-                  {currStatus}
+                  {viewSetting.status}
                 </Listbox.Button>
                 <Listbox.Options className="rounded bg-gray-500 top-9 absolute">
                   {statusArray.map((item, index) => (

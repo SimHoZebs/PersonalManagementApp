@@ -5,15 +5,15 @@ import {
   createTypedHooks,
 } from "easy-peasy";
 import { WithId } from "mongodb";
-import { TaskDoc } from "./task/types";
+import { Status, TaskDoc } from "./task/types";
 import { UserWithoutTaskArray } from "./user/types";
 
 interface Store {
   user: WithId<UserWithoutTaskArray> | undefined;
   setUser: Action<Store, WithId<UserWithoutTaskArray> | undefined>;
 
-  createTaskViewVisible: boolean;
-  setCreateTaskViewVisible: Action<Store, boolean>;
+  createTaskViewSetting: { visible: boolean; status: Status; };
+  setCreateTaskViewSetting: Action<Store, { visible: boolean; status: Status; }>;
 
   taskArray: TaskDoc[];
   setTaskArray: Action<Store, TaskDoc[]>;
@@ -37,9 +37,10 @@ export const globalState = createStore<Store>({
     state.user = payload;
   }),
 
-  createTaskViewVisible: false,
-  setCreateTaskViewVisible: action((s, p) => {
-    s.createTaskViewVisible = p;
+  createTaskViewSetting: { visible: false, status: "Planned" },
+  setCreateTaskViewSetting: action((s, p) => {
+    const newSetting = { ...p };
+    s.createTaskViewSetting = newSetting;
   }),
 
   taskArray: [],

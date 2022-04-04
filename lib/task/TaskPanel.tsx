@@ -1,18 +1,18 @@
-import React, { HTMLAttributes, useState } from "react";
+import React from "react";
 import { useStoreActions } from "../globalState";
 import { Status, TaskDoc } from "./types";
 import Button from "../components/Button";
 import Task from "./Task";
 
-interface Props extends HTMLAttributes<HTMLDivElement> {
+interface Props extends React.HTMLAttributes<HTMLDivElement> {
   userId: string;
   status: Status;
   taskArray: TaskDoc[];
 }
 
 const TaskPanel = (props: Props) => {
-  const setCreatingTaskViewVisible = useStoreActions(
-    (a) => a.setCreateTaskViewVisible
+  const setCreateTaskViewSetting = useStoreActions(
+    (a) => a.setCreateTaskViewSetting
   );
 
   return (
@@ -20,7 +20,11 @@ const TaskPanel = (props: Props) => {
       <header className="flex justify-between">
         <h1 className="text-2xl">{props.status}</h1>
 
-        <Button onClick={() => setCreatingTaskViewVisible(true)}>
+        <Button
+          onClick={() =>
+            setCreateTaskViewSetting({ visible: true, status: props.status })
+          }
+        >
           Add a task
         </Button>
       </header>
