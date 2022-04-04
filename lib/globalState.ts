@@ -24,6 +24,9 @@ interface Store {
   contextMenuVisible: boolean;
   toggleContextMenuVisibility: Action<Store, void>;
 
+  contextMenuCoords: [number, number];
+  setContextMenuCoords: Action<Store, [number, number]>;
+
   moreContextMenuOptions: { name: string, function: () => void; }[];
   setMoreContextMenuOptions: Action<Store, { name: string, function: () => void; }[]>;
 }
@@ -56,6 +59,9 @@ export const globalState = createStore<Store>({
 
   contextMenuVisible: false,
   toggleContextMenuVisibility: action((state, payload) => { state.contextMenuVisible = !state.contextMenuVisible; }),
+
+  contextMenuCoords: [0, 0],
+  setContextMenuCoords: action((state, payload) => { state.contextMenuCoords = payload; }),
 
   moreContextMenuOptions: [],
   setMoreContextMenuOptions: action((state, payload) => {

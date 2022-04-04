@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useStoreActions, useStoreState } from "../globalState";
-import ContextMenuBase from "./ContextMenuBase";
 
 const ContextMenu = () => {
   const moreContextMenuOptions = useStoreState(
@@ -15,9 +14,8 @@ const ContextMenu = () => {
     (a) => a.toggleContextMenuVisibility
   );
 
-  const [contextMenuCoords, setContextMenuCoords] = useState<[number, number]>([
-    0, 0,
-  ]);
+  const contextMenuCoords = useStoreState((s) => s.contextMenuCoords);
+  const setContextMenuCoords = useStoreActions((a) => a.setContextMenuCoords);
 
   const contextMenuRef = useRef<HTMLUListElement>(null);
 
@@ -25,10 +23,8 @@ const ContextMenu = () => {
     function showContextMenu(e: MouseEvent) {
       e.preventDefault();
 
-      setContextMenuCoords((prev) => [e.clientX, e.clientY]);
+      setContextMenuCoords([e.clientX, e.clientY]);
       toggleContextMenuVisibility();
-
-      contextMenuRef.current?.focus();
     }
 
     window.addEventListener("contextmenu", showContextMenu);
@@ -36,17 +32,26 @@ const ContextMenu = () => {
     return () => {
       window.removeEventListener("contextmenu", showContextMenu);
     };
-  }, [toggleContextMenuVisibility]);
+  }, [toggleContextMenuVisibility, setContextMenuCoords]);
+
+  useEffect(() => {
+    if (!(contextMenuRef.current && contextMenuVisible)) return;
+
+    contextMenuRef.current.focus();
+  }, [contextMenuVisible]);
 
   return (
-    <ContextMenuBase
+    <ul
       tabIndex={0}
+      ref={contextMenuRef}
       onBlur={() => {
         toggleContextMenuVisibility();
         setMoreContextMenuOptions([]);
       }}
-      ref={contextMenuRef}
-      className={`${contextMenuVisible ? "" : " hidden"}`}
+      className={
+        "bg-dark-300 shadow-dark-900 absolute flex flex-col gap-y-1 rounded px-2 py-1 text-xs shadow outline-none " +
+        `${contextMenuVisible ? "" : " hidden"}`
+      }
       //inline styles because windi can't make styles on demand after build
       style={{
         transform: `translateX(${contextMenuCoords[0]}px) translateY(${contextMenuCoords[1]}px)`,
@@ -57,7 +62,7 @@ const ContextMenu = () => {
           <button onClick={option.function}>{option.name}</button>
         </li>
       ))}
-    </ContextMenuBase>
+    </ul>
   );
 };
 

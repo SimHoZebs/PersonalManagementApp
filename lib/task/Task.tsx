@@ -16,10 +16,6 @@ export interface Props {
   task: TaskDoc;
 }
 
-/**
- *@note isNewTask may seem unnecessary with creatingTask in Goal component, but it makes sure only last task of array behaves as a new task.
- * This is needed as existing tasks can behave like new tasks if user clicks away while creating new task.
- */
 const Task = (props: Props) => {
   const updateTask = useStoreActions((a) => a.updateTask);
   const deleteTask = useStoreActions((a) => a.deleteTask);
