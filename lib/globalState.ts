@@ -22,7 +22,7 @@ interface Store {
   deleteTask: Action<Store, number>;
 
   contextMenuVisible: boolean;
-  toggleContextMenuVisibility: Action<Store, void>;
+  setContextMenuVisibility: Action<Store, boolean>;
 
   contextMenuCoords: [number, number];
   setContextMenuCoords: Action<Store, [number, number]>;
@@ -59,7 +59,7 @@ export const globalState = createStore<Store>({
   }),
 
   contextMenuVisible: false,
-  toggleContextMenuVisibility: action((state, payload) => { state.contextMenuVisible = !state.contextMenuVisible; }),
+  setContextMenuVisibility: action((state, payload) => { state.contextMenuVisible = payload; }),
 
   contextMenuCoords: [0, 0],
   setContextMenuCoords: action((state, payload) => { state.contextMenuCoords = payload; }),

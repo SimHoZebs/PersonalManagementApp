@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useStoreActions, useStoreState } from "../globalState";
 
 const ContextMenu = () => {
@@ -10,8 +10,8 @@ const ContextMenu = () => {
   );
 
   const contextMenuVisible = useStoreState((s) => s.contextMenuVisible);
-  const toggleContextMenuVisibility = useStoreActions(
-    (a) => a.toggleContextMenuVisibility
+  const setContextMenuVisibility = useStoreActions(
+    (a) => a.setContextMenuVisibility
   );
 
   const contextMenuCoords = useStoreState((s) => s.contextMenuCoords);
@@ -22,21 +22,31 @@ const ContextMenu = () => {
   useEffect(() => {
     function showContextMenu(e: MouseEvent) {
       e.preventDefault();
-
       setContextMenuCoords([e.clientX, e.clientY]);
-      toggleContextMenuVisibility();
+      setContextMenuVisibility(true);
+    }
+
+    function clickOutsideContextMenu() {
+      if (
+        contextMenuRef.current &&
+        !contextMenuRef.current.contains(document.activeElement) &&
+        contextMenuVisible
+      ) {
+        setContextMenuVisibility(false);
+      }
     }
 
     window.addEventListener("contextmenu", showContextMenu);
+    window.addEventListener("click", clickOutsideContextMenu);
 
     return () => {
       window.removeEventListener("contextmenu", showContextMenu);
+      window.removeEventListener("click", clickOutsideContextMenu);
     };
-  }, [toggleContextMenuVisibility, setContextMenuCoords]);
+  }, [setContextMenuVisibility, setContextMenuCoords, contextMenuVisible]);
 
   useEffect(() => {
     if (!(contextMenuRef.current && contextMenuVisible)) return;
-
     contextMenuRef.current.focus();
   }, [contextMenuVisible]);
 
@@ -44,12 +54,8 @@ const ContextMenu = () => {
     <ul
       tabIndex={0}
       ref={contextMenuRef}
-      onBlur={() => {
-        toggleContextMenuVisibility();
-        setMoreContextMenuOptions([]);
-      }}
       className={
-        "bg-dark-300 shadow-dark-900 absolute flex flex-col gap-y-1 rounded px-2 py-1 text-xs shadow outline-none " +
+        "bg-dark-300 z-50 shadow-dark-900 absolute flex flex-col gap-y-1 rounded px-2 py-1 text-xs shadow outline-none " +
         `${contextMenuVisible ? "" : " hidden"}`
       }
       //inline styles because windi can't make styles on demand after build
@@ -58,8 +64,16 @@ const ContextMenu = () => {
       }}
     >
       {moreContextMenuOptions.map((option, index) => (
-        <li key={index} tabIndex={0}>
-          <button onClick={option.function}>{option.name}</button>
+        <li key={index}>
+          <button
+            onClick={() => {
+              option.function();
+              setContextMenuVisibility(false);
+              setMoreContextMenuOptions([]);
+            }}
+          >
+            {option.name}
+          </button>
         </li>
       ))}
     </ul>

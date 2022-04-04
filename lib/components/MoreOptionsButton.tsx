@@ -10,8 +10,8 @@ const MoreOptionsButton = (props: Props) => {
   const setMoreContextMenuOptions = useStoreActions(
     (a) => a.setMoreContextMenuOptions
   );
-  const toggleContextMenuVisibility = useStoreActions(
-    (a) => a.toggleContextMenuVisibility
+  const setContextMenuVisibility = useStoreActions(
+    (a) => a.setContextMenuVisibility
   );
 
   const setContextMenuCoords = useStoreActions((a) => a.setContextMenuCoords);
@@ -22,7 +22,7 @@ const MoreOptionsButton = (props: Props) => {
         onClick={(e) => {
           setMoreContextMenuOptions(props.options);
           setContextMenuCoords([e.clientX, e.clientY]);
-          toggleContextMenuVisibility();
+          setContextMenuVisibility(true);
         }}
         {...props}
       >
