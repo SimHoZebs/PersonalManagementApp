@@ -8,7 +8,7 @@ const IconButton = (props: Props) => {
   return (
     <button
       className={
-        "hover:bg-dark-300 flex rounded-full p-2 focus:outline-none " +
+        "flex font-medium text-xs focus:outline-none gap-x-1 duration-100 items-center " +
         className
       }
       {...rest}

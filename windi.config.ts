@@ -11,8 +11,10 @@ export default defineConfig({
         "roboto": ['Roboto', 'system-ui']
       },
       colors: {
-        "primary": "#7690EA"
+        "primary": "#7690EA",
+        "primary-hover": "#98ACF4"
       }
+
     }
   }
 });

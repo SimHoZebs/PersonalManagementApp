@@ -92,7 +92,7 @@ const CreateTaskView = () => {
             onChange={(e) => setTaskName(e.currentTarget.value)}
           />
 
-          <div className="flex tracking-wide gap-x-4">
+          <div className="flex gap-x-4">
             <div className="w-auto relative">
               <Listbox
                 value={viewSetting.status}

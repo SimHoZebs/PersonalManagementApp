@@ -3,6 +3,7 @@ import Head from "next/head";
 import { StoreProvider } from "easy-peasy";
 import { AppProps } from "next/app";
 import "windi.css";
+import "../lib/global.css";
 
 import ContextMenu from "../lib/components/ContextMenu";
 import globalState from "../lib/globalState";

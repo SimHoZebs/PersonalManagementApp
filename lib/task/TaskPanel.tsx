@@ -18,7 +18,7 @@ const TaskPanel = (props: Props) => {
   return (
     <div className="flex flex-col gap-y-2">
       <header className="flex justify-between">
-        <h1 className="text-2xl">{props.status}</h1>
+        <h3>{props.status}</h3>
 
         <Button
           onClick={() =>

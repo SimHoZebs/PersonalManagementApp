@@ -9,11 +9,11 @@ export default class MyDocument extends Document {
           <link
             crossOrigin="true"
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
           />
           <link rel="shortcut icon" type="image/png" href="/favicon.png" />
         </Head>
-        <body className="font-roboto bg-dark-800 text-true-gray-200">
+        <body className="font-roboto bg-dark-800 text-true-gray-200 ">
           <Main />
           <NextScript />
         </body>

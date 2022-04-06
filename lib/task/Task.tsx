@@ -6,10 +6,11 @@ import SelectDateButton from "../components/SelectDateButton";
 import MoreOptionsButton from "../components/MoreOptionsButton";
 
 //etc
-import { useStoreActions, useStoreState } from "../globalState";
+import { useStoreActions } from "../globalState";
 import TaskCard from "./TaskCard";
 import { Icon } from "@iconify/react";
 import { TaskDoc } from "./types";
+import IconButton from "../components/IconButton";
 
 export interface Props {
   taskIndex: number;
@@ -17,13 +18,11 @@ export interface Props {
 }
 
 const Task = (props: Props) => {
-  const updateTask = useStoreActions((a) => a.updateTask);
   const deleteTask = useStoreActions((a) => a.deleteTask);
-  const taskArray = useStoreState((s) => s.taskArray);
   const setMoreContextMenuOptions = useStoreActions(
     (a) => a.setMoreContextMenuOptions
   );
-  const [task, setTask] = useState(taskArray[props.taskIndex]);
+  const [task, setTask] = useState(props.task);
   const [taskCardHidden, setTaskCardHidden] = useState(true);
   const textFieldRef = useRef<HTMLInputElement>(null);
 
@@ -37,14 +36,10 @@ const Task = (props: Props) => {
     },
   ];
 
-  useEffect(() => {
-    updateTask({ task: props.task, taskIndex: props.taskIndex });
-  }, [props.task, props.taskIndex, updateTask]);
-
   return (
     <>
       <TaskCard
-        task={props.task}
+        task={task}
         setTask={setTask}
         taskCardHidden={taskCardHidden}
         setTaskCardHidden={setTaskCardHidden}
@@ -65,6 +60,7 @@ const Task = (props: Props) => {
               icon="mdi:checkbox-blank-outline"
               className="h-6 text-gray-500 w-6"
             />
+
             <TextField
               ref={textFieldRef}
               //Subtract 2 because there's a weird padding on the right of textfield.
@@ -82,8 +78,16 @@ const Task = (props: Props) => {
           <MoreOptionsButton options={menuOptions} />
         </div>
 
-        <div className="flex gap-x-1 items-center">
+        <div className="flex gap-x-4 items-center">
           <SelectDateButton />
+
+          <IconButton className="text-true-gray-400 gap-x-1 group hover:text-true-gray-300">
+            <Icon
+              icon="mdi:clock-time-three-outline"
+              className="h-6 text-primary w-6 duration-100 group-hover:text-primary-hover"
+            />
+            {props.task.duration}
+          </IconButton>
         </div>
       </div>
     </>
