@@ -56,7 +56,7 @@ const ContextMenu = () => {
       ref={contextMenuRef}
       className={
         "bg-dark-300 z-50 shadow-dark-900 absolute flex flex-col gap-y-1 rounded px-2 py-1 text-xs shadow outline-none " +
-        `${contextMenuVisible ? "" : " hidden"}`
+        `${contextMenuVisible ? "" : "hidden"}`
       }
       //inline styles because windi can't make styles on demand after build
       style={{
