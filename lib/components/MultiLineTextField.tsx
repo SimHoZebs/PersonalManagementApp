@@ -1,6 +1,6 @@
 import React, { TextareaHTMLAttributes, useEffect, useRef } from "react";
 import { useStoreActions, useStoreState } from "../globalState";
-import narrowType from "../narrowType";
+import narrowType from "../helper/narrowType";
 import { TaskDoc } from "../task/types";
 import Skeleton from "./Skeleton";
 

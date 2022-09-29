@@ -1,6 +1,6 @@
-import { Body, Del } from "../../pages/api/user/[userId]";
+import { Body, Del } from "../../../pages/api/user/[userId]";
 import { ObjectId } from "mongodb";
-import apiFunctionHelper from "../apiFunctionHelper";
+import apiFunctionHelper from "../../helper/apiFunctionHelper";
 
 export default async function handler(userId: string, taskId: ObjectId) {
 

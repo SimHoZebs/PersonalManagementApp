@@ -1,4 +1,4 @@
-import apiFunctionHelper from '../apiFunctionHelper';
+import apiFunctionHelper from '../helper/apiFunctionHelper';
 import { Body, Get } from '../../pages/api/user';
 import { ObjectId } from 'mongodb';
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import Button from "../components/Button";
-import TextField from "../components/TextField";
+import Button from "../../components/Button";
+import TextField from "../../components/TextField";
 import { Listbox } from "@headlessui/react";
-import { useStoreActions, useStoreState } from "../globalState";
+import { useStoreActions, useStoreState } from "../../globalState";
 import createTask from "./createTask";
-import newTaskDefault from "./newTaskDefault";
-import { Duration, Status, TaskDoc } from "./types";
+import newTaskDefault from "../newTaskDefault";
+import { Duration, Status, TaskDoc } from "../types";
 
 const CreateTaskView = () => {
   const viewSetting = useStoreState((s) => s.createTaskViewSetting);

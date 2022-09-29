@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { Post, Body } from "../../pages/api/user";
-import apiFunctionHelper from "../apiFunctionHelper";
+import apiFunctionHelper from "../helper/apiFunctionHelper";
 
 export default async function createUser(name: string, userId?: string | ObjectId) {
 

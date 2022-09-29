@@ -1,6 +1,6 @@
-import apiFunctionHelper from "../apiFunctionHelper";
-import { Body, Post } from "../../pages/api/user/[userId]";
-import { TaskDoc } from "./types";
+import apiFunctionHelper from "../../helper/apiFunctionHelper";
+import { Body, Post } from "../../../pages/api/user/[userId]";
+import { TaskDoc } from "../types";
 import { ObjectId } from "mongodb";
 
 /**

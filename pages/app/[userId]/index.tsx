@@ -12,7 +12,7 @@ import readUser from "../../../lib/user/readUser";
 import Skeleton from "../../../lib/components/Skeleton";
 import createUser from "../../../lib/user/createUser";
 import { UserDoc } from "../../../lib/user/types";
-import CreateTaskView from "../../../lib/task/CreateTaskView";
+import CreateTaskView from "../../../lib/task/functions/CreateTaskView";
 import { Status } from "../../../lib/task/types";
 
 /**

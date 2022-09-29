@@ -1,5 +1,5 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import request from "./request";
+import request from "../request";
 
 interface ApiRes extends AxiosResponse {
   data: {

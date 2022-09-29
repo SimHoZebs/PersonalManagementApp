@@ -1,5 +1,5 @@
 import { Get } from "../../pages/api/firebase";
-import apiFunctionHelper from "../apiFunctionHelper";
+import apiFunctionHelper from "../helper/apiFunctionHelper";
 
 export default async function readFirebaseConfig() {
 

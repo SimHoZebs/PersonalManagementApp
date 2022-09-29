@@ -1,6 +1,6 @@
-import { Patch, Body } from "../../pages/api/user/[userId]";
-import apiFunctionHelper from "../apiFunctionHelper";
-import { TaskDoc } from "./types";
+import { Patch, Body } from "../../../pages/api/user/[userId]";
+import apiFunctionHelper from "../../helper/apiFunctionHelper";
+import { TaskDoc } from "../types";
 
 export default async function updateTask(userId: string, goalId: string, updatedTask: TaskDoc) {
   return await apiFunctionHelper<Patch, Body>({

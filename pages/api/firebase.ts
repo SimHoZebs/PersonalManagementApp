@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import apiEndpointHelper from "../../lib/apiEndpointHelper";
+import apiEndpointHelper from "../../lib/helper/apiEndpointHelper";
 
 export type Get = ReturnType<typeof get>;
 

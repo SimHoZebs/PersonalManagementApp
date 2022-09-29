@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 import { NextApiRequest, NextApiResponse } from 'next';
-import apiEndpointHelper from '../../../../lib/apiEndpointHelper';
+import apiEndpointHelper from '../../../../lib/helper/apiEndpointHelper';
 import { TaskDoc } from '../../../../lib/task/types';
 import db from '../../../../lib/db';
 import { UserDoc } from '../../../../lib/user/types';
