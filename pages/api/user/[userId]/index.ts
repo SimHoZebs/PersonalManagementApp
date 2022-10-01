@@ -7,19 +7,19 @@ import { UserDoc } from '../../../../lib/user/types';
 
 export type Get = Awaited<ReturnType<typeof get>>;
 async function get() {
-  return new Error("This endpoint is not implemented yet.");
+  throw new Error("This endpoint is not implemented yet.");
 }
 
 export type Post = Awaited<ReturnType<typeof post>>;
 async function post(body: Body, userId: string) {
-  if (!(body.task && userId)) return new Error("Missing required fields");
+  if (!(body.task && userId)) throw new Error("Missing required fields");
 
   const userCollection = await db.then(res => res.collection<UserDoc>('users'));
 
   //Figure out how to insert a new task into the task array
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
 
-  if (!user) return new Error("User does not exist");
+  if (!user) throw new Error("User does not exist");
 
   return await userCollection.findOneAndUpdate({ _id: new ObjectId(userId) }, {
     $set: {
@@ -38,13 +38,13 @@ async function patch(body: Body, userId: ObjectId) {
 
 export type Del = Awaited<ReturnType<typeof del>>;
 async function del(body: Body, userId: ObjectId) {
-  if (!(typeof (body.taskIndex) === "number" && userId)) return new Error(`Missing required fields, taskIndex is ${body.taskIndex} and userId is ${userId}`);
+  if (!(typeof (body.taskIndex) === "number" && userId)) throw new Error(`Missing required fields, taskIndex is ${body.taskIndex} and userId is ${userId}`);
   const _id = new ObjectId(userId);
 
   const userCollection = await db.then(res => res.collection('users'));
   const user = await userCollection.findOne({ _id }) as UserDoc | null;
 
-  if (!user) return new Error(`UserId ${_id} does not exist`);
+  if (!user) throw new Error(`UserId ${_id} does not exist`);
 
   user.taskArray.splice(body.taskIndex, 1);
   const taskArray = user.taskArray;

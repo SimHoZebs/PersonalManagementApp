@@ -44,7 +44,7 @@ export default async function apiEndpointHelper(
         return { status: 400 };
     }
   } catch (error) {
-    console.log(error);
-    return { status: 500 };
+    console.log("error at apiEndpointHelper,", error);
+    return { status: 500, response: { error } };
   }
 }

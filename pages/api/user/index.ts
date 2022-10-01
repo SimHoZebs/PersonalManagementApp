@@ -6,7 +6,7 @@ import { UserDoc } from "../../../lib/user/types";
 
 export type Get = Awaited<ReturnType<typeof get>>;
 async function get(userId: string) {
-  if (!userId) return new Error("userId is undefined");
+  if (!userId) throw new Error("userId is undefined");
 
   const userCollection = await db.then(res => res.collection<UserDoc>('users'));
   return await userCollection.findOne({ _id: new ObjectId(userId === "0" ? 0 : userId) });
@@ -14,7 +14,7 @@ async function get(userId: string) {
 
 export type Post = Awaited<ReturnType<typeof post>>;
 async function post(body: Body) {
-  if (!body.name) return new Error("Title is undefined");
+  if (!body.name) throw new Error("Title is undefined");
 
   const newUser = {
     _id: new ObjectId(),
