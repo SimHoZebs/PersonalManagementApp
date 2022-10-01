@@ -38,15 +38,28 @@ async function patch(body: Body, userId: ObjectId) {
 
 export type Del = Awaited<ReturnType<typeof del>>;
 async function del(body: Body, userId: ObjectId) {
-  if (!(body.taskId && userId)) return new Error("Missing required fields");
+  if (!(typeof (body.taskIndex) === "number" && userId)) return new Error(`Missing required fields, taskIndex is ${body.taskIndex} and userId is ${userId}`);
+  const _id = new ObjectId(userId);
 
-  //task deletion
+  const userCollection = await db.then(res => res.collection('users'));
+  const user = await userCollection.findOne({ _id }) as UserDoc | null;
+
+  if (!user) return new Error(`UserId ${_id} does not exist`);
+
+  user.taskArray.splice(body.taskIndex, 1);
+  const taskArray = user.taskArray;
+
+  return await userCollection.findOneAndUpdate(
+    { _id },
+    { $set: { taskArray } }
+  );
 };
 
 export interface Body {
   task?: TaskDoc;
   target?: string; //updateLastViewedGoalId
   taskId?: ObjectId;
+  taskIndex?: number; //deleteTask
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -66,6 +79,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     async function patchWrapper() {
       return patch(body, userId as unknown as ObjectId);
     },
+
     async function delWrapper() {
       return del(body, userId as unknown as ObjectId);
     }

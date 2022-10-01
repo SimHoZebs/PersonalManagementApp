@@ -6,11 +6,12 @@ import SelectDateButton from "../components/SelectDateButton";
 import MoreOptionsButton from "../components/MoreOptionsButton";
 
 //etc
-import { useStoreActions } from "../globalState";
+import { useStoreActions, useStoreState } from "../globalState";
 import TaskCard from "./TaskCard";
 import { Icon } from "@iconify/react";
 import { TaskDoc } from "./types";
 import IconButton from "../components/IconButton";
+import deleteTaskFromDB from "./api/deleteTask";
 
 export interface Props {
   taskIndex: number;
@@ -18,6 +19,7 @@ export interface Props {
 }
 
 const Task = (props: Props) => {
+  const userId = useStoreState((state) => state.user?._id);
   const deleteTask = useStoreActions((a) => a.deleteTask);
   const setMoreContextMenuOptions = useStoreActions(
     (a) => a.setMoreContextMenuOptions
@@ -32,6 +34,7 @@ const Task = (props: Props) => {
       shortcut: "",
       function: () => {
         deleteTask(props.taskIndex);
+        deleteTaskFromDB(userId ? userId.toString() : "", props.taskIndex);
       },
     },
   ];
