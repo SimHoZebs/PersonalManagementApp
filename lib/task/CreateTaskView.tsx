@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import Button from "../../components/Button";
-import TextField from "../../components/TextField";
+import Button from "../components/Button";
+import TextField from "../components/TextField";
 import { Listbox } from "@headlessui/react";
-import { useStoreActions, useStoreState } from "../../globalState";
-import createTask from "./createTask";
-import newTaskDefault from "../newTaskDefault";
-import { Duration, Status, TaskDoc } from "../types";
+import { useStoreActions, useStoreState } from "../globalState";
+import createTask from "./api/createTask";
+import newTaskDefault from "./newTaskDefault";
+import { Duration, Status, TaskDoc } from "./types";
 
 const CreateTaskView = () => {
   const viewSetting = useStoreState((s) => s.createTaskViewSetting);
@@ -16,6 +16,9 @@ const CreateTaskView = () => {
   const setTaskArray = useStoreActions((a) => a.setTaskArray);
 
   const [taskName, setTaskName] = React.useState("");
+  const [endDate, setEndDate] = React.useState(
+    new Date(Date.now()).toISOString().split("T")[0]
+  );
   const statusArray: Status[] = ["On going", "Planned"];
 
   const durationArray: Duration[] = [
@@ -93,7 +96,7 @@ const CreateTaskView = () => {
           />
 
           <div className="flex gap-x-4">
-            <div className="w-auto relative">
+            <div className="relative">
               <Listbox
                 value={viewSetting.status}
                 onChange={(status) =>
@@ -134,6 +137,16 @@ const CreateTaskView = () => {
                   ))}
                 </Listbox.Options>
               </Listbox>
+            </div>
+
+            <div className="relative">
+              <input
+                className="rounded h-full bg-gray-500 py-1 px-2"
+                type="date"
+                name="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.currentTarget.value)}
+              ></input>
             </div>
           </div>
 

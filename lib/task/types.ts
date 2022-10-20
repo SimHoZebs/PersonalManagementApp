@@ -6,7 +6,6 @@ export interface SubTask {
   completed: boolean;
 }
 
-
 export interface TaskDoc {
   title: string;
   status: Status;
