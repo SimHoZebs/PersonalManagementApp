@@ -1,3 +1,5 @@
+This project is halted due to a change in perspective toward task management and the Second Brain.
+---
 # LifeOrb - Open source personal management tool
 
 ## Introduction
